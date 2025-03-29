@@ -43,7 +43,9 @@ function mergeConfig(baseConfig, userConfig) {
   const merged = { ...baseConfig }
   for (const key in userConfig) {
     if (key === 'env') {
-      merged.env = { ...merged.env, ...userConfig.env }
+      // Filter out NODE_ENV from user config if present
+      const { NODE_ENV, ...otherEnvVars } = userConfig.env || {}
+      merged.env = { ...merged.env, ...otherEnvVars }
     } else if (key === 'experimental') {
       merged.experimental = { ...merged.experimental, ...userConfig.experimental }
     } else {
@@ -53,6 +55,7 @@ function mergeConfig(baseConfig, userConfig) {
   return merged
 }
 
-mergeConfig(nextConfig, userConfig)
+// Actually use the result of mergeConfig
+const finalConfig = mergeConfig(nextConfig, userConfig)
 
-export default nextConfig
+export default finalConfig
