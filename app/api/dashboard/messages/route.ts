@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 import clientPromise, { testConnection } from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 
-// Add a function to generate sample messages when database is not available
+// We'll keep this function in case we need it in the future,
+// but we won't use it by default anymore
 function getSampleMessages() {
   return [
     {
@@ -42,20 +43,8 @@ export async function GET() {
   try {
     console.log('Starting GET request to /api/dashboard/messages');
     
-    // Try to test the connection first
-    const connectionTest = await testConnection();
-    if (!connectionTest.success) {
-      console.log('MongoDB connection test failed, using sample data');
-      return NextResponse.json({
-        success: true,
-        messages: getSampleMessages(),
-        fallback: true,
-        connectionError: connectionTest.error
-      });
-    }
-    
     const client = await clientPromise;
-    const db = client.db('datascience'); // Use the same database name as in the connection string
+    const db = client.db(); // Will use the database specified in the connection string
     
     console.log('Connected to MongoDB, fetching messages...');
     
@@ -81,18 +70,12 @@ export async function GET() {
   } catch (error) {
     console.error('Error in dashboard messages API route:', error);
     
-    // Return sample data in development mode or when configured to show fallbacks
-    const isFallbackEnabled = process.env.NODE_ENV === 'development' || process.env.ENABLE_FALLBACKS === 'true';
-    const sampleMessages = isFallbackEnabled ? getSampleMessages() : [];
-    
-    console.log(`Returning ${sampleMessages.length} sample messages as fallback`);
-    
+    // If connection failed, return error instead of sample data
     return NextResponse.json({
-      success: true,
-      messages: sampleMessages,
-      fallback: true,
+      success: false,
+      message: 'Failed to connect to database',
       error: error instanceof Error ? error.message : 'Unknown error connecting to database'
-    });
+    }, { status: 500 });
   }
 }
 
@@ -106,7 +89,7 @@ export async function PUT(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('datascience');
+    const db = client.db(); // Use the database from connection string
 
     const result = await db.collection('messages').updateOne(
       { _id: new ObjectId(id) },
@@ -137,7 +120,7 @@ export async function DELETE(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db('datascience');
+    const db = client.db(); // Use the database from connection string
 
     const result = await db.collection('messages').deleteOne({ _id: new ObjectId(id) });
 

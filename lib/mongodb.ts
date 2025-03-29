@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 // Set a fallback URI in case environment variables fail
 // This should match the value in your .env.local file
-const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh2000%40@datascience.no0i8st.mongodb.net/datascience";
+const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh2000%40@datascience.no0i8st.mongodb.net/?retryWrites=true&w=majority&appName=datascience";
 
 // Check for MongoDB URI in various places, with fallback
 const getMongoURI = () => {
@@ -20,9 +20,10 @@ const getMongoURI = () => {
 const uri = getMongoURI();
 console.log('MongoDB connection string detected:', uri.substring(0, 20) + '...');
 
+// Define client options - retryWrites and w are already in the connection string
 const options = {
   maxPoolSize: 10,
-  serverSelectionTimeoutMS: 5000,
+  serverSelectionTimeoutMS: 10000, // Increased timeout for server selection
   socketTimeoutMS: 45000,
   connectTimeoutMS: 10000
 };

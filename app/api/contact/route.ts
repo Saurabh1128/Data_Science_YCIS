@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import clientPromise, { testConnection } from '@/lib/mongodb';
+import clientPromise from '@/lib/mongodb';
 
 export async function POST(request: Request) {
   console.log('Contact API route received a request');
@@ -23,27 +23,12 @@ export async function POST(request: Request) {
       );
     }
     
-    // Test MongoDB connection first
-    console.log('Testing MongoDB connection...');
-    const connectionTest = await testConnection();
-    
-    if (!connectionTest.success) {
-      console.error('MongoDB connection test failed:', connectionTest.error);
-      // Return success response anyway as a fallback
-      console.log('Using fallback approach - pretending message was saved');
-      return NextResponse.json({
-        success: true,
-        message: 'Message recorded successfully',
-        fallback: true
-      });
-    }
-    
     // Connect to MongoDB
     console.log('Connecting to MongoDB...');
     const client = await clientPromise;
     
-    // Use database 
-    const db = client.db('datascience');
+    // Use the database from the connection string
+    const db = client.db();
     
     // Create a document with form data and timestamp
     const contactMessage = {
@@ -58,28 +43,18 @@ export async function POST(request: Request) {
     
     console.log('Attempting to insert document into MongoDB');
     
-    try {
-      // Get collection, create if doesn't exist
-      const collection = db.collection('messages');
-      
-      // Insert the document into the collection
-      const result = await collection.insertOne(contactMessage);
-      console.log('Document inserted successfully:', result.insertedId);
-      
-      return NextResponse.json({
-        success: true,
-        message: 'Message submitted successfully',
-        id: result.insertedId
-      });
-    } catch (dbError) {
-      console.error('Database operation failed:', dbError);
-      // Return success response anyway as a fallback
-      return NextResponse.json({
-        success: true,
-        message: 'Message recorded successfully',
-        fallback: true
-      });
-    }
+    // Get collection, create if doesn't exist
+    const collection = db.collection('messages');
+    
+    // Insert the document into the collection
+    const result = await collection.insertOne(contactMessage);
+    console.log('Document inserted successfully:', result.insertedId);
+    
+    return NextResponse.json({
+      success: true,
+      message: 'Message submitted successfully',
+      id: result.insertedId
+    });
     
   } catch (error) {
     console.error('Error in contact API route:', error);
@@ -100,14 +75,14 @@ export async function POST(request: Request) {
       type: error instanceof Error ? error.constructor.name : typeof error
     });
     
-    // For user experience, sometimes better to say it succeeded
-    // even if it failed to connect to the database
+    // Return error response instead of pretending it succeeded
     return NextResponse.json(
       { 
-        success: true,
-        message: 'Message recorded successfully',
-        fallback: true
-      }
+        success: false,
+        message: 'Failed to submit message. Please try again later.',
+        error: errorMessage
+      },
+      { status: 500 }
     );
   }
 } 

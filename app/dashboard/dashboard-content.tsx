@@ -104,25 +104,13 @@ export default function DashboardContent() {
       
       if (data.success) {
         setMessages(data.messages || []);
-        
-        // Changed: Don't set an error message for fallback data
-        // Instead show a notification-style message only if fallback is true
-        if (data.fallback) {
-          // Just set a notification flag instead of error
-          setNotification({
-            message: "Using sample data - database connection unavailable", 
-            type: "warning"
-          });
-        } else {
-          // Clear any notification if we have real data
-          setNotification(null);
-        }
+        setNotification(null); // Clear any notification
       } else {
-        throw new Error(data.message || 'Unknown error occurred');
+        throw new Error(data.message || data.error || 'Unknown error occurred');
       }
     } catch (err) {
       console.error('Error fetching messages:', err);
-      setError('Error loading messages. Please try again.');
+      setError('Error connecting to the database. Please try again later.');
       // Set messages to empty array to avoid showing stale data
       setMessages([]);
     } finally {
