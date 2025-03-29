@@ -401,10 +401,10 @@ export default function DashboardContent() {
   };
 
   return (
-    <div className="space-y-8 p-6 max-w-[1400px] mx-auto">
-      {/* Notification Banner (add this) */}
+    <div className="space-y-6 p-4 sm:p-6 max-w-[1400px] mx-auto">
+      {/* Notification Banner */}
       {notification && (
-        <div className={`rounded-lg p-4 flex items-center justify-between ${
+        <div className={`rounded-lg p-3 sm:p-4 flex items-center justify-between shadow-sm ${
           notification.type === 'warning' 
             ? 'bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-200 dark:border-amber-800/30' 
             : notification.type === 'success'
@@ -412,85 +412,87 @@ export default function DashboardContent() {
               : 'bg-blue-50 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800/30'
         }`}>
           <div className="flex items-center gap-2">
-            {notification.type === 'warning' && <AlertTriangle className="h-5 w-5" />}
-            <p>{notification.message}</p>
+            {notification.type === 'warning' && <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />}
+            <p className="text-sm sm:text-base">{notification.message}</p>
           </div>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={() => setNotification(null)}
-            className="h-8 px-2"
+            className="h-7 w-7 p-0 rounded-full ml-2"
+            aria-label="Dismiss notification"
           >
+            <span className="sr-only">Dismiss</span>
             ✕
           </Button>
         </div>
       )}
 
       {/* Dashboard Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-red-50 to-white dark:from-red-900/20 dark:to-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Messages</CardTitle>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6">
+        <Card className="bg-gradient-to-br from-red-50 to-white dark:from-red-900/20 dark:to-gray-800 shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-1 sm:pb-2 pt-3 sm:pt-4 px-3 sm:px-4">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Total Messages</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0 pb-3 sm:pb-4 px-3 sm:px-4">
             <div className="flex items-center">
-              <MessageSquare className="h-8 w-8 text-red-600 mr-3" />
-              <div className="text-3xl font-bold">{messages.length}</div>
+              <MessageSquare className="h-5 w-5 sm:h-8 sm:w-8 text-red-600 mr-2 sm:mr-3" />
+              <div className="text-xl sm:text-3xl font-bold">{messages.length}</div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/20 dark:to-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">Unread Messages</CardTitle>
+        <Card className="bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/20 dark:to-gray-800 shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-1 sm:pb-2 pt-3 sm:pt-4 px-3 sm:px-4">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Unread Messages</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0 pb-3 sm:pb-4 px-3 sm:px-4">
             <div className="flex items-center">
-              <Mail className="h-8 w-8 text-blue-600 mr-3" />
-              <div className="text-3xl font-bold">{messages.filter(m => m.status === 'unread').length}</div>
+              <Mail className="h-5 w-5 sm:h-8 sm:w-8 text-blue-600 mr-2 sm:mr-3" />
+              <div className="text-xl sm:text-3xl font-bold">{messages.filter(m => m.status === 'unread').length}</div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-green-50 to-white dark:from-green-900/20 dark:to-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">Read Messages</CardTitle>
+        <Card className="bg-gradient-to-br from-green-50 to-white dark:from-green-900/20 dark:to-gray-800 shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-1 sm:pb-2 pt-3 sm:pt-4 px-3 sm:px-4">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Read Messages</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0 pb-3 sm:pb-4 px-3 sm:px-4">
             <div className="flex items-center">
-              <CheckCircle className="h-8 w-8 text-green-600 mr-3" />
-              <div className="text-3xl font-bold">{messages.filter(m => m.status === 'read').length}</div>
+              <CheckCircle className="h-5 w-5 sm:h-8 sm:w-8 text-green-600 mr-2 sm:mr-3" />
+              <div className="text-xl sm:text-3xl font-bold">{messages.filter(m => m.status === 'read').length}</div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">Archived Messages</CardTitle>
+        <Card className="bg-gradient-to-br from-gray-50 to-white dark:from-gray-700 dark:to-gray-800 shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-1 sm:pb-2 pt-3 sm:pt-4 px-3 sm:px-4">
+            <CardTitle className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Archived Messages</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0 pb-3 sm:pb-4 px-3 sm:px-4">
             <div className="flex items-center">
-              <Trash className="h-8 w-8 text-gray-600 mr-3" />
-              <div className="text-3xl font-bold">{messages.filter(m => m.status === 'archived').length}</div>
+              <Trash className="h-5 w-5 sm:h-8 sm:w-8 text-gray-600 mr-2 sm:mr-3" />
+              <div className="text-xl sm:text-3xl font-bold">{messages.filter(m => m.status === 'archived').length}</div>
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Analytics Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="overflow-hidden">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <BarChart3 className="mr-2 h-5 w-5 text-red-600" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <Card className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-2 pt-3 sm:pt-4 px-3 sm:px-6">
+            <CardTitle className="flex items-center text-base sm:text-lg">
+              <BarChart3 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
               Subject Distribution
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs sm:text-sm">
               Number of messages by subject category
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="h-[300px] w-full mt-4">
+          <CardContent className="px-2 sm:px-4 pb-2 sm:pb-4">
+            <div className="h-[220px] sm:h-[300px] w-full mt-2 sm:mt-4">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
@@ -501,16 +503,17 @@ export default function DashboardContent() {
                     data={getSubjectData()}
                     margin={{
                       top: 5,
-                      right: 30,
-                      left: 20,
+                      right: 20,
+                      left: 0,
                       bottom: 5,
                     }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => [`${value} messages`, 'Count']} />
-                    <Legend />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                    <XAxis dataKey="name" tick={{fontSize: 10}} />
+                    <YAxis tick={{fontSize: 10}} />
+                    <Tooltip formatter={(value) => [`${value} messages`, 'Count']} 
+                      contentStyle={{fontSize: '12px'}} />
+                    <Legend wrapperStyle={{fontSize: '12px', paddingTop: '10px'}} />
                     <Bar dataKey="count" name="Number of Messages" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -519,18 +522,18 @@ export default function DashboardContent() {
           </CardContent>
         </Card>
 
-        <Card className="overflow-hidden">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <PieChartIcon className="mr-2 h-5 w-5 text-red-600" />
+        <Card className="overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-2 pt-3 sm:pt-4 px-3 sm:px-6">
+            <CardTitle className="flex items-center text-base sm:text-lg">
+              <PieChartIcon className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-red-600" />
               Message Status Distribution
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-xs sm:text-sm">
               Breakdown of messages by status
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="h-[300px] w-full mt-4">
+          <CardContent className="px-2 sm:px-4 pb-2 sm:pb-4">
+            <div className="h-[220px] sm:h-[300px] w-full mt-2 sm:mt-4">
               {loading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
@@ -542,17 +545,20 @@ export default function DashboardContent() {
                       data={getStatusData()}
                       cx="50%"
                       cy="50%"
-                      outerRadius={100}
-                      innerRadius={60}
+                      outerRadius={80}
+                      innerRadius={50}
                       dataKey="value"
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      labelLine={false}
+                      label={({ name, percent }) => 
+                        percent > 0.05 ? `${name}: ${(percent * 100).toFixed(0)}%` : ''}
                     >
                       {getStatusData().map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value) => [`${value} messages`, 'Count']} />
-                    <Legend />
+                    <Tooltip formatter={(value) => [`${value} messages`, 'Count']} 
+                      contentStyle={{fontSize: '12px'}} />
+                    <Legend wrapperStyle={{fontSize: '12px', paddingTop: '10px'}} />
                   </PieChart>
                 </ResponsiveContainer>
               )}
@@ -562,58 +568,60 @@ export default function DashboardContent() {
       </div>
 
       {/* Message List Section */}
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex justify-between items-center flex-wrap gap-4">
-            <CardTitle className="text-xl font-bold">Contact Messages</CardTitle>
+      <Card className="shadow-sm hover:shadow-md transition-shadow">
+        <CardHeader className="pb-3 px-3 sm:px-6">
+          <div className="flex justify-between items-center flex-wrap gap-3">
+            <CardTitle className="text-lg sm:text-xl font-bold">Contact Messages</CardTitle>
             <div className="flex gap-2 items-center">
-              <div className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 rounded-md p-1">
+              <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-800 rounded-md p-1">
                 <Button 
                   variant={viewMode === 'cards' ? "default" : "ghost"} 
                   size="sm" 
                   onClick={() => setViewMode('cards')}
-                  className="h-8"
+                  className="h-8 px-2 sm:px-3"
                 >
-                  <MessageSquare className="h-4 w-4 mr-1" /> Detailed
+                  <MessageSquare className="h-4 w-4 sm:mr-1" /> 
+                  <span className="hidden sm:inline">Detailed</span>
                 </Button>
                 <Button 
                   variant={viewMode === 'compact' ? "default" : "ghost"} 
                   size="sm" 
                   onClick={() => setViewMode('compact')}
-                  className="h-8"
+                  className="h-8 px-2 sm:px-3"
                 >
-                  <Inbox className="h-4 w-4 mr-1" /> Compact
+                  <Inbox className="h-4 w-4 sm:mr-1" /> 
+                  <span className="hidden sm:inline">Compact</span>
                 </Button>
               </div>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-2 sm:px-6">
           <Tabs defaultValue="all" onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid grid-cols-4 mb-8">
-              <TabsTrigger value="all" className="flex items-center gap-2">
+            <TabsList className="grid grid-cols-4 mb-6 sm:mb-8 h-auto">
+              <TabsTrigger value="all" className="py-2 sm:py-3 flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
                 <Inbox className="h-4 w-4" />
-                <span>All</span>
-                <Badge className="ml-1 bg-red-600">{messages.length}</Badge>
+                <span className="text-xs sm:text-sm">All</span>
+                <Badge className="hidden sm:inline-flex ml-1 bg-red-600">{messages.length}</Badge>
               </TabsTrigger>
-              <TabsTrigger value="unread" className="flex items-center gap-2">
+              <TabsTrigger value="unread" className="py-2 sm:py-3 flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
                 <Clock className="h-4 w-4" />
-                <span>Unread</span>
-                <Badge className="ml-1 bg-red-600">
+                <span className="text-xs sm:text-sm">Unread</span>
+                <Badge className="hidden sm:inline-flex ml-1 bg-red-600">
                   {messages.filter(m => m.status === 'unread').length}
                 </Badge>
               </TabsTrigger>
-              <TabsTrigger value="read" className="flex items-center gap-2">
+              <TabsTrigger value="read" className="py-2 sm:py-3 flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
                 <CheckCircle className="h-4 w-4" />
-                <span>Read</span>
-                <Badge className="ml-1 bg-green-600">
+                <span className="text-xs sm:text-sm">Read</span>
+                <Badge className="hidden sm:inline-flex ml-1 bg-green-600">
                   {messages.filter(m => m.status === 'read').length}
                 </Badge>
               </TabsTrigger>
-              <TabsTrigger value="archived" className="flex items-center gap-2">
+              <TabsTrigger value="archived" className="py-2 sm:py-3 flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
                 <Trash className="h-4 w-4" />
-                <span>Archived</span>
-                <Badge className="ml-1 bg-gray-600">
+                <span className="text-xs sm:text-sm">Archive</span>
+                <Badge className="hidden sm:inline-flex ml-1 bg-gray-600">
                   {messages.filter(m => m.status === 'archived').length}
                 </Badge>
               </TabsTrigger>
@@ -626,10 +634,10 @@ export default function DashboardContent() {
                   <p className="mt-4 text-gray-600 dark:text-gray-400">Loading messages...</p>
                 </div>
               ) : error ? (
-                <div className="rounded-lg bg-red-50 dark:bg-red-900/30 p-4 mb-6">
+                <div className="rounded-lg bg-red-50 dark:bg-red-900/30 p-3 sm:p-4 mb-6">
                   <div className="flex items-center">
                     <AlertTriangle className="h-5 w-5 text-red-600 mr-2" />
-                    <p className="text-red-600 dark:text-red-400">{error}</p>
+                    <p className="text-sm sm:text-base text-red-600 dark:text-red-400">{error}</p>
                     <Button 
                       variant="outline" 
                       size="sm" 
@@ -641,10 +649,10 @@ export default function DashboardContent() {
                   </div>
                 </div>
               ) : filteredMessages.length === 0 ? (
-                <div className="flex flex-col items-center justify-center p-12 text-center bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                  <Inbox className="h-16 w-16 text-gray-400 mb-4" />
+                <div className="flex flex-col items-center justify-center p-6 sm:p-12 text-center bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                  <Inbox className="h-12 w-12 sm:h-16 sm:w-16 text-gray-400 mb-4" />
                   <h3 className="text-lg font-medium mb-2">No messages yet</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mb-4">
+                  <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-4">
                     When users submit contact form messages, they will appear here.
                   </p>
                   <Button onClick={retryFetchMessages}>
@@ -652,123 +660,142 @@ export default function DashboardContent() {
                   </Button>
                 </div>
               ) : viewMode === 'compact' ? (
-                // Compact view
-                <div className="border rounded-lg overflow-hidden">
-                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Subject</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
-                      {filteredMessages.map((message) => (
-                        <tr key={message._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="font-medium">{message.name}</div>
-                            <div className="text-sm text-gray-500">{message.email}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <Badge variant="secondary">
-                              {message.subject === 'admission' ? 'Admission Inquiry' :
-                              message.subject === 'course' ? 'Course Information' :
-                              message.subject === 'faculty' ? 'Faculty Contact' : 'Other'}
-                            </Badge>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <Badge className={getStatusColor(message.status)}>
-                              {message.status}
-                            </Badge>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            <ClientFormattedDate dateString={message.createdAt} />
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div className="flex justify-end gap-2">
-                              {message.status === 'unread' && (
-                                <Button 
-                                  size="sm" 
-                                  variant="outline"
-                                  onClick={() => updateMessageStatus(message._id, 'read')}
-                                  className="h-8"
-                                >
-                                  <CheckCircle className="h-3 w-3 mr-1" /> Read
-                                </Button>
-                              )}
-                              {message.status !== 'archived' && (
-                                <Button 
-                                  size="sm" 
-                                  variant="outline"
-                                  onClick={() => updateMessageStatus(message._id, 'archived')}
-                                  className="h-8"
-                                >
-                                  <Trash className="h-3 w-3 mr-1" /> Archive
-                                </Button>
-                              )}
-                              <Button 
-                                size="sm" 
-                                variant="outline"
-                                onClick={() => confirmDeleteMessage(message._id)}
-                                className="h-8 text-red-600 border-red-200 hover:bg-red-50 hover:text-red-700 dark:border-red-800/30 dark:hover:bg-red-900/20"
-                              >
-                                <AlertTriangle className="h-3 w-3 mr-1" /> Delete
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                // Compact view - optimize for mobile with responsive table
+                <div className="overflow-x-auto -mx-2 sm:mx-0">
+                  <div className="inline-block min-w-full align-middle">
+                    <div className="overflow-hidden border rounded-lg">
+                      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                        <thead className="bg-gray-50 dark:bg-gray-800">
+                          <tr>
+                            <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                            <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Subject</th>
+                            <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+                            <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                            <th className="px-3 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
+                          {filteredMessages.map((message) => (
+                            <tr key={message._id} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                              <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                                <div className="font-medium text-sm">{message.name}</div>
+                                <div className="text-xs sm:text-sm text-gray-500 truncate max-w-[120px] sm:max-w-full">{message.email}</div>
+                              </td>
+                              <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                                <Badge variant="secondary" className="text-xs">
+                                  {message.subject === 'admission' ? 'Admission' :
+                                  message.subject === 'course' ? 'Course' :
+                                  message.subject === 'faculty' ? 'Faculty' : 'Other'}
+                                </Badge>
+                              </td>
+                              <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                                <Badge className={`${getStatusColor(message.status)} text-xs`}>
+                                  {message.status}
+                                </Badge>
+                              </td>
+                              <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500">
+                                <ClientFormattedDate dateString={message.createdAt} />
+                              </td>
+                              <td className="px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-right">
+                                <div className="flex justify-end gap-1 sm:gap-2">
+                                  {message.status === 'unread' && (
+                                    <Button 
+                                      size="sm" 
+                                      variant="outline"
+                                      onClick={() => updateMessageStatus(message._id, 'read')}
+                                      className="h-7 sm:h-8 px-1.5 sm:px-2 text-xs"
+                                    >
+                                      <CheckCircle className="h-3 w-3 sm:mr-1" /> 
+                                      <span className="hidden sm:inline">Read</span>
+                                    </Button>
+                                  )}
+                                  {message.status !== 'archived' && (
+                                    <Button 
+                                      size="sm" 
+                                      variant="outline"
+                                      onClick={() => updateMessageStatus(message._id, 'archived')}
+                                      className="h-7 sm:h-8 px-1.5 sm:px-2 text-xs"
+                                    >
+                                      <Trash className="h-3 w-3 sm:mr-1" /> 
+                                      <span className="hidden sm:inline">Archive</span>
+                                    </Button>
+                                  )}
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline"
+                                    onClick={() => confirmDeleteMessage(message._id)}
+                                    className="h-7 sm:h-8 px-1.5 sm:px-2 text-xs text-red-600 border-red-200 hover:border-red-300 hover:bg-red-50"
+                                  >
+                                    <AlertTriangle className="h-3 w-3 sm:mr-1" /> 
+                                    <span className="hidden sm:inline">Delete</span>
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               ) : (
-                // Card view (default)
-                <div className="grid gap-6">
+                // Card view (default) - enhanced for mobile
+                <div className="grid gap-4 sm:gap-6">
                   {filteredMessages.map((message) => (
                     <Card key={message._id} className="overflow-hidden border border-gray-200 dark:border-gray-800 hover:shadow-md transition-shadow duration-300">
-                      <CardHeader className="pb-3 bg-gray-50 dark:bg-gray-800/50">
-                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                          <div>
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <CardTitle className="text-lg">{message.name}</CardTitle>
-                              <Badge className={getStatusColor(message.status)}>
-                                {message.status}
-                              </Badge>
-                            </div>
-                            <CardDescription className="mt-1 space-y-1">
-                              <div className="flex items-center gap-2 text-sm">
-                                <Mail className="h-4 w-4 text-gray-400" />
-                                <a href={`mailto:${message.email}`} className="text-red-600 hover:underline">
-                                  {message.email}
-                                </a>
+                      <CardHeader className="pb-2 sm:pb-3 pt-3 sm:pt-4 px-3 sm:px-6 bg-gray-50 dark:bg-gray-800/50">
+                        <div className="flex flex-col gap-3">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <CardTitle className="text-base sm:text-lg">{message.name}</CardTitle>
+                                <Badge className={`${getStatusColor(message.status)} text-xs`}>
+                                  {message.status}
+                                </Badge>
                               </div>
-                              
-                              {message.phone && (
-                                <div className="flex items-center gap-2 text-sm">
-                                  <Phone className="h-4 w-4 text-gray-400" />
-                                  <a href={`tel:${message.phone}`} className="text-red-600 hover:underline">
-                                    {message.phone}
+                              <CardDescription className="mt-1 space-y-1">
+                                <div className="flex items-center gap-2 text-xs sm:text-sm">
+                                  <Mail className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
+                                  <a href={`mailto:${message.email}`} className="text-red-600 hover:underline truncate max-w-[150px] sm:max-w-full">
+                                    {message.email}
                                   </a>
                                 </div>
-                              )}
-                              
-                              <div className="flex items-center gap-2 text-sm">
-                                <Calendar className="h-4 w-4 text-gray-400" />
-                                <ClientFormattedDate dateString={message.createdAt} />
-                              </div>
-                            </CardDescription>
+                                
+                                {message.phone && (
+                                  <div className="flex items-center gap-2 text-xs sm:text-sm">
+                                    <Phone className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
+                                    <a href={`tel:${message.phone}`} className="text-red-600 hover:underline">
+                                      {message.phone}
+                                    </a>
+                                  </div>
+                                )}
+                                
+                                <div className="flex items-center gap-2 text-xs sm:text-sm">
+                                  <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-gray-400" />
+                                  <ClientFormattedDate dateString={message.createdAt} />
+                                </div>
+                              </CardDescription>
+                            </div>
+                            
+                            {/* Display subject for mobile */}
+                            <Badge variant="secondary" className="text-xs sm:hidden">
+                              {message.subject === 'admission' ? 'Admission' :
+                              message.subject === 'course' ? 'Course' :
+                              message.subject === 'faculty' ? 'Faculty' : 'Other'}
+                            </Badge>
                           </div>
-                          <div className="flex gap-2 self-start">
+                          
+                          {/* Action buttons */}
+                          <div className="flex flex-wrap gap-2 justify-end">
                             {message.status === 'unread' && (
                               <Button 
                                 size="sm" 
                                 variant="outline"
                                 onClick={() => updateMessageStatus(message._id, 'read')}
-                                className="text-green-600 border-green-200 hover:border-green-300 hover:bg-green-50"
+                                className="h-8 px-2 sm:px-3 text-xs sm:text-sm text-green-600 border-green-200 hover:border-green-300 hover:bg-green-50"
                               >
-                                <CheckCircle className="h-4 w-4 mr-1" /> Mark as Read
+                                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /> 
+                                <span>Mark Read</span>
                               </Button>
                             )}
                             {message.status !== 'archived' && (
@@ -776,33 +803,35 @@ export default function DashboardContent() {
                                 size="sm" 
                                 variant="outline"
                                 onClick={() => updateMessageStatus(message._id, 'archived')}
-                                className="text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                                className="h-8 px-2 sm:px-3 text-xs sm:text-sm text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
                               >
-                                <Trash className="h-4 w-4 mr-1" /> Archive
+                                <Trash className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /> 
+                                <span>Archive</span>
                               </Button>
                             )}
                             <Button 
                               size="sm" 
                               variant="outline"
                               onClick={() => confirmDeleteMessage(message._id)}
-                              className="text-red-600 border-red-200 hover:border-red-300 hover:bg-red-50"
+                              className="h-8 px-2 sm:px-3 text-xs sm:text-sm text-red-600 border-red-200 hover:border-red-300 hover:bg-red-50"
                             >
-                              <AlertTriangle className="h-4 w-4 mr-1" /> Delete
+                              <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /> 
+                              <span>Delete</span>
                             </Button>
                           </div>
                         </div>
                       </CardHeader>
-                      <CardContent className="py-4">
-                        <div className="mb-3">
-                          <span className="font-medium">Subject: </span>
-                          <Badge variant="secondary" className="ml-2">
+                      <CardContent className="py-3 sm:py-4 px-3 sm:px-6">
+                        <div className="mb-2 sm:mb-3">
+                          <span className="font-medium text-sm sm:text-base">Subject: </span>
+                          <Badge variant="secondary" className="ml-2 text-xs sm:text-sm">
                             {message.subject === 'admission' ? 'Admission Inquiry' :
                             message.subject === 'course' ? 'Course Information' :
                             message.subject === 'faculty' ? 'Faculty Contact' : 'Other'}
                           </Badge>
                         </div>
-                        <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                          <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
+                        <div className="bg-gray-50 dark:bg-gray-800/50 p-2 sm:p-4 rounded-lg">
+                          <p className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                             {message.message}
                           </p>
                         </div>
@@ -817,15 +846,15 @@ export default function DashboardContent() {
       </Card>
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-[95vw] sm:max-w-lg">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this message?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-lg sm:text-xl">Delete this message?</AlertDialogTitle>
+            <AlertDialogDescription className="text-sm sm:text-base">
               This action cannot be undone. This will permanently delete the message from the database.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
+            <AlertDialogCancel className="mt-2 sm:mt-0">Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={deleteMessage} className="bg-red-600 hover:bg-red-700">
               Delete
             </AlertDialogAction>
