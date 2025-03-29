@@ -137,6 +137,7 @@ export default function Home() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     subject: '',
     message: ''
   });
@@ -180,6 +181,7 @@ export default function Home() {
         setFormData({
           name: '',
           email: '',
+          phone: '',
           subject: '',
           message: ''
         });
@@ -614,11 +616,9 @@ export default function Home() {
                   <p>Stay updated with the latest events, workshops, and activities organized by the department.</p>
                 </CardContent>
                 <CardFooter>
-                  <Link href="/activities" className="w-full">
-                    <Button className="w-full group bg-red-600 hover:bg-red-700">
-                      <span>View Activities</span>
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Button>
+                  <Link href="/activities" className="w-full group bg-red-600 hover:bg-red-700">
+                    <span>View Activities</span>
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </CardFooter>
               </Card>
@@ -639,11 +639,9 @@ export default function Home() {
                   <p>Learn about our faculty members, research areas, and state-of-the-art facilities.</p>
                 </CardContent>
                 <CardFooter>
-                  <Link href="/department" className="w-full">
-                    <Button className="w-full group bg-red-600 hover:bg-red-700">
-                      <span>Department Details</span>
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Button>
+                  <Link href="/department" className="w-full group bg-red-600 hover:bg-red-700">
+                    <span>Department Details</span>
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </CardFooter>
               </Card>
@@ -1021,6 +1019,19 @@ export default function Home() {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="phone" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Contact Number
+                    </label>
+                    <input
+                      id="phone"
+                      type="tel"
+                      className="flex h-12 w-full rounded-md border border-red-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-800 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-red-600"
+                      placeholder="Enter your contact number"
+                      value={formData.phone}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">

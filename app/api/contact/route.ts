@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     
     // Validate required fields
-    const { name, email, subject, message } = body;
+    const { name, email, subject, message, phone } = body;
     
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
@@ -28,6 +28,7 @@ export async function POST(request: Request) {
     const contactMessage = {
       name,
       email,
+      phone: phone || '',  // Make phone optional
       subject,
       message,
       createdAt: new Date(),
