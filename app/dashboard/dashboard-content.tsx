@@ -48,20 +48,49 @@ export default function DashboardContent() {
   const fetchMessages = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/dashboard/messages');
+      setError(null); // Clear previous errors
+      
+      console.log('Fetching dashboard messages...');
+      const response = await fetch('/api/dashboard/messages', {
+        // Add cache: 'no-store' to prevent caching issues
+        cache: 'no-store',
+        // Add a longer timeout
+        signal: AbortSignal.timeout(10000)
+      });
+      
+      console.log('Response status:', response.status);
       
       if (!response.ok) {
-        throw new Error('Failed to fetch messages');
+        throw new Error(`Failed to fetch messages: ${response.status}`);
       }
       
       const data = await response.json();
-      setMessages(data.messages);
+      console.log('Received messages data:', data);
+      
+      if (data.success) {
+        setMessages(data.messages || []);
+        
+        // If it was a fallback response with empty messages, show a warning
+        if (data.fallback && data.messages.length === 0) {
+          setError('Could not connect to the database. Showing cached data or empty state.');
+        }
+      } else {
+        throw new Error(data.message || 'Unknown error occurred');
+      }
     } catch (err) {
-      setError('Error loading messages. Please try again.');
       console.error('Error fetching messages:', err);
+      setError('Error loading messages. Please try again.');
+      // Set messages to empty array to avoid showing stale data
+      setMessages([]);
     } finally {
       setLoading(false);
     }
+  };
+
+  // Add a retry function
+  const retryFetchMessages = () => {
+    console.log('Retrying to fetch messages...');
+    fetchMessages();
   };
 
   const updateMessageStatus = async (id: string, status: 'read' | 'unread' | 'archived') => {
@@ -388,14 +417,30 @@ export default function DashboardContent() {
                   <p className="mt-4 text-gray-600 dark:text-gray-400">Loading messages...</p>
                 </div>
               ) : error ? (
-                <div className="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4 dark:bg-red-900/30 dark:border-red-800 dark:text-red-300">
-                  {error}
+                <div className="rounded-lg bg-red-50 dark:bg-red-900/30 p-4 mb-6">
+                  <div className="flex items-center">
+                    <AlertTriangle className="h-5 w-5 text-red-600 mr-2" />
+                    <p className="text-red-600 dark:text-red-400">{error}</p>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="ml-auto" 
+                      onClick={retryFetchMessages}
+                    >
+                      Retry
+                    </Button>
+                  </div>
                 </div>
               ) : filteredMessages.length === 0 ? (
-                <div className="text-center py-12 border rounded-lg bg-gray-50 dark:bg-gray-800">
-                  <Inbox className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500 dark:text-gray-400 text-lg">No messages found.</p>
-                  <p className="text-gray-400 dark:text-gray-500 text-sm mt-2">Messages will appear here when received.</p>
+                <div className="flex flex-col items-center justify-center p-12 text-center bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+                  <Inbox className="h-16 w-16 text-gray-400 mb-4" />
+                  <h3 className="text-lg font-medium mb-2">No messages yet</h3>
+                  <p className="text-gray-500 dark:text-gray-400 mb-4">
+                    When users submit contact form messages, they will appear here.
+                  </p>
+                  <Button onClick={retryFetchMessages}>
+                    Refresh Messages
+                  </Button>
                 </div>
               ) : viewMode === 'compact' ? (
                 // Compact view
