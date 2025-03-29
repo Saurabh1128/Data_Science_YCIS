@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
-import { MongoClient } from 'mongodb';
+import clientPromise, { testConnection } from '@/lib/mongodb';
 
 export async function POST(request: Request) {
   console.log('Contact API route received a request');
@@ -24,19 +23,12 @@ export async function POST(request: Request) {
       );
     }
     
-    // Connect to MongoDB with timeout
-    console.log('Attempting to connect to MongoDB...');
-    let client: MongoClient;
-    try {
-      client = await Promise.race([
-        clientPromise,
-        new Promise<never>((_, reject) => 
-          setTimeout(() => reject(new Error('MongoDB connection timeout')), 5000)
-        )
-      ]);
-      console.log('MongoDB connection successful');
-    } catch (connectionError) {
-      console.error('MongoDB connection failed:', connectionError);
+    // Test MongoDB connection first
+    console.log('Testing MongoDB connection...');
+    const connectionTest = await testConnection();
+    
+    if (!connectionTest.success) {
+      console.error('MongoDB connection test failed:', connectionTest.error);
       // Return success response anyway as a fallback
       console.log('Using fallback approach - pretending message was saved');
       return NextResponse.json({
@@ -46,7 +38,11 @@ export async function POST(request: Request) {
       });
     }
     
-    // Try creating database and collection if they don't exist
+    // Connect to MongoDB
+    console.log('Connecting to MongoDB...');
+    const client = await clientPromise;
+    
+    // Use database 
     const db = client.db('datascience');
     
     // Create a document with form data and timestamp
@@ -64,7 +60,7 @@ export async function POST(request: Request) {
     
     try {
       // Get collection, create if doesn't exist
-      const collection = db.collection('contactMessages');
+      const collection = db.collection('messages');
       
       // Insert the document into the collection
       const result = await collection.insertOne(contactMessage);

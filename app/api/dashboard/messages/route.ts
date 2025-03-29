@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import clientPromise, { testConnection } from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 
 // Add a function to generate sample messages when database is not available
@@ -41,8 +41,21 @@ function getSampleMessages() {
 export async function GET() {
   try {
     console.log('Starting GET request to /api/dashboard/messages');
+    
+    // Try to test the connection first
+    const connectionTest = await testConnection();
+    if (!connectionTest.success) {
+      console.log('MongoDB connection test failed, using sample data');
+      return NextResponse.json({
+        success: true,
+        messages: getSampleMessages(),
+        fallback: true,
+        connectionError: connectionTest.error
+      });
+    }
+    
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db('datascience'); // Use the same database name as in the connection string
     
     console.log('Connected to MongoDB, fetching messages...');
     
@@ -93,7 +106,7 @@ export async function PUT(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db('datascience');
 
     const result = await db.collection('messages').updateOne(
       { _id: new ObjectId(id) },
@@ -124,7 +137,7 @@ export async function DELETE(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db('datascience');
 
     const result = await db.collection('messages').deleteOne({ _id: new ObjectId(id) });
 
