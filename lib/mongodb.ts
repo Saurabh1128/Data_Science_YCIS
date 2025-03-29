@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 // Set a fallback URI in case environment variables fail
 // This should match the value in your .env.local file
-const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh2000@datascience.no0i8st.mongodb.net/datascience";
+const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh%402000@datascience.no0i8st.mongodb.net/datascience";
 
 // Check for MongoDB URI in various places, with fallback
 const getMongoURI = () => {

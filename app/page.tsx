@@ -229,24 +229,24 @@ export default function Home() {
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="container px-4 md:px-6 relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7 }}
               className="flex flex-col space-y-6"
-            >
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
                 className="inline-block p-2 bg-red-100 dark:bg-red-900 rounded-full mb-2 w-14 h-14 flex items-center justify-center"
-              >
+            >
                 <GraduationCap className="h-8 w-8 text-red-600" />
-              </motion.div>
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
+            </motion.div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
                 className="space-y-4"
               >
                 <motion.div
@@ -274,7 +274,7 @@ export default function Home() {
                   >
                     Data Science
                   </motion.span>
-                </h1>
+              </h1>
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -283,10 +283,10 @@ export default function Home() {
                 >
                   Empowering students with cutting-edge education and research at Yashavantrao Chavan Institute of Science
                 </motion.p>
-              </motion.div>
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
+            </motion.div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1.0, duration: 0.5 }}
                 className="flex flex-col sm:flex-row gap-4 mt-2"
               >
@@ -303,15 +303,15 @@ export default function Home() {
                         animate={{ x: [0, 5, 0] }}
                         transition={{ repeat: Infinity, repeatType: "loop", duration: 1.5, delay: 1.5 }}
                       >
-                        <ChevronRight className="ml-2 h-4 w-4" />
+                  <ChevronRight className="ml-2 h-4 w-4" />
                       </motion.span>
                     </motion.span>
-                  </Button>
-                </Link>
-                <Link href="/activities">
-                  <Button
-                    variant="outline"
-                    size="lg"
+                </Button>
+              </Link>
+              <Link href="/activities">
+                <Button
+                  variant="outline"
+                  size="lg"
                     className="px-8 text-md border-red-300 dark:border-red-700 transition-all duration-300 hover:scale-105 hover:shadow-lg"
                   >
                     <motion.span 
@@ -319,21 +319,21 @@ export default function Home() {
                       animate={{ opacity: 1 }}
                       transition={{ delay: 1.2, duration: 0.4 }}
                       className="flex items-center"
-                    >
-                      View Activities
+                >
+                  View Activities
                       <motion.span
                         animate={{ x: [0, 5, 0] }}
                         transition={{ repeat: Infinity, repeatType: "loop", duration: 1.5, delay: 1.7 }}
                       >
-                        <ChevronRight className="ml-2 h-4 w-4" />
+                  <ChevronRight className="ml-2 h-4 w-4" />
                       </motion.span>
                     </motion.span>
-                  </Button>
-                </Link>
-              </motion.div>
+                </Button>
+              </Link>
             </motion.div>
-            
-            <motion.div
+          </motion.div>
+
+          <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
@@ -353,15 +353,15 @@ export default function Home() {
               <div className="relative overflow-hidden rounded-2xl border shadow-2xl">
                 <img
                   src="https://images.unsplash.com/photo-1606761568499-6d2451b23c66?q=80&w=1000&auto=format&fit=crop"
-                  alt="Data Science Department"
+                alt="Data Science Department"
                   width={700}
                   height={500}
                   className="object-cover w-full aspect-[4/3]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-red-900/70 via-red-700/30 to-transparent">
-                </div>
               </div>
-            </motion.div>
+            </div>
+          </motion.div>
           </div>
         </div>
 
@@ -471,8 +471,8 @@ export default function Home() {
                       {index % 5 === 2 && <Database className="h-5 w-5 text-red-600" />}
                       {index % 5 === 3 && <Users className="h-5 w-5 text-red-600" />}
                       {index % 5 === 4 && <Calendar className="h-5 w-5 text-red-600" />}
-                    </div>
-                    <div>
+                  </div>
+                  <div>
                       <h3 className="font-bold text-sm md:text-base text-white drop-shadow-sm">
                         {index % 5 === 0 && "Award-winning Faculty"}
                         {index % 5 === 1 && "Research Excellence"}
@@ -480,7 +480,7 @@ export default function Home() {
                         {index % 5 === 3 && "Student Community"}
                         {index % 5 === 4 && "Regular Workshops"}
                       </h3>
-                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -513,8 +513,8 @@ export default function Home() {
                       {index % 5 === 2 && <FileText className="h-5 w-5 text-red-600" />}
                       {index % 5 === 3 && <BarChart2 className="h-5 w-5 text-red-600" />}
                       {index % 5 === 4 && <Database className="h-5 w-5 text-red-600" />}
-                    </div>
-                    <div>
+                  </div>
+                  <div>
                       <h3 className="font-bold text-sm md:text-base text-white drop-shadow-sm">
                         {index % 5 === 0 && "Comprehensive Curriculum"}
                         {index % 5 === 1 && "High Placement Rate"}
@@ -522,7 +522,7 @@ export default function Home() {
                         {index % 5 === 3 && "Data Visualization"}
                         {index % 5 === 4 && "Big Data Infrastructure"}
                       </h3>
-                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -555,8 +555,8 @@ export default function Home() {
                       {index % 5 === 2 && <Database className="h-5 w-5 text-red-600" />}
                       {index % 5 === 3 && <Users className="h-5 w-5 text-red-600" />}
                       {index % 5 === 4 && <Calendar className="h-5 w-5 text-red-600" />}
-                    </div>
-                    <div>
+                  </div>
+                  <div>
                       <h3 className="font-bold text-sm md:text-base text-white drop-shadow-sm">
                         {index % 5 === 0 && "Award-winning Faculty"}
                         {index % 5 === 1 && "Research Excellence"}
@@ -564,7 +564,7 @@ export default function Home() {
                         {index % 5 === 3 && "Student Community"}
                         {index % 5 === 4 && "Regular Workshops"}
                       </h3>
-                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -794,8 +794,8 @@ export default function Home() {
                 className="h-auto w-4/5 object-contain" 
                 loading="lazy"
               />
-            </motion.div>
-            <motion.div 
+          </motion.div>
+          <motion.div
               whileHover={{ scale: 1.05 }}
               className="bg-red-50 dark:bg-gray-800 p-6 rounded-lg shadow-md flex items-center justify-center h-40 w-full"
             >
@@ -908,7 +908,7 @@ export default function Home() {
 
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             {/* Form */}
-            <motion.div
+          <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={isLoaded ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -929,7 +929,7 @@ export default function Home() {
                       onChange={handleInputChange}
                       required
                     />
-                  </div>
+                </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                       Email
@@ -1020,7 +1020,7 @@ export default function Home() {
                 </form>
               </div>
             </motion.div>
-            
+
             {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
@@ -1037,15 +1037,15 @@ export default function Home() {
                 <div className="flex gap-4 items-start">
                   <div className="p-3 bg-red-100 dark:bg-red-900/30 rounded-full">
                     <GraduationCap className="h-6 w-6 text-red-600" />
-                  </div>
+                </div>
                   <div>
                     <h3 className="text-xl font-bold mb-2">Department of Data Science</h3>
                     <p className="text-gray-600 dark:text-gray-300">Yashavantrao Chavan Institute of Science</p>
                     <p className="text-gray-600 dark:text-gray-300 mt-4">123 University Road<br />Satara, Maharashtra 415001</p>
                   </div>
                 </div>
-              </motion.div>
-              
+            </motion.div>
+
               <motion.div 
                 initial={{ y: 20, opacity: 0 }}
                 animate={isLoaded ? { y: 0, opacity: 1 } : {}}
@@ -1058,7 +1058,7 @@ export default function Home() {
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-red-600">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                       </svg>
-                    </div>
+                </div>
                     <a href="mailto:datascience@ycis.edu" className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">datascience@ycis.edu</a>
                   </div>
                   
@@ -1080,9 +1080,9 @@ export default function Home() {
                     <a href="https://ycis.edu/datascience" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">www.ycis.edu/datascience</a>
                   </div>
                 </div>
-              </motion.div>
-              
-              <motion.div 
+          </motion.div>
+
+          <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={isLoaded ? { y: 0, opacity: 1 } : {}}
                 transition={{ delay: 0.6, duration: 0.5 }}
@@ -1100,7 +1100,7 @@ export default function Home() {
                   </div>
                 </div>
               </motion.div>
-            </motion.div>
+          </motion.div>
           </div>
         </div>
       </section>
