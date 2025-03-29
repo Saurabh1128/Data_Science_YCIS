@@ -26,28 +26,34 @@ const nextConfig = {
     maxInactiveAge: 25 * 1000,
     pagesBufferLength: 4,
   },
+  env: {
+    MONGODB_URI: process.env.MONGODB_URI,
+    NODE_ENV: process.env.NODE_ENV,
+  },
+  output: 'standalone',
+}
+
+if (process.env.NODE_ENV === 'development') {
+  console.log('Next.js Config - Environment Variables:');
+  console.log('MONGODB_URI exists:', !!process.env.MONGODB_URI);
+  console.log('NODE_ENV:', process.env.NODE_ENV);
+}
+
+function mergeConfig(baseConfig, userConfig) {
+  if (!userConfig) return baseConfig
+  const merged = { ...baseConfig }
+  for (const key in userConfig) {
+    if (key === 'env') {
+      merged.env = { ...merged.env, ...userConfig.env }
+    } else if (key === 'experimental') {
+      merged.experimental = { ...merged.experimental, ...userConfig.experimental }
+    } else {
+      merged[key] = userConfig[key]
+    }
+  }
+  return merged
 }
 
 mergeConfig(nextConfig, userConfig)
-
-function mergeConfig(nextConfig, userConfig) {
-  if (!userConfig) {
-    return
-  }
-
-  for (const key in userConfig) {
-    if (
-      typeof nextConfig[key] === 'object' &&
-      !Array.isArray(nextConfig[key])
-    ) {
-      nextConfig[key] = {
-        ...nextConfig[key],
-        ...userConfig[key],
-      }
-    } else {
-      nextConfig[key] = userConfig[key]
-    }
-  }
-}
 
 export default nextConfig
