@@ -96,8 +96,17 @@ export default function DashboardContent() {
       console.log('Response status:', response.status);
       
       if (!response.ok) {
-        const errorText = await response.text().catch(() => null);
-        console.error('Error response body:', errorText);
+        let errorText = null;
+        try {
+          // Safely parse error response
+          errorText = await response.text();
+          // Don't log to console during render to avoid hydration mismatch
+          if (typeof window !== "undefined") {
+            console.error('Error response body:', errorText);
+          }
+        } catch (e) {
+          // Ignore text parsing errors
+        }
         
         throw new Error(`Failed to fetch messages: ${response.status}${errorText ? ` - ${errorText}` : ''}`);
       }
@@ -112,7 +121,10 @@ export default function DashboardContent() {
         throw new Error(data.message || data.error || 'Unknown error occurred');
       }
     } catch (err) {
-      console.error('Error fetching messages:', err);
+      // Only log errors on client side to prevent hydration mismatch
+      if (typeof window !== "undefined") {
+        console.error('Error fetching messages:', err);
+      }
       
       // Use a more specific error message if we can determine the issue
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
@@ -121,12 +133,16 @@ export default function DashboardContent() {
         setError('Network error: Could not connect to the server. Check your internet connection.');
       } else if (errorMessage.includes('MongoDB')) {
         setError('Database error: Failed to connect to the MongoDB database. Please check your database configuration.');
+      } else if (errorMessage.includes('Topology')) {
+        setError('Database connection error: The MongoDB client is not properly connected.');
+      } else if (errorMessage.includes('ENOTFOUND')) {
+        setError('DNS error: Could not resolve the database hostname. Check your connection string.');
       } else if (errorMessage.includes('timeout')) {
         setError('Connection timeout: The request took too long to complete. Please try again.');
       } else if (errorMessage.includes('401') || errorMessage.includes('403')) {
         setError('Authentication error: Not authorized to access the database.');
       } else {
-        setError(`Error connecting to the database: ${errorMessage}. Please try again later.`);
+        setError(`Error connecting to the database. Please try again later.`);
       }
       
       // Set messages to empty array to avoid showing stale data

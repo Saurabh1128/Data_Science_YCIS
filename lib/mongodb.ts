@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 // Set a fallback URI in case environment variables fail
 // This should match the value in your .env.local file
-const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh2000%40@datascience.no0i8st.mongodb.net/?retryWrites=true&w=majority&appName=datascience";
+const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh2000@datascience.no0i8st.mongodb.net/datascience";
 
 // Check for MongoDB URI in various places, with fallback
 const getMongoURI = () => {
@@ -67,6 +67,19 @@ if (process.env.NODE_ENV === 'development') {
       })
       .catch(err => {
         console.error('Failed to connect to MongoDB in development:', err);
+        
+        // Create a new client and try again with a simpler URI format
+        // sometimes the query parameters in the URI can cause issues
+        if (uri.includes('?')) {
+          console.log('Trying simplified URI format without query parameters');
+          const simplifiedUri = uri.split('?')[0];
+          const retryClient = new MongoClient(simplifiedUri, options);
+          return retryClient.connect().catch(retryErr => {
+            console.error('Retry connection also failed:', retryErr);
+            return client; // Return original client for graceful failure
+          });
+        }
+        
         // Instead of throwing, return a connected client that will fail more gracefully
         return client;
       });
@@ -85,6 +98,18 @@ if (process.env.NODE_ENV === 'development') {
     })
     .catch(err => {
       console.error('Failed to connect to MongoDB in production:', err);
+      
+      // Try with simplified URI in production as well
+      if (uri.includes('?')) {
+        console.log('Trying simplified URI format without query parameters');
+        const simplifiedUri = uri.split('?')[0];
+        const retryClient = new MongoClient(simplifiedUri, options);
+        return retryClient.connect().catch(retryErr => {
+          console.error('Retry connection also failed:', retryErr);
+          return client; // Return original client for graceful failure
+        });
+      }
+      
       // Instead of throwing, return a connected client that will fail more gracefully
       return client;
     });
