@@ -46,6 +46,9 @@ export default function Footer() {
             <Link href="/resources/publications" className="text-sm text-gray-300 hover:text-purple-400">
               Publications
             </Link>
+            <Link href="/dashboard-login" className="text-sm text-gray-300 hover:text-purple-400">
+              Dashboard
+            </Link>
           </div>
           <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
             <h3 className="font-semibold">Contact</h3>
