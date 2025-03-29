@@ -1,15 +1,50 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { format } from 'date-fns';
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  Cell,
+  PieChart,
+  Pie,
+  Legend
+} from 'recharts';
+import { 
+  Tabs, 
+  TabsContent, 
+  TabsList, 
+  TabsTrigger 
+} from "@/components/ui/tabs";
+import { Button } from '@/components/ui/button';
+import {
+  AlertTriangle,
+  AlertCircle,
+  ChevronDown,
+  Mail,
+  MessageSquare,
+  LayoutGrid,
+  List,
+  Trash2,
+  BarChart as BarChart3,
+  PieChart as PieChartIcon,
+  Eye,
+  EyeOff,
+  Inbox, 
+  Clock, 
+  CheckCircle, 
+  Trash,
+  Phone,
+  Calendar
+} from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Inbox, Clock, CheckCircle, Trash, AlertTriangle, BarChart, 
-  Users, Mail, Phone, Calendar, MessageSquare, PieChart
-} from 'lucide-react';
-import { 
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -19,7 +54,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
 type Message = {
   _id: string;
@@ -40,6 +74,7 @@ export default function DashboardContent() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'cards' | 'compact'>('cards');
+  const [notification, setNotification] = useState<{message: string, type: 'info' | 'warning' | 'success'} | null>(null);
 
   useEffect(() => {
     fetchMessages();
@@ -70,9 +105,17 @@ export default function DashboardContent() {
       if (data.success) {
         setMessages(data.messages || []);
         
-        // If it was a fallback response with empty messages, show a warning
-        if (data.fallback && data.messages.length === 0) {
-          setError('Could not connect to the database. Showing cached data or empty state.');
+        // Changed: Don't set an error message for fallback data
+        // Instead show a notification-style message only if fallback is true
+        if (data.fallback) {
+          // Just set a notification flag instead of error
+          setNotification({
+            message: "Using sample data - database connection unavailable", 
+            type: "warning"
+          });
+        } else {
+          // Clear any notification if we have real data
+          setNotification(null);
         }
       } else {
         throw new Error(data.message || 'Unknown error occurred');
@@ -217,6 +260,30 @@ export default function DashboardContent() {
 
   return (
     <div className="space-y-8 p-6 max-w-[1400px] mx-auto">
+      {/* Notification Banner (add this) */}
+      {notification && (
+        <div className={`rounded-lg p-4 flex items-center justify-between ${
+          notification.type === 'warning' 
+            ? 'bg-amber-50 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 border border-amber-200 dark:border-amber-800/30' 
+            : notification.type === 'success'
+              ? 'bg-green-50 text-green-800 dark:bg-green-900/30 dark:text-green-300 border border-green-200 dark:border-green-800/30'
+              : 'bg-blue-50 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 border border-blue-200 dark:border-blue-800/30'
+        }`}>
+          <div className="flex items-center gap-2">
+            {notification.type === 'warning' && <AlertTriangle className="h-5 w-5" />}
+            <p>{notification.message}</p>
+          </div>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={() => setNotification(null)}
+            className="h-8 px-2"
+          >
+            ✕
+          </Button>
+        </div>
+      )}
+
       {/* Dashboard Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="bg-gradient-to-br from-red-50 to-white dark:from-red-900/20 dark:to-gray-800">
@@ -273,7 +340,7 @@ export default function DashboardContent() {
         <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <BarChart className="mr-2 h-5 w-5 text-red-600" />
+              <BarChart3 className="mr-2 h-5 w-5 text-red-600" />
               Subject Distribution
             </CardTitle>
             <CardDescription>
@@ -288,7 +355,7 @@ export default function DashboardContent() {
                 </div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
-                  <RechartsBarChart
+                  <BarChart
                     data={getSubjectData()}
                     margin={{
                       top: 5,
@@ -303,7 +370,7 @@ export default function DashboardContent() {
                     <Tooltip formatter={(value) => [`${value} messages`, 'Count']} />
                     <Legend />
                     <Bar dataKey="count" name="Number of Messages" />
-                  </RechartsBarChart>
+                  </BarChart>
                 </ResponsiveContainer>
               )}
             </div>
@@ -313,7 +380,7 @@ export default function DashboardContent() {
         <Card className="overflow-hidden">
           <CardHeader>
             <CardTitle className="flex items-center">
-              <PieChart className="mr-2 h-5 w-5 text-red-600" />
+              <PieChartIcon className="mr-2 h-5 w-5 text-red-600" />
               Message Status Distribution
             </CardTitle>
             <CardDescription>
@@ -328,7 +395,7 @@ export default function DashboardContent() {
                 </div>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
-                  <RechartsPieChart>
+                  <PieChart>
                     <Pie
                       data={getStatusData()}
                       cx="50%"
@@ -344,7 +411,7 @@ export default function DashboardContent() {
                     </Pie>
                     <Tooltip formatter={(value) => [`${value} messages`, 'Count']} />
                     <Legend />
-                  </RechartsPieChart>
+                  </PieChart>
                 </ResponsiveContainer>
               )}
             </div>
