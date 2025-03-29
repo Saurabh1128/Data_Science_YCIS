@@ -184,40 +184,50 @@ export default function Home() {
       
       console.log('Response status:', response.status);
       
+      if (!response.ok) {
+        // Handle HTTP error status codes properly
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      
       const data = await response.json();
       console.log('Response data:', data);
       
-      // Always treat it as success if we got any response
-      // This is a UI improvement - backend already returns success even for failures
-      setFormStatus({
-        success: true,
-        message: data.message || 'Thank you! Your message has been received.'
-      });
-      
-      // Reset form data
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-      });
+      if (data.success) {
+        // Only treat as success if the API explicitly returns success: true
+        setFormStatus({
+          success: true,
+          message: data.message || 'Thank you! Your message has been received.'
+        });
+        
+        // Reset form data on success
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        // Handle API-level errors
+        throw new Error(data.message || 'Failed to submit message');
+      }
     } catch (error) {
       console.error('Error submitting form:', error);
       
-      // Fake success for UX purposes
-      setFormStatus({
-        success: true,
-        message: 'Thank you! Your message has been received.'
-      });
+      let errorMessage = 'Failed to submit message. Please try again later.';
       
-      // Reset form data anyway
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
+      if (error instanceof Error) {
+        if (error.message.includes('timeout')) {
+          errorMessage = 'Request timed out. Please check your connection and try again.';
+        } else {
+          errorMessage = `Error: ${error.message}`;
+        }
+      }
+      
+      // Show actual error instead of fake success
+      setFormStatus({
+        success: false,
+        message: errorMessage
       });
     }
   };
