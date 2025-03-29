@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 import clientPromise, { isConnectionLikelyFailed } from '@/lib/mongodb';
-import { v4 as uuidv4 } from 'uuid';
 
 // Store messages in memory when file system isn't available 
 // (useful for Vercel serverless functions)
 let inMemoryQueue: any[] = [];
+
+// Generate a simple unique ID without external dependencies
+function generateId() {
+  return `msg_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+}
 
 // Function to save a message to a memory queue if MongoDB is down
 async function saveMessageToQueue(messageData: any) {
@@ -13,7 +17,7 @@ async function saveMessageToQueue(messageData: any) {
     // So we'll use an in-memory queue instead (note: this will be lost on deployment)
     const queueItem = {
       ...messageData,
-      id: uuidv4(),
+      id: generateId(),
       queuedAt: new Date().toISOString(),
     };
     
