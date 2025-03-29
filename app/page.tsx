@@ -160,8 +160,11 @@ export default function Home() {
     
     // Set loading state
     setFormStatus({ loading: true });
+    console.log('Form submission started...');
     
     try {
+      console.log('Submitting form data:', formData);
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
@@ -170,9 +173,13 @@ export default function Home() {
         body: JSON.stringify(formData),
       });
       
+      console.log('Response status:', response.status);
+      
       const data = await response.json();
+      console.log('Response data:', data);
       
       if (response.ok) {
+        console.log('Form submission successful');
         setFormStatus({
           success: true,
           message: 'Thank you! Your message has been sent successfully.'
@@ -186,12 +193,14 @@ export default function Home() {
           message: ''
         });
       } else {
+        console.error('Form submission failed:', data);
         setFormStatus({
           success: false,
           message: data.message || 'Something went wrong. Please try again.'
         });
       }
     } catch (error) {
+      console.error('Error submitting form:', error);
       setFormStatus({
         success: false,
         message: 'An error occurred. Please try again later.'
