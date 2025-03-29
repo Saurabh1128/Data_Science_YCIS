@@ -159,24 +159,25 @@ export default function Home() {
     e.preventDefault();
     
     // Set loading state
-    setFormStatus({ loading: true });
+    setFormStatus({ loading: true, message: 'Sending your message...' });
     console.log('Form submission started...');
     
     try {
       console.log('Submitting form data:', formData);
       
-      // Create a timeout promise to handle network delays
+      // Create a timeout promise with a longer timeout - increase to 30 seconds
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout')), 15000);
+        setTimeout(() => reject(new Error('Request timeout - the server took too long to respond')), 30000);
       });
       
-      // Actual fetch request
+      // Actual fetch request with cache: 'no-store' to prevent caching issues
       const fetchPromise = fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        cache: 'no-store'
       });
       
       // Race between fetch and timeout
@@ -218,7 +219,11 @@ export default function Home() {
       
       if (error instanceof Error) {
         if (error.message.includes('timeout')) {
-          errorMessage = 'Request timed out. Please check your connection and try again.';
+          errorMessage = 'The connection timed out. The server might be busy or your internet connection may be unstable. Please try again later.';
+        } else if (error.message.includes('fetch')) {
+          errorMessage = 'Network error. Please check your internet connection and try again.';
+        } else if (error.message.includes('MongoDB') || error.message.includes('database')) {
+          errorMessage = 'Database connection error. Our system is currently having issues connecting to the database. Please try again later.';
         } else {
           errorMessage = `Error: ${error.message}`;
         }

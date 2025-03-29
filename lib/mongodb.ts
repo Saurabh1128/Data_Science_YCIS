@@ -4,6 +4,12 @@ import { MongoClient } from 'mongodb';
 // This should match the value in your .env.local file
 const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh%402000@datascience.no0i8st.mongodb.net/datascience";
 
+// Connection state tracking
+let lastConnectionAttempt = 0;
+let connectionErrorCount = 0;
+const RETRY_DELAY = 60000; // 1 minute before retrying after failures
+const MAX_ERROR_COUNT = 5; // Consider connection dead after 5 failures
+
 // Check for MongoDB URI in various places, with fallback
 const getMongoURI = () => {
   // For Vercel deployment
@@ -42,24 +48,42 @@ export async function testConnection() {
     // Try to ping the database
     await testClient.db().command({ ping: 1 });
     console.log("MongoDB connection successful: Connected to the database!");
+    // Reset error counters on successful connection
+    connectionErrorCount = 0;
     return { success: true, message: "Connected to MongoDB successfully!" };
   } catch (error) {
     console.error("MongoDB connection failed:", error);
+    // Increment error counter
+    connectionErrorCount++;
     return { 
       success: false, 
       message: "Failed to connect to MongoDB", 
-      error: error instanceof Error ? error.message : String(error) 
+      error: error instanceof Error ? error.message : String(error),
+      errorCount: connectionErrorCount
     };
   }
 }
 
 // Create a safe connect function that handles different error scenarios
 const safeConnect = async (mongoClient: MongoClient, connectionUri: string): Promise<MongoClient> => {
+  // Check if we should delay retry based on previous failures
+  const now = Date.now();
+  if (connectionErrorCount > 0 && (now - lastConnectionAttempt) < RETRY_DELAY) {
+    console.log(`Skipping MongoDB connection attempt - waiting for retry delay (${Math.round((RETRY_DELAY - (now - lastConnectionAttempt)) / 1000)}s remaining)`);
+    // Return the existing client which will fail gracefully when used
+    return mongoClient;
+  }
+  
+  lastConnectionAttempt = now;
+  
   try {
     console.log('Attempting MongoDB connection...');
-    return await mongoClient.connect();
+    const client = await mongoClient.connect();
+    connectionErrorCount = 0; // Reset error count on success
+    return client;
   } catch (err) {
     console.error('Initial MongoDB connection failed:', err);
+    connectionErrorCount++;
     
     // Try with simplified URI format if there are query parameters
     if (connectionUri.includes('?')) {
@@ -67,19 +91,26 @@ const safeConnect = async (mongoClient: MongoClient, connectionUri: string): Pro
         console.log('Trying simplified URI format without query parameters');
         const simplifiedUri = connectionUri.split('?')[0];
         const retryClient = new MongoClient(simplifiedUri, options);
-        return await retryClient.connect();
+        const client = await retryClient.connect();
+        connectionErrorCount = 0; // Reset error count on success
+        return client;
       } catch (retryErr) {
         console.error('Retry with simplified URI also failed:', retryErr);
+        connectionErrorCount++;
       }
     }
     
     // If we've reached here, all connection attempts have failed
-    // Return the client but mark it as having failed to connect
-    console.error('All MongoDB connection attempts failed');
+    console.error(`All MongoDB connection attempts failed (attempt #${connectionErrorCount})`);
     // We'll return the client and handle the errors at the operation level
     return mongoClient;
   }
 };
+
+// Helper function to check if connection is likely to be in a failed state
+export function isConnectionLikelyFailed(): boolean {
+  return connectionErrorCount >= MAX_ERROR_COUNT;
+}
 
 // Handle the connection in development or production mode
 if (process.env.NODE_ENV === 'development') {
@@ -107,6 +138,11 @@ if (process.env.NODE_ENV === 'development') {
 // Helper function that consumers can use to check connection
 export async function getMongoClient() {
   try {
+    // If we've had too many errors, immediately reject
+    if (isConnectionLikelyFailed()) {
+      throw new Error('MongoDB connection is in a failed state after multiple attempts');
+    }
+    
     const client = await clientPromise;
     // Test the connection is actually working
     await client.db().command({ ping: 1 });
