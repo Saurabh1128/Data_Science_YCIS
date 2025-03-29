@@ -581,17 +581,17 @@ export default function Home() {
                     <BookOpen className="h-8 w-8 text-red-600" />
                   </div>
                   <div>
-                    <CardTitle>Study Materials</CardTitle>
-                    <CardDescription>Access study materials and digital resources</CardDescription>
+                    <CardTitle>Learning Resources</CardTitle>
+                    <CardDescription>Access digital tools and study materials</CardDescription>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p>Comprehensive study materials for all courses in the Data Science curriculum.</p>
+                  <p>Find all the resources you need for your Data Science courses and research projects.</p>
                 </CardContent>
                 <CardFooter>
                   <Link href="/resources" className="w-full">
                     <Button variant="outline" className="h-8 w-full justify-start px-2 font-normal">
-                      <span>View Resources</span>
+                      <span>Explore Resources</span>
                       <ArrowRight className="ml-auto h-4 w-4" />
                     </Button>
                   </Link>
