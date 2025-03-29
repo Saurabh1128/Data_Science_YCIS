@@ -93,26 +93,22 @@ export default function DashboardContent() {
         signal: AbortSignal.timeout(10000)
       });
       
-      console.log('Response status:', response.status);
+      const responseStatus = response.status;
       
       if (!response.ok) {
         let errorText = null;
         try {
           // Safely parse error response
           errorText = await response.text();
-          // Don't log to console during render to avoid hydration mismatch
-          if (typeof window !== "undefined") {
-            console.error('Error response body:', errorText);
-          }
+          // Don't log during render - we'll log in useEffect
         } catch (e) {
           // Ignore text parsing errors
         }
         
-        throw new Error(`Failed to fetch messages: ${response.status}${errorText ? ` - ${errorText}` : ''}`);
+        throw new Error(`Failed to fetch messages: ${responseStatus}${errorText ? ` - ${errorText}` : ''}`);
       }
       
       const data = await response.json();
-      console.log('Received messages data:', data);
       
       if (data.success) {
         setMessages(data.messages || []);
@@ -121,10 +117,7 @@ export default function DashboardContent() {
         throw new Error(data.message || data.error || 'Unknown error occurred');
       }
     } catch (err) {
-      // Only log errors on client side to prevent hydration mismatch
-      if (typeof window !== "undefined") {
-        console.error('Error fetching messages:', err);
-      }
+      // Don't log errors during render - move to useEffect
       
       // Use a more specific error message if we can determine the issue
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
@@ -151,6 +144,19 @@ export default function DashboardContent() {
       setLoading(false);
     }
   };
+
+  // Add a useEffect for client-side logging to prevent hydration mismatch
+  useEffect(() => {
+    // Safe to access console only on client side
+    console.log('Dashboard initialized on client side');
+  }, []);
+
+  // Add this useEffect to log any errors after mounting (client-side only)
+  useEffect(() => {
+    if (error) {
+      console.error('Error state in dashboard:', error);
+    }
+  }, [error]);
 
   // Add a retry function
   const retryFetchMessages = () => {
@@ -270,14 +276,38 @@ export default function DashboardContent() {
   };
   
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date);
+    try {
+      const date = new Date(dateString);
+      // Use a simpler format for SSR that will be consistent between server and client
+      return date.toISOString().split('T')[0]; // Just return YYYY-MM-DD format for initial render
+    } catch (e) {
+      return dateString;
+    }
+  };
+
+  // Add a client-side component for formatted dates
+  const ClientFormattedDate = ({ dateString }: { dateString: string }) => {
+    const [formattedDate, setFormattedDate] = useState<string>("");
+    
+    useEffect(() => {
+      try {
+        const date = new Date(dateString);
+        // Only format dates on the client side
+        const formatted = new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }).format(date);
+        setFormattedDate(formatted);
+      } catch (e) {
+        setFormattedDate(dateString);
+      }
+    }, [dateString]);
+    
+    // Return the ISO date for SSR, which will be replaced with formatted date on client
+    return <span>{formattedDate || formatDate(dateString)}</span>;
   };
 
   return (
@@ -564,7 +594,7 @@ export default function DashboardContent() {
                             </Badge>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {formatDate(message.createdAt)}
+                            <ClientFormattedDate dateString={message.createdAt} />
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div className="flex justify-end gap-2">
@@ -636,7 +666,7 @@ export default function DashboardContent() {
                               
                               <div className="flex items-center gap-2 text-sm">
                                 <Calendar className="h-4 w-4 text-gray-400" />
-                                <span>{formatDate(message.createdAt)}</span>
+                                <ClientFormattedDate dateString={message.createdAt} />
                               </div>
                             </CardDescription>
                           </div>
