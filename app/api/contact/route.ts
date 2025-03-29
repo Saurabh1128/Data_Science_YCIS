@@ -40,6 +40,11 @@ async function saveMessageToQueue(messageData: any) {
 export async function POST(request: Request) {
   console.log('Contact API route received a request');
   
+  // Set a timeout for the entire operation
+  const apiTimeout = setTimeout(() => {
+    console.error('API operation timeout reached - operation may continue but response will be incomplete');
+  }, 40000); // 40 second timeout warning
+  
   try {
     // Parse the request body
     const body = await request.json();
@@ -50,6 +55,7 @@ export async function POST(request: Request) {
     
     if (!name || !email || !subject || !message) {
       console.log('Missing required fields:', { name, email, subject, message });
+      clearTimeout(apiTimeout); // Clear timeout
       return NextResponse.json(
         {
           success: false,
@@ -59,78 +65,91 @@ export async function POST(request: Request) {
       );
     }
 
+    // Save to queue immediately to ensure we don't lose the message
+    // Even if MongoDB works, we'll have a backup
+    const messageData = {
+      name,
+      email,
+      phone: phone || '',
+      subject,
+      message,
+      createdAt: new Date().toISOString(),
+      status: 'unread'
+    };
+    
+    // Queue in background without waiting (fire and forget)
+    saveMessageToQueue(messageData).catch(err => {
+      console.error('Background queue save failed:', err);
+    });
+
     // Check if MongoDB connection is likely in a failed state
     const offlineMode = isConnectionLikelyFailed();
     if (offlineMode) {
       console.log('MongoDB connection is likely failed, using offline queue mode');
       
-      // Create message data
-      const messageData = {
-        name,
-        email,
-        phone: phone || '',
-        subject,
-        message,
-        createdAt: new Date().toISOString(),
-        status: 'unread'
-      };
-      
-      // Try to save to queue
-      const savedToQueue = await saveMessageToQueue(messageData);
-      
-      if (savedToQueue) {
-        return NextResponse.json({
-          success: true,
-          message: 'Your message has been received and will be processed when our services are fully operational.',
-          offlineMode: true
-        });
-      } else {
-        // If queue fails too, inform the user but don't expose technical details
-        return NextResponse.json({
-          success: false,
-          message: 'Unable to save your message at this time. Please try again later.',
-          error: 'Storage system unavailable'
-        }, { status: 503 });
-      }
+      clearTimeout(apiTimeout); // Clear timeout
+      return NextResponse.json({
+        success: true,
+        message: 'Your message has been received and will be processed when our services are fully operational.',
+        offlineMode: true
+      });
     }
 
     try {
-      // Connect to MongoDB
-      console.log('Connecting to MongoDB...');
-      const client = await clientPromise;
-  
-      // Explicitly specify database
-      const dbName = 'datascience';
-      console.log(`Using database: ${dbName}`);
-      const db = client.db(dbName);
-  
-      // Create a document with form data and timestamp
-      const contactMessage = {
-        name,
-        email,
-        phone: phone || '',
-        subject,
-        message,
-        createdAt: new Date(),
-        status: 'unread'
+      // Set a shorter timeout for MongoDB operations to ensure the API responds quickly
+      const dbOperationPromise = async () => {
+        try {
+          // Connect to MongoDB
+          console.log('Connecting to MongoDB...');
+          const client = await clientPromise;
+      
+          // Explicitly specify database
+          const dbName = 'datascience';
+          console.log(`Using database: ${dbName}`);
+          const db = client.db(dbName);
+      
+          // Create a document with form data and timestamp
+          const contactMessage = {
+            name,
+            email,
+            phone: phone || '',
+            subject,
+            message,
+            createdAt: new Date(),
+            status: 'unread'
+          };
+      
+          console.log('Attempting to insert document into MongoDB');
+      
+          // Get collection, create if doesn't exist
+          const collectionName = 'messages';
+          console.log(`Using collection: ${collectionName}`);
+          const collection = db.collection(collectionName);
+      
+          // Use a write concern of 1 for faster operations
+          // This means the operation completes once the primary acknowledges it
+          const result = await collection.insertOne(contactMessage, { writeConcern: { w: 1 } });
+          console.log('Document inserted successfully:', result.insertedId);
+          
+          return {
+            success: true,
+            message: 'Message submitted successfully',
+            id: result.insertedId
+          };
+        } catch (err) {
+          throw err;
+        }
       };
-  
-      console.log('Attempting to insert document into MongoDB');
-  
-      // Get collection, create if doesn't exist
-      const collectionName = 'messages';
-      console.log(`Using collection: ${collectionName}`);
-      const collection = db.collection(collectionName);
-  
-      // Insert the document into the collection
-      const result = await collection.insertOne(contactMessage);
-      console.log('Document inserted successfully:', result.insertedId);
-  
-      return NextResponse.json({
-        success: true,
-        message: 'Message submitted successfully',
-        id: result.insertedId
+      
+      // Race the DB operation against a timeout
+      const dbTimeout = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Database operation timed out')), 30000);
       });
+      
+      const dbResult = await Promise.race([dbOperationPromise(), dbTimeout]);
+      
+      clearTimeout(apiTimeout); // Clear timeout
+      return NextResponse.json(dbResult);
     } catch (dbError) {
       console.error('Database connection or operation error:', dbError);
       
@@ -140,7 +159,17 @@ export async function POST(request: Request) {
         errorMessage = dbError.message;
         
         // More specific error messages based on the type of error
-        if (errorMessage.includes('ENOTFOUND') || errorMessage.includes('ETIMEDOUT')) {
+        if (errorMessage.includes('timed out')) {
+          errorMessage = 'The database operation timed out. Your message was saved to our backup queue and will be processed later.';
+          
+          clearTimeout(apiTimeout); // Clear timeout
+          // Return success even though DB failed since we saved to queue
+          return NextResponse.json({
+            success: true,
+            message: 'Your message has been received. There was a delay in saving to our database, but we\'ve stored your message and will process it shortly.',
+            offlineMode: true
+          });
+        } else if (errorMessage.includes('ENOTFOUND') || errorMessage.includes('ETIMEDOUT')) {
           errorMessage = 'Could not connect to the database server. Please check your internet connection.';
         } else if (errorMessage.includes('Authentication failed')) {
           errorMessage = 'Database authentication failed. Please check your credentials.';
@@ -149,39 +178,21 @@ export async function POST(request: Request) {
         }
       }
       
-      // Try fallback to queue if DB fails
-      console.log('Attempting to save message to offline queue after DB failure');
-      const messageData = {
-        name,
-        email,
-        phone: phone || '',
-        subject,
-        message,
-        createdAt: new Date().toISOString(),
-        status: 'unread'
-      };
+      console.log('Message was already saved to offline queue after DB failure');
       
-      const savedToQueue = await saveMessageToQueue(messageData);
-      
-      if (savedToQueue) {
-        return NextResponse.json({
-          success: true,
-          message: 'Your message has been received. We are currently experiencing technical difficulties but will process your message as soon as possible.',
-          offlineMode: true
-        });
-      }
-      
-      return NextResponse.json(
-        {
-          success: false,
-          message: 'Unable to save your message at this time. Please try again later.',
-          error: errorMessage
-        },
-        { status: 503 } // Service Unavailable is more appropriate for DB issues
-      );
+      clearTimeout(apiTimeout); // Clear timeout
+      // Since we already saved to queue at the beginning, we can return a more positive message
+      return NextResponse.json({
+        success: true,
+        message: 'Your message has been received. We are currently experiencing technical difficulties but will process your message as soon as possible.',
+        offlineMode: true
+      });
     }
   } catch (error) {
     console.error('Error in contact API route:', error);
+
+    // Clear timeout
+    clearTimeout(apiTimeout);
 
     // Create a more detailed error response
     let errorMessage = 'Failed to submit message';

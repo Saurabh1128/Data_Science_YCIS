@@ -165,19 +165,23 @@ export default function Home() {
     try {
       console.log('Submitting form data:', formData);
       
-      // Create a timeout promise with a longer timeout - increase to 30 seconds
+      // Create a timeout promise with a longer timeout - increase to 45 seconds to better handle slow connections
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout - the server took too long to respond')), 30000);
+        setTimeout(() => reject(new Error('Request timeout - the server took too long to respond')), 45000);
       });
       
-      // Actual fetch request with cache: 'no-store' to prevent caching issues
+      // Actual fetch request with additional settings for better reliability
       const fetchPromise = fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        cache: 'no-store'
+        cache: 'no-store',
+        // Add longer timeout for fetch
+        signal: AbortSignal.timeout(45000),
+        // Add keepalive to maintain the connection
+        keepalive: true
       });
       
       // Race between fetch and timeout
@@ -186,8 +190,14 @@ export default function Home() {
       console.log('Response status:', response.status);
       
       if (!response.ok) {
-        // Handle HTTP error status codes properly
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        // Handle specific HTTP error status codes
+        if (response.status === 504) {
+          throw new Error('Gateway Timeout (504): The server took too long to respond. Your message may still have been received, but please check the dashboard later or try again.');
+        } else if (response.status === 503) {
+          throw new Error('Service Unavailable (503): The database is currently unavailable. Please try again later.');
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
       }
       
       const data = await response.json();
@@ -218,9 +228,9 @@ export default function Home() {
       let errorMessage = 'Failed to submit message. Please try again later.';
       
       if (error instanceof Error) {
-        if (error.message.includes('timeout')) {
-          errorMessage = 'The connection timed out. The server might be busy or your internet connection may be unstable. Please try again later.';
-        } else if (error.message.includes('fetch')) {
+        if (error.message.includes('timeout') || error.message.includes('504')) {
+          errorMessage = 'The connection timed out. Your message may still have been received but the server took too long to respond. Please check later or try again.';
+        } else if (error.message.includes('fetch') || error.message.includes('network')) {
           errorMessage = 'Network error. Please check your internet connection and try again.';
         } else if (error.message.includes('MongoDB') || error.message.includes('database')) {
           errorMessage = 'Database connection error. Our system is currently having issues connecting to the database. Please try again later.';
