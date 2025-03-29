@@ -19,26 +19,32 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
           <div className="flex flex-col gap-2">
             <h3 className="font-semibold">Quick Links</h3>
-            <Link href="/notes" className="text-sm text-gray-300 hover:text-purple-400">
-              Notes
+            <Link href="/" className="text-sm text-gray-300 hover:text-purple-400">
+              Home
             </Link>
-            <Link href="/activities" className="text-sm text-gray-300 hover:text-purple-400">
-              Activities
+            <Link href="/courses" className="text-sm text-gray-300 hover:text-purple-400">
+              Courses
             </Link>
-            <Link href="/department" className="text-sm text-gray-300 hover:text-purple-400">
-              Department
+            <Link href="/faculty" className="text-sm text-gray-300 hover:text-purple-400">
+              Faculty
+            </Link>
+            <Link href="/research" className="text-sm text-gray-300 hover:text-purple-400">
+              Research
+            </Link>
+            <Link href="/resources" className="text-sm text-gray-300 hover:text-purple-400">
+              Resources
             </Link>
           </div>
           <div className="flex flex-col gap-2">
             <h3 className="font-semibold">Resources</h3>
-            <Link href="/notes/syllabus" className="text-sm text-gray-300 hover:text-purple-400">
-              Syllabus
+            <Link href="/resources/library" className="text-sm text-gray-300 hover:text-purple-400">
+              Digital Library
             </Link>
-            <Link href="/notes/assignments" className="text-sm text-gray-300 hover:text-purple-400">
-              Assignments
+            <Link href="/resources/tools" className="text-sm text-gray-300 hover:text-purple-400">
+              Software Tools
             </Link>
-            <Link href="/notes/projects" className="text-sm text-gray-300 hover:text-purple-400">
-              Projects
+            <Link href="/resources/publications" className="text-sm text-gray-300 hover:text-purple-400">
+              Publications
             </Link>
           </div>
           <div className="flex flex-col gap-2 col-span-2 md:col-span-1">

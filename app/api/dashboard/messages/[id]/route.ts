@@ -62,4 +62,52 @@ export async function PATCH(
       { status: 500 }
     );
   }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const { id } = params;
+    
+    // Validate ID format
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid message ID' },
+        { status: 400 }
+      );
+    }
+    
+    // Connect to MongoDB
+    const client = await clientPromise;
+    const db = client.db('datascience');
+    const collection = db.collection('contactMessages');
+    
+    // Delete the message
+    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+    
+    if (result.deletedCount === 0) {
+      return NextResponse.json(
+        { success: false, message: 'Message not found' },
+        { status: 404 }
+      );
+    }
+    
+    return NextResponse.json({
+      success: true,
+      message: 'Message deleted successfully'
+    });
+    
+  } catch (error) {
+    console.error('Error deleting message:', error);
+    return NextResponse.json(
+      { 
+        success: false, 
+        message: 'Failed to delete message',
+        error: error instanceof Error ? error.message : String(error)
+      },
+      { status: 500 }
+    );
+  }
 } 

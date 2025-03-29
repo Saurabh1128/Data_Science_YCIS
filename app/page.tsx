@@ -265,7 +265,7 @@ export default function Home() {
                 transition={{ delay: 1.0, duration: 0.5 }}
                 className="flex flex-col sm:flex-row gap-4 mt-2"
               >
-                <Link href="/notes">
+                <Link href="/courses">
                   <Button size="lg" className="px-8 text-md bg-red-600 hover:bg-red-700 transition-all duration-300 hover:scale-105 hover:shadow-lg">
                     <motion.span 
                       initial={{ opacity: 0 }}
@@ -273,7 +273,7 @@ export default function Home() {
                       transition={{ delay: 1.2, duration: 0.4 }}
                       className="flex items-center"
                     >
-                      Explore Notes
+                      Explore Courses
                       <motion.span
                         animate={{ x: [0, 5, 0] }}
                         transition={{ repeat: Infinity, repeatType: "loop", duration: 1.5, delay: 1.5 }}
@@ -582,17 +582,17 @@ export default function Home() {
                   </div>
                   <div>
                     <CardTitle>Study Materials</CardTitle>
-                    <CardDescription>Access lecture notes and resources</CardDescription>
+                    <CardDescription>Access study materials and digital resources</CardDescription>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <p>Comprehensive study materials for all courses in the Data Science curriculum.</p>
                 </CardContent>
                 <CardFooter>
-                  <Link href="/notes" className="w-full">
-                    <Button className="w-full group bg-red-600 hover:bg-red-700">
-                      <span>View Notes</span>
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <Link href="/resources" className="w-full">
+                    <Button variant="outline" className="h-8 w-full justify-start px-2 font-normal">
+                      <span>View Resources</span>
+                      <ArrowRight className="ml-auto h-4 w-4" />
                     </Button>
                   </Link>
                 </CardFooter>
