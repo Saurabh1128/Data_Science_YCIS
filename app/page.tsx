@@ -134,6 +134,69 @@ export default function Home() {
     return <span>{value}</span>
   }
 
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [formStatus, setFormStatus] = useState<{
+    success?: boolean;
+    message?: string;
+    loading?: boolean;
+  } | null>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Set loading state
+    setFormStatus({ loading: true });
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setFormStatus({
+          success: true,
+          message: 'Thank you! Your message has been sent successfully.'
+        });
+        // Reset form data
+        setFormData({
+          name: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        setFormStatus({
+          success: false,
+          message: data.message || 'Something went wrong. Please try again.'
+        });
+      }
+    } catch (error) {
+      setFormStatus({
+        success: false,
+        message: 'An error occurred. Please try again later.'
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section with Animation */}
@@ -931,7 +994,7 @@ export default function Home() {
               className="space-y-6"
             >
               <div className="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-red-100 dark:border-red-800/30">
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={handleSubmit}>
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                       Full Name
@@ -941,6 +1004,9 @@ export default function Home() {
                       type="text"
                       className="flex h-12 w-full rounded-md border border-red-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-800 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-red-600"
                       placeholder="Enter your name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <div className="space-y-2">
@@ -952,6 +1018,9 @@ export default function Home() {
                       type="email"
                       className="flex h-12 w-full rounded-md border border-red-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-800 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-red-600"
                       placeholder="Enter your email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <div className="space-y-2">
@@ -961,7 +1030,9 @@ export default function Home() {
                     <select
                       id="subject"
                       className="flex h-12 w-full rounded-md border border-red-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-800 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-red-600"
-                      defaultValue=""
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
                     >
                       <option value="" disabled>Select a subject</option>
                       <option value="admission">Admission Inquiry</option>
@@ -978,10 +1049,32 @@ export default function Home() {
                       id="message"
                       className="flex min-h-[120px] w-full rounded-md border border-red-200 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-800 dark:bg-gray-900 dark:text-white dark:placeholder:text-gray-500 dark:focus:ring-red-600"
                       placeholder="Enter your message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
                     ></textarea>
                   </div>
-                  <Button className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-md shadow-md hover:shadow-lg transition-all duration-300 mt-2">
-                    Submit Message
+                  
+                  {formStatus && (
+                    <div className={`p-3 rounded-md ${
+                      formStatus.success 
+                        ? 'bg-green-50 text-green-800 border border-green-200' 
+                        : formStatus.loading 
+                          ? 'bg-blue-50 text-blue-800 border border-blue-200'
+                          : 'bg-red-50 text-red-800 border border-red-200'
+                    }`}>
+                      {formStatus.loading 
+                        ? 'Sending your message...' 
+                        : formStatus.message}
+                    </div>
+                  )}
+                  
+                  <Button 
+                    type="submit"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-md shadow-md hover:shadow-lg transition-all duration-300 mt-2"
+                    disabled={formStatus?.loading}
+                  >
+                    {formStatus?.loading ? 'Submitting...' : 'Submit Message'}
                     <motion.span
                       animate={{ x: [0, 5, 0] }}
                       transition={{ repeat: Infinity, repeatType: "loop", duration: 1.5 }}
