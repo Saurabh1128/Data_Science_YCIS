@@ -199,12 +199,36 @@ export default function DashboardContent() {
     if (!messageToDelete) return;
     
     try {
-      const response = await fetch(`/api/dashboard/messages/${messageToDelete}`, {
-        method: 'DELETE',
+      console.log(`Attempting to delete message with ID: ${messageToDelete}`);
+      setError(null); // Clear any previous errors
+      
+      // Show loading state
+      setNotification({
+        type: 'info',
+        message: 'Deleting message...'
       });
       
+      const response = await fetch(`/api/dashboard/messages/${messageToDelete}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        // Add cache control to prevent caching issues
+        cache: 'no-store',
+      });
+      
+      // Get response data to check for errors
+      const data = await response.json();
+      console.log('Delete response:', data);
+      
       if (!response.ok) {
-        throw new Error('Failed to delete message');
+        console.error('Delete response not OK:', response.status, data);
+        throw new Error(data.message || 'Failed to delete message');
+      }
+      
+      if (!data.success) {
+        console.error('Delete operation not successful:', data);
+        throw new Error(data.message || 'Failed to delete message');
       }
       
       // Remove the message from the local state
@@ -212,12 +236,33 @@ export default function DashboardContent() {
         prevMessages.filter(msg => msg._id !== messageToDelete)
       );
       
+      // Show success notification
+      setNotification({
+        type: 'success',
+        message: 'Message deleted successfully'
+      });
+      
+      // Clear notification after 3 seconds
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+      
       // Close the dialog
       setDeleteDialogOpen(false);
       setMessageToDelete(null);
     } catch (err) {
       console.error('Error deleting message:', err);
-      setError('Failed to delete message. Please try again.');
+      
+      // Show detailed error to user
+      const errorMessage = err instanceof Error ? err.message : 'Failed to delete message';
+      setError(errorMessage);
+      
+      // Show error notification
+      setNotification({
+        type: 'warning',
+        message: `Delete failed: ${errorMessage}. Please try again.`
+      });
+      
       setDeleteDialogOpen(false);
     }
   };
