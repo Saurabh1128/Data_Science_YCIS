@@ -2,7 +2,11 @@
   "version": 2,
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
+  "installCommand": "npm install --legacy-peer-deps",
   "framework": "nextjs",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "env": {
+    "MONGODB_URI": "mongodb+srv://Saurabh:Saurabh2000%40@datascience.no0i8st.mongodb.net/?retryWrites=true&w=majority&appName=datascience",
+    "NODE_ENV": "production"
+  }
 } 
