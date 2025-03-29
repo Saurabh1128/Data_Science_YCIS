@@ -20,12 +20,16 @@ const getMongoURI = () => {
 const uri = getMongoURI();
 console.log('MongoDB connection string detected:', uri.substring(0, 20) + '...');
 
-// Define client options - retryWrites and w are already in the connection string
+// Define client options with more forgiving settings
 const options = {
   maxPoolSize: 10,
-  serverSelectionTimeoutMS: 10000, // Increased timeout for server selection
+  serverSelectionTimeoutMS: 15000, // Increased timeout for server selection
   socketTimeoutMS: 45000,
-  connectTimeoutMS: 10000
+  connectTimeoutMS: 15000,
+  retryWrites: true,
+  retryReads: true,
+  // w property should be typed correctly for MongoDB
+  w: 'majority' as const // Use 'as const' to fix the type issue
 };
 
 let client: MongoClient;
@@ -49,6 +53,34 @@ export async function testConnection() {
   }
 }
 
+// Create a safe connect function that handles different error scenarios
+const safeConnect = async (mongoClient: MongoClient, connectionUri: string): Promise<MongoClient> => {
+  try {
+    console.log('Attempting MongoDB connection...');
+    return await mongoClient.connect();
+  } catch (err) {
+    console.error('Initial MongoDB connection failed:', err);
+    
+    // Try with simplified URI format if there are query parameters
+    if (connectionUri.includes('?')) {
+      try {
+        console.log('Trying simplified URI format without query parameters');
+        const simplifiedUri = connectionUri.split('?')[0];
+        const retryClient = new MongoClient(simplifiedUri, options);
+        return await retryClient.connect();
+      } catch (retryErr) {
+        console.error('Retry with simplified URI also failed:', retryErr);
+      }
+    }
+    
+    // If we've reached here, all connection attempts have failed
+    // Return the client but mark it as having failed to connect
+    console.error('All MongoDB connection attempts failed');
+    // We'll return the client and handle the errors at the operation level
+    return mongoClient;
+  }
+};
+
 // Handle the connection in development or production mode
 if (process.env.NODE_ENV === 'development') {
   // In development mode, use a global variable so that the value
@@ -60,29 +92,7 @@ if (process.env.NODE_ENV === 'development') {
   if (!globalWithMongo._mongoClientPromise) {
     console.log("Establishing new MongoDB connection in development mode");
     client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect()
-      .then(client => {
-        console.log('Successfully connected to MongoDB in development');
-        return client;
-      })
-      .catch(err => {
-        console.error('Failed to connect to MongoDB in development:', err);
-        
-        // Create a new client and try again with a simpler URI format
-        // sometimes the query parameters in the URI can cause issues
-        if (uri.includes('?')) {
-          console.log('Trying simplified URI format without query parameters');
-          const simplifiedUri = uri.split('?')[0];
-          const retryClient = new MongoClient(simplifiedUri, options);
-          return retryClient.connect().catch(retryErr => {
-            console.error('Retry connection also failed:', retryErr);
-            return client; // Return original client for graceful failure
-          });
-        }
-        
-        // Instead of throwing, return a connected client that will fail more gracefully
-        return client;
-      });
+    globalWithMongo._mongoClientPromise = safeConnect(client, uri);
   } else {
     console.log("Reusing existing MongoDB connection in development mode");
   }
@@ -91,37 +101,19 @@ if (process.env.NODE_ENV === 'development') {
   // In production mode, it's best to not use a global variable
   console.log("Establishing MongoDB connection in production mode");
   client = new MongoClient(uri, options);
-  clientPromise = client.connect()
-    .then(client => {
-      console.log('Successfully connected to MongoDB in production');
-      return client;
-    })
-    .catch(err => {
-      console.error('Failed to connect to MongoDB in production:', err);
-      
-      // Try with simplified URI in production as well
-      if (uri.includes('?')) {
-        console.log('Trying simplified URI format without query parameters');
-        const simplifiedUri = uri.split('?')[0];
-        const retryClient = new MongoClient(simplifiedUri, options);
-        return retryClient.connect().catch(retryErr => {
-          console.error('Retry connection also failed:', retryErr);
-          return client; // Return original client for graceful failure
-        });
-      }
-      
-      // Instead of throwing, return a connected client that will fail more gracefully
-      return client;
-    });
+  clientPromise = safeConnect(client, uri);
 }
 
 // Helper function that consumers can use to check connection
 export async function getMongoClient() {
   try {
-    return await clientPromise;
+    const client = await clientPromise;
+    // Test the connection is actually working
+    await client.db().command({ ping: 1 });
+    return client;
   } catch (error) {
     console.error("Error getting MongoDB client:", error);
-    throw error;
+    throw new Error(`MongoDB connection failed: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
