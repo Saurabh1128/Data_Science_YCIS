@@ -166,27 +166,72 @@ export default function DashboardContent() {
 
   const updateMessageStatus = async (id: string, status: 'read' | 'unread' | 'archived') => {
     try {
+      // Clear any previous errors
+      setError(null);
+      
+      // Show loading notification
+      setNotification({
+        type: 'info',
+        message: `Updating message status to ${status}...`
+      });
+      
+      console.log(`Updating message status: ID ${id} to "${status}"`);
+      
       const response = await fetch(`/api/dashboard/messages/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ status }),
+        // Add cache control
+        cache: 'no-store',
       });
       
+      // Get the response data
+      const data = await response.json();
+      console.log('Update response:', data);
+      
       if (!response.ok) {
-        throw new Error('Failed to update message');
+        console.error('Update response not OK:', response.status, data);
+        throw new Error(data.message || `Failed to update message status to ${status}`);
       }
       
-      // Update the local state
+      if (!data.success) {
+        console.error('Update operation not successful:', data);
+        throw new Error(data.message || `Failed to update message status to ${status}`);
+      }
+      
+      // Update the messages in state
       setMessages(prevMessages => 
         prevMessages.map(msg => 
           msg._id === id ? { ...msg, status } : msg
         )
       );
+      
+      // Show success notification
+      setNotification({
+        type: 'success',
+        message: `Message marked as ${status} successfully`
+      });
+      
+      // Clear notification after 3 seconds
+      setTimeout(() => {
+        setNotification(null);
+      }, 3000);
+      
     } catch (err) {
       console.error('Error updating message status:', err);
-      setError('Failed to update message status. Please try again.');
+      
+      // Show detailed error to user
+      const errorMessage = err instanceof Error ? err.message : `Failed to update message status to ${status}`;
+      
+      setError(errorMessage);
+      
+      // Show error notification
+      setNotification({
+        type: 'warning',
+        message: `Update failed: ${errorMessage}. Please try again.`
+      });
     }
   };
 
