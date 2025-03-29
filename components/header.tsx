@@ -22,7 +22,6 @@ export default function Header() {
     { name: "Faculty", href: "/faculty" },
     { name: "Research", href: "/research" },
     { name: "Resources", href: "/resources" },
-    { name: "Dashboard", href: "/dashboard" },
   ]
 
   return (
