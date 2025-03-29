@@ -27,8 +27,10 @@ export async function POST(request: Request) {
     console.log('Connecting to MongoDB...');
     const client = await clientPromise;
     
-    // Use the database from the connection string
-    const db = client.db();
+    // Explicitly specify database
+    const dbName = 'datascience';
+    console.log(`Using database: ${dbName}`);
+    const db = client.db(dbName);
     
     // Create a document with form data and timestamp
     const contactMessage = {
@@ -44,7 +46,9 @@ export async function POST(request: Request) {
     console.log('Attempting to insert document into MongoDB');
     
     // Get collection, create if doesn't exist
-    const collection = db.collection('messages');
+    const collectionName = 'messages';
+    console.log(`Using collection: ${collectionName}`);
+    const collection = db.collection(collectionName);
     
     // Insert the document into the collection
     const result = await collection.insertOne(contactMessage);

@@ -43,17 +43,41 @@ export async function GET() {
   try {
     console.log('Starting GET request to /api/dashboard/messages');
     
+    // First, explicitly test the MongoDB connection
+    console.log('Testing MongoDB connection...');
+    const connectionTest = await testConnection();
+    if (!connectionTest.success) {
+      console.error('MongoDB connection test failed:', connectionTest.error);
+      throw new Error(`Connection test failed: ${connectionTest.error}`);
+    }
+    
+    console.log('Connection test successful, proceeding to get client');
     const client = await clientPromise;
-    const db = client.db(); // Will use the database specified in the connection string
+    
+    // Explicitly select the database and log it
+    console.log('Getting database reference');
+    const dbName = 'datascience'; // Explicitly specify database name
+    console.log(`Using database: ${dbName}`);
+    const db = client.db(dbName);
     
     console.log('Connected to MongoDB, fetching messages...');
     
     // Test the connection with a ping
+    console.log('Pinging database to verify connection');
     await db.command({ ping: 1 });
     console.log('MongoDB connection verified with ping');
     
+    // List all collections to help debug
+    console.log('Listing collections in database');
+    const collections = await db.listCollections().toArray();
+    console.log('Available collections:', collections.map(c => c.name));
+    
+    // Use 'messages' collection
+    const collectionName = 'messages';
+    console.log(`Using collection: ${collectionName}`);
+    
     const messages = await db
-      .collection('messages')
+      .collection(collectionName)
       .find({})
       .sort({ createdAt: -1 }) // Sort by createdAt in descending order
       .toArray();
@@ -68,13 +92,26 @@ export async function GET() {
       }))
     });
   } catch (error) {
-    console.error('Error in dashboard messages API route:', error);
+    // Create detailed error information
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorStack = error instanceof Error ? error.stack : '';
+    const errorName = error instanceof Error ? error.name : 'Error';
+    
+    console.error('Error in dashboard messages API route:', {
+      name: errorName,
+      message: errorMessage,
+      stack: errorStack
+    });
+    
+    // For development, return detailed error info
+    const isDev = process.env.NODE_ENV === 'development';
     
     // If connection failed, return error instead of sample data
     return NextResponse.json({
       success: false,
       message: 'Failed to connect to database',
-      error: error instanceof Error ? error.message : 'Unknown error connecting to database'
+      error: errorMessage,
+      ...isDev && { stack: errorStack, name: errorName }
     }, { status: 500 });
   }
 }
@@ -89,7 +126,7 @@ export async function PUT(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db(); // Use the database from connection string
+    const db = client.db('datascience'); // Use the database from connection string
 
     const result = await db.collection('messages').updateOne(
       { _id: new ObjectId(id) },
@@ -120,7 +157,7 @@ export async function DELETE(request: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db(); // Use the database from connection string
+    const db = client.db('datascience'); // Use the database from connection string
 
     const result = await db.collection('messages').deleteOne({ _id: new ObjectId(id) });
 

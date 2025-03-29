@@ -9,6 +9,7 @@ export default function DatabaseTestPage() {
     message: string;
     error?: string;
     timestamp?: string;
+    details?: any;
   } | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -85,6 +86,64 @@ export default function DatabaseTestPage() {
               </div>
             </div>
             
+            {/* Display detailed connection information if available */}
+            {connectionStatus.success && connectionStatus.details && (
+              <div className="mt-6 bg-white border rounded-lg p-4">
+                <h3 className="font-semibold text-lg mb-3">Connection Details</h3>
+                
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium">Database</h4>
+                    <p className="mt-1 p-2 bg-gray-50 rounded">{connectionStatus.details.database}</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium">MongoDB Version</h4>
+                    <p className="mt-1 p-2 bg-gray-50 rounded">{connectionStatus.details.mongodbVersion || 'Unknown'}</p>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium">Collections</h4>
+                    {connectionStatus.details.collections?.length > 0 ? (
+                      <ul className="mt-1 p-2 bg-gray-50 rounded list-disc pl-5">
+                        {connectionStatus.details.collections.map((collection: string) => (
+                          <li key={collection}>{collection}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-1 p-2 bg-gray-50 rounded">No collections found</p>
+                    )}
+                  </div>
+                  
+                  {connectionStatus.details.hasMessagesCollection !== undefined && (
+                    <div>
+                      <h4 className="font-medium">Messages Collection</h4>
+                      <div className="mt-1 p-2 bg-gray-50 rounded">
+                        <p>
+                          Status: {connectionStatus.details.hasMessagesCollection ? 
+                            <span className="text-green-600">✓ Available</span> : 
+                            <span className="text-red-600">✗ Not Found</span>
+                          }
+                        </p>
+                        {connectionStatus.details.hasMessagesCollection && (
+                          <p className="mt-1">
+                            Document Count: {connectionStatus.details.messageCount || 0}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {connectionStatus.details.error && (
+                    <div>
+                      <h4 className="font-medium text-red-600">Detailed Test Error</h4>
+                      <p className="mt-1 p-2 bg-red-50 rounded">{connectionStatus.details.error}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
             <div className="mt-4">
               <button
                 onClick={testConnection}
@@ -107,6 +166,8 @@ export default function DatabaseTestPage() {
             <li>Ensure MongoDB is running and accessible from your network</li>
             <li>Verify IP whitelist settings in MongoDB Atlas (if using Atlas)</li>
             <li>Check for any firewalls blocking the connection</li>
+            <li>Make sure you're using the correct database name (<code className="bg-gray-100 px-1 py-0.5 rounded">datascience</code>)</li>
+            <li>Verify the collection (<code className="bg-gray-100 px-1 py-0.5 rounded">messages</code>) exists in your database</li>
           </ul>
         </div>
         
@@ -116,6 +177,8 @@ export default function DatabaseTestPage() {
             <li><Link href="/dashboard" className="text-blue-500 hover:underline">View Dashboard</Link> to see messages</li>
             <li><Link href="/" className="text-blue-500 hover:underline">Go to Homepage</Link> to submit a test message</li>
             <li><Link href="/api/test/db-connection" className="text-blue-500 hover:underline">Raw API Response</Link></li>
+            <li>Check server logs for detailed MongoDB connection errors</li>
+            <li>If MongoDB credentials changed, update them in your <code className="bg-gray-100 px-1 py-0.5 rounded">.env.local</code> file</li>
           </ul>
         </div>
       </div>

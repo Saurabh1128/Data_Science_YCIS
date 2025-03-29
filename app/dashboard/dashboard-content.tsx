@@ -96,7 +96,10 @@ export default function DashboardContent() {
       console.log('Response status:', response.status);
       
       if (!response.ok) {
-        throw new Error(`Failed to fetch messages: ${response.status}`);
+        const errorText = await response.text().catch(() => null);
+        console.error('Error response body:', errorText);
+        
+        throw new Error(`Failed to fetch messages: ${response.status}${errorText ? ` - ${errorText}` : ''}`);
       }
       
       const data = await response.json();
@@ -110,7 +113,22 @@ export default function DashboardContent() {
       }
     } catch (err) {
       console.error('Error fetching messages:', err);
-      setError('Error connecting to the database. Please try again later.');
+      
+      // Use a more specific error message if we can determine the issue
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      
+      if (errorMessage.includes('Failed to fetch')) {
+        setError('Network error: Could not connect to the server. Check your internet connection.');
+      } else if (errorMessage.includes('MongoDB')) {
+        setError('Database error: Failed to connect to the MongoDB database. Please check your database configuration.');
+      } else if (errorMessage.includes('timeout')) {
+        setError('Connection timeout: The request took too long to complete. Please try again.');
+      } else if (errorMessage.includes('401') || errorMessage.includes('403')) {
+        setError('Authentication error: Not authorized to access the database.');
+      } else {
+        setError(`Error connecting to the database: ${errorMessage}. Please try again later.`);
+      }
+      
       // Set messages to empty array to avoid showing stale data
       setMessages([]);
     } finally {
