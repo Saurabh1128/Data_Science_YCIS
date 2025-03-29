@@ -5,7 +5,18 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Inbox, Clock, CheckCircle, Trash } from 'lucide-react';
+import { Inbox, Clock, CheckCircle, Trash, AlertTriangle, BarChart } from 'lucide-react';
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
 type Message = {
   _id: string;
@@ -22,6 +33,8 @@ export default function DashboardContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('all');
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     fetchMessages();
@@ -72,6 +85,63 @@ export default function DashboardContent() {
     }
   };
 
+  const confirmDeleteMessage = (id: string) => {
+    setMessageToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const deleteMessage = async () => {
+    if (!messageToDelete) return;
+    
+    try {
+      const response = await fetch(`/api/dashboard/messages/${messageToDelete}`, {
+        method: 'DELETE',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete message');
+      }
+      
+      // Remove the message from the local state
+      setMessages(prevMessages => 
+        prevMessages.filter(msg => msg._id !== messageToDelete)
+      );
+      
+      // Close the dialog
+      setDeleteDialogOpen(false);
+      setMessageToDelete(null);
+    } catch (err) {
+      console.error('Error deleting message:', err);
+      setError('Failed to delete message. Please try again.');
+      setDeleteDialogOpen(false);
+    }
+  };
+
+  // Create data for the bar chart
+  const getSubjectData = () => {
+    const subjects = {
+      admission: 0,
+      course: 0,
+      faculty: 0,
+      other: 0
+    };
+    
+    messages.forEach(message => {
+      if (message.subject in subjects) {
+        subjects[message.subject as keyof typeof subjects]++;
+      } else {
+        subjects.other++;
+      }
+    });
+    
+    return [
+      { name: 'Admission Inquiry', count: subjects.admission, fill: '#f43f5e' },
+      { name: 'Course Information', count: subjects.course, fill: '#3b82f6' },
+      { name: 'Faculty Contact', count: subjects.faculty, fill: '#10b981' },
+      { name: 'Other', count: subjects.other, fill: '#6b7280' }
+    ];
+  };
+
   const filteredMessages = activeTab === 'all' 
     ? messages 
     : messages.filter(msg => msg.status === activeTab);
@@ -98,6 +168,50 @@ export default function DashboardContent() {
 
   return (
     <div className="space-y-8">
+      {/* Analytics Section */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">Message Analytics</h2>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <BarChart className="mr-2 h-5 w-5 text-red-600" />
+              Subject Distribution
+            </CardTitle>
+            <CardDescription>
+              Number of messages by subject category
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px] w-full mt-4">
+              {loading ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+                </div>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <RechartsBarChart
+                    data={getSubjectData()}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip formatter={(value) => [`${value} messages`, 'Count']} />
+                    <Legend />
+                    <Bar dataKey="count" name="Number of Messages" />
+                  </RechartsBarChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       <Tabs defaultValue="all" onValueChange={setActiveTab}>
         <TabsList className="grid grid-cols-4 mb-8">
           <TabsTrigger value="all" className="flex items-center gap-2">
@@ -183,6 +297,14 @@ export default function DashboardContent() {
                           <Trash className="h-4 w-4 mr-1" /> Archive
                         </Button>
                       )}
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => confirmDeleteMessage(message._id)}
+                        className="text-red-600 border-red-200 hover:border-red-300 hover:bg-red-50"
+                      >
+                        <AlertTriangle className="h-4 w-4 mr-1" /> Delete
+                      </Button>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -204,6 +326,23 @@ export default function DashboardContent() {
           )}
         </TabsContent>
       </Tabs>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this message?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the message from the database.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={deleteMessage} className="bg-red-600 hover:bg-red-700">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 } 
