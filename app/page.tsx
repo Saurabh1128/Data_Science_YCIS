@@ -358,7 +358,7 @@ export default function Home() {
             </div>
             </div>
         </div>
-        
+
         {/* Wave separator */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" className="w-full h-auto">
@@ -410,7 +410,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature: Feature, index: number) => (
               <div 
-                key={index} 
+                key={index}
                 className="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow group"
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center mb-4 text-white group-hover:scale-110 transition-transform">
@@ -431,7 +431,7 @@ export default function Home() {
             <div className="text-center mb-10">
               <div className="inline-block px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-medium mb-4">
                 Get In Touch
-              </div>
+            </div>
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                 Contact <span className="text-indigo-600 dark:text-indigo-400">Our Department</span>
               </h2>
@@ -462,19 +462,19 @@ export default function Home() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
-                      </div>
-                      <div>
+                  </div>
+                  <div>
                         <p className="font-medium">Email</p>
                         <p className="text-sm text-white/80 mt-1">datascienceycis@example.com</p>
                       </div>
-                    </div>
+                  </div>
                     <div className="flex items-start">
                       <div className="bg-white/20 p-2 rounded-lg mr-4">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                         </svg>
-                      </div>
-                      <div>
+                  </div>
+                  <div>
                         <p className="font-medium">Phone</p>
                         <p className="text-sm text-white/80 mt-1">+91 1234567890</p>
                       </div>
@@ -504,9 +504,9 @@ export default function Home() {
                           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                         </svg>
                       </a>
-                    </div>
                   </div>
-                </div>
+                  </div>
+        </div>
                 
                 <div className="p-6 md:p-8">
                   <form onSubmit={handleSubmit}>
@@ -522,7 +522,7 @@ export default function Home() {
                           onChange={handleInputChange}
                           required 
                         />
-                      </div>
+            </div>
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
                         <input 
@@ -534,7 +534,7 @@ export default function Home() {
                           onChange={handleInputChange}
                           required 
                         />
-                      </div>
+            </div>
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
                         <input 
@@ -545,8 +545,8 @@ export default function Home() {
                           value={formData.phone}
                           onChange={handleInputChange}
                         />
-                      </div>
-                      <div>
+                  </div>
+                  <div>
                         <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject</label>
                         <input 
                           type="text" 
@@ -557,7 +557,7 @@ export default function Home() {
                           onChange={handleInputChange}
                           required 
                         />
-                      </div>
+                  </div>
                       <div>
                         <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
                         <textarea 
@@ -569,8 +569,8 @@ export default function Home() {
                           onChange={handleInputChange}
                           required
                         ></textarea>
-                      </div>
-                      
+            </div>
+
                       {formStatus && (
                         <div className={`p-3 rounded-md ${formStatus.success ? 'bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-300' : 'bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-300'}`}>
                           {formStatus.message}
@@ -578,7 +578,7 @@ export default function Home() {
                       )}
                       
                       <div>
-                        <button 
+                <button
                           type="submit" 
                           className="w-full px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70"
                           disabled={formStatus?.loading}
@@ -607,8 +607,8 @@ export default function Home() {
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Our graduates work at top companies worldwide. We collaborate with industry leaders to ensure our curriculum meets market demands.
-            </p>
-          </div>
+              </p>
+            </div>
         </div>
         
         {/* Logo Slider */}
@@ -620,7 +620,7 @@ export default function Home() {
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1280px-Amazon_Web_Services_Logo.svg.png" alt="AWS" className="h-8 object-contain" />
                 </div>
                 <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/Capgemini_logo.svg/1200px-Capgemini_logo.svg.png" alt="Capgemini" className="h-8 object-contain" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Wipro_Primary_Logo_Color_RGB.svg/2560px-Wipro_Primary_Logo_Color_RGB.svg.png" alt="Wipro" className="h-8 object-contain" />
                 </div>
                 <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Cognizant_logo_2022.svg/2560px-Cognizant_logo_2022.svg.png" alt="Cognizant" className="h-8 object-contain" />
@@ -632,10 +632,16 @@ export default function Home() {
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" className="h-8 object-contain" />
                 </div>
                 <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://placehold.co/400x200/purple/white?text=Qhills" alt="Qhills" className="h-8 object-contain" />
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/1200px-Microsoft_Azure.svg.png" alt="Microsoft Azure" className="h-8 object-contain" />
                 </div>
                 <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/HCL_Technologies_logo.svg/1280px-HCL_Technologies_logo.svg.png" alt="HCL" className="h-8 object-contain" />
+                </div>
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Databricks_logo.svg/1200px-Databricks_logo.svg.png" alt="Databricks" className="h-8 object-contain" />
+                </div>
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png" alt="Jupyter" className="h-8 object-contain" />
                 </div>
               </div>
             ))}
