@@ -32,7 +32,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("system");
+  const [theme, setTheme] = useState<"light" | "dark" | "system">("dark");
   const pathname = usePathname();
 
   // Check if the user is scrolling down
@@ -46,8 +46,8 @@ export default function Navbar() {
 
   // Handle theme switching
   useEffect(() => {
-    // On mount, read the theme from localStorage or use system preference
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | "system" || "system";
+    // On mount, read the theme from localStorage or use dark as default
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | "system" || "dark";
     setTheme(savedTheme);
 
     // Apply the theme
