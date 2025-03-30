@@ -104,12 +104,6 @@ export default function Home() {
       alt: "BSc Data Science Laboratory",
       title: "Undergraduate Facilities",
       description: "Modern computing labs for hands-on learning experience"
-    },
-    {
-      src: "/placeholder.svg?height=600&width=800&text=Industry+Connections",
-      alt: "Industry Connections",
-      title: "Industry Partnerships",
-      description: "Connect with leading organizations in the field"
     }
   ];
 
@@ -458,7 +452,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        
+
         <div className="hidden lg:block">
           <CoverFlowSlider images={sliderImages} />
         </div>
@@ -685,8 +679,8 @@ export default function Home() {
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Our graduates work at top companies worldwide. We collaborate with industry leaders to ensure our curriculum meets market demands.
-            </p>
-          </div>
+              </p>
+            </div>
         </div>
         
         {/* Mobile-optimized Logo Slider */}
@@ -717,7 +711,7 @@ export default function Home() {
                 </div>
                 <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Databricks_logo.svg/1200px-Databricks_logo.svg.png" alt="Databricks" className="h-6 md:h-8 object-contain" loading="lazy" />
-                </div>
+                  </div>
                 <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png" alt="Jupyter" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
