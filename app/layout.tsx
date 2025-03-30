@@ -1,34 +1,27 @@
-import type React from "react"
-import "@/app/globals.css"
+import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { ThemeProvider } from "@/components/theme-provider"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
-import { cn } from "@/lib/utils"
+import "./globals.css"
+import Navbar from "@/components/navbar"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata = {
-  title: "Department of Data Science - Yashavantrao Chavan Institute of Science",
-  description: "Official website of the Department of Data Science at Yashavantrao Chavan Institute of Science",
-    generator: 'v0.dev'
+export const metadata: Metadata = {
+  title: "YCIS Data Science Program",
+  description: "Yashavantrao Chavan Institute of Science Data Science Department",
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(inter.className)}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+      <body className={`${inter.className} min-h-screen flex flex-col bg-white dark:bg-gray-900`}>
+        <Navbar />
+        <main className="flex-grow pt-16">
+          {children}
+        </main>
       </body>
     </html>
   )

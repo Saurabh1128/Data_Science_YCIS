@@ -175,6 +175,15 @@ export default function Home() {
     loading?: boolean;
   } | null>(null);
 
+  // Subject options for dropdown
+  const subjectOptions = [
+    { value: "admission", label: "Admission Enquiry" },
+    { value: "student-problem", label: "Student Problem" },
+    { value: "document", label: "Document Requirement" },
+    { value: "feedback", label: "Feedback" },
+    { value: "other", label: "Other" }
+  ];
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
     setFormData(prev => ({
@@ -579,15 +588,20 @@ export default function Home() {
                   </div>
                   <div>
                         <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Subject</label>
-                        <input 
-                          type="text" 
+                        <select 
                           id="subject" 
                           className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                          placeholder="How can we help you?"
                           value={formData.subject}
                           onChange={handleInputChange}
-                          required 
-                        />
+                          required
+                        >
+                          <option value="" disabled>Select a subject</option>
+                          {subjectOptions.map(option => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
                   </div>
                       <div>
                         <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
