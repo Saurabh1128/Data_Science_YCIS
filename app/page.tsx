@@ -404,22 +404,6 @@ export default function Home() {
           {/* Continue with the rest of your testimonials section */}
         </div>
       </section>
-
-      {/* Faculty section */}
-      <section className="py-16 bg-white dark:bg-gray-900">
-        <div className="container px-4 mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Meet Our <span className="text-indigo-600 dark:text-indigo-400">Faculty</span>
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Learn from industry professionals and academic experts with years of experience.
-            </p>
-          </div>
-
-          {/* Continue with the rest of your faculty section */}
-        </div>
-      </section>
     </div>
   )
 }
