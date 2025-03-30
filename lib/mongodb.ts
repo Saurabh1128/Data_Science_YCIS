@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
-// Update connection string with better error handling
-const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh%402000@datascience.no0i8st.mongodb.net/datascience";
+// Update connection string with better error handling and correct format
+const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh2000%40@datascience.no0i8st.mongodb.net/datascience?retryWrites=true&w=majority";
 
 // Connection state tracking
 let lastConnectionAttempt = 0;
