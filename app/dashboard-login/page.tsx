@@ -99,8 +99,7 @@ export default function DashboardLogin() {
         </CardContent>
         <CardFooter className="border-t px-6 py-4">
           <div className="text-sm text-center w-full text-gray-500">
-            <p>Default credentials (for demo only):</p>
-            <p>Username: <span className="font-mono">Saurabh</span> | Password: <span className="font-mono">Data@123</span></p>
+            <p>Please enter your credentials to access the dashboard.</p>
           </div>
         </CardFooter>
       </Card>
