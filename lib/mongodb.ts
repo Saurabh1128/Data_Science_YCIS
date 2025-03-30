@@ -1,12 +1,15 @@
 import { MongoClient } from 'mongodb';
 
 // Update connection string with better error handling and correct format
-const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh%402000@datascience.no0i8st.mongodb.net/datascience?retryWrites=true&w=majority";
+const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh%402000@datascience.no0i8st.mongodb.net/datascience?retryWrites=true&w=majority&directConnection=true";
 
 // Connection state tracking
 let lastConnectionAttempt = 0;
 let connectionErrorCount = 0;
 let isConnecting = false;
+
+// Debug mode - set to true to show detailed logs
+const DEBUG = true;
 
 const MAX_ERROR_COUNT = 5; // Consider connection dead after 5 failures
 const RETRY_DELAY = 30000; // Wait 30 seconds before retrying after a connection failure
@@ -19,11 +22,16 @@ let clientPromise: Promise<MongoClient> | null = null;
 function getConnectionString() {
   try {
     if (process.env.MONGODB_URI) {
-      console.log('Using MONGODB_URI from process.env');
-      return process.env.MONGODB_URI;
+      DEBUG && console.log('Using MONGODB_URI from process.env');
+      const uri = process.env.MONGODB_URI;
+      // Ensure the URI has the directConnection parameter
+      if (!uri.includes('directConnection=')) {
+        return uri + (uri.includes('?') ? '&' : '?') + 'directConnection=true';
+      }
+      return uri;
     }
     
-    console.log('Using fallback MongoDB URI');
+    DEBUG && console.log('Using fallback MongoDB URI');
     return FALLBACK_URI;
   } catch (error) {
     console.error('Error getting MongoDB connection string:', error);
@@ -55,6 +63,7 @@ function getConnectionOptions() {
 export async function testConnection() {
   const uri = getConnectionString();
   try {
+    DEBUG && console.log('Connection string being used:', uri);
     const client = new MongoClient(uri, getConnectionOptions());
     
     console.log('Testing MongoDB connection...');
@@ -89,13 +98,13 @@ const safeConnect = async (mongoClient: MongoClient, connectionUri: string): Pro
   
   // Prevent duplicate connection attempts
   if (isConnecting) {
-    console.log('Another connection attempt is already in progress');
+    DEBUG && console.log('Another connection attempt is already in progress');
     throw new Error('Connection attempt already in progress');
   }
   
   // Avoid repeated connection attempts in a short time
   if (connectionErrorCount > 0 && (now - lastConnectionAttempt) < RETRY_DELAY) {
-    console.log(`Skipping MongoDB connection attempt - waiting for retry delay (${Math.round((RETRY_DELAY - (now - lastConnectionAttempt)) / 1000)}s remaining)`);
+    DEBUG && console.log(`Skipping MongoDB connection attempt - waiting for retry delay (${Math.round((RETRY_DELAY - (now - lastConnectionAttempt)) / 1000)}s remaining)`);
     throw new Error('Connection attempts rate limited');
   }
   
@@ -111,7 +120,8 @@ const safeConnect = async (mongoClient: MongoClient, connectionUri: string): Pro
       });
       
       try {
-        console.log('Attempting MongoDB connection...');
+        DEBUG && console.log('Attempting MongoDB connection with URI:', 
+                            connectionUri.substring(0, connectionUri.indexOf('@') + 1) + '***');
         return await Promise.race([mongoClient.connect(), timeoutPromise]);
       } catch (err) {
         console.error('Connection attempt timed out or failed:', err);
@@ -140,7 +150,7 @@ const safeConnect = async (mongoClient: MongoClient, connectionUri: string): Pro
     
     return client;
   } catch (err) {
-    console.error('MongoDB connection failed:', err);
+    console.error('MongoDB connection failed. Complete error:', err);
     throw err;
   } finally {
     isConnecting = false;
@@ -154,6 +164,7 @@ export default async function clientPromiseFn(): Promise<MongoClient> {
     
     // If we already have a client or an in-progress connection, reuse it
     if (clientPromise) {
+      DEBUG && console.log('Reusing existing client promise');
       return clientPromise;
     }
     
@@ -172,12 +183,14 @@ export default async function clientPromiseFn(): Promise<MongoClient> {
       } catch (error) {
         // Clear the promise if connection fails
         clientPromise = null;
+        console.error('Failed to establish MongoDB connection:', error);
         throw error;
       }
     }
     
     // If we have a cached client, ensure it's connected
     try {
+      DEBUG && console.log('Validating cached client connection');
       await cachedClient.db("admin").command({ ping: 1 });
       return cachedClient;
     } catch (error) {
