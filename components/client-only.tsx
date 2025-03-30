@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from "react"
 
-interface ClientOnlyProps {
-  children: React.ReactNode
-}
-
-export default function ClientOnly({ children }: ClientOnlyProps) {
+// This component is used to wrap content that should only render on the client
+// It helps prevent hydration mismatches by not rendering children during SSR
+export function ClientOnly({ children, fallback = null }: { 
+  children: React.ReactNode 
+  fallback?: React.ReactNode
+}) {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
@@ -14,7 +15,7 @@ export default function ClientOnly({ children }: ClientOnlyProps) {
   }, [])
 
   if (!isMounted) {
-    return null
+    return fallback
   }
 
   return <>{children}</>

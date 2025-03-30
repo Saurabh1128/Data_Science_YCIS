@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 // Update connection string with better error handling and correct format
-const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh%402000@datascience.no0i8st.mongodb.net/datascience?retryWrites=true&w=majority&directConnection=true";
+const FALLBACK_URI = "mongodb+srv://Saurabh:Saurabh2000%40@datascience.no0i8st.mongodb.net/datascience?retryWrites=true&w=majority&directConnection=true";
 
 // Connection state tracking
 let lastConnectionAttempt = 0;
@@ -39,23 +39,17 @@ function getConnectionString() {
   }
 }
 
-// Get connection options
+// Get connection options - use only officially supported options
 function getConnectionOptions() {
   return {
     maxPoolSize: 10,
-    minPoolSize: 1, // Keep at least one connection in the pool
-    maxIdleTimeMS: 120000, // Close idle connections after 2 minutes
-    connectTimeoutMS: 15000, // 15 seconds timeout for connection
-    socketTimeoutMS: 45000, // 45 seconds for socket timeout
-    serverSelectionTimeoutMS: 15000, // 15 seconds to select a server
-    heartbeatFrequencyMS: 10000, // Check server status every 10 seconds
-    waitQueueTimeoutMS: 10000, // Wait 10 seconds in queue
+    minPoolSize: 5,
     retryWrites: true,
-    retryReads: true,
     w: 'majority' as const,
-    // Enable keepAlive to prevent connection timeouts
-    keepAlive: true,
-    keepAliveInitialDelay: 30000, // 30 seconds
+    connectTimeoutMS: 30000,
+    socketTimeoutMS: 45000,
+    serverSelectionTimeoutMS: 30000,
+    directConnection: true
   };
 }
 
