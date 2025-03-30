@@ -30,52 +30,76 @@ export default function CoursesPage() {
               name: "Semester I",
               courses: [
                 {
-                  code: "DS101",
-                  title: "Fundamentals of Mathematics for Data Science",
+                  code: "BDST 111",
+                  title: "Fundamental of Data Science",
                   credits: 4,
-                  description: "Introduction to mathematical concepts essential for data science including linear algebra, calculus, and discrete mathematics.",
+                  description: "Introduction to core concepts of data science including data collection, processing, analysis, and interpretation.",
+                  type: "Core",
+                  tags: ["Data Science", "Foundation"]
+                },
+                {
+                  code: "BDST 112",
+                  title: "Database Management System",
+                  credits: 4,
+                  description: "Database design principles, SQL, relational database systems, and data management techniques.",
+                  type: "Core",
+                  tags: ["Database", "SQL"]
+                },
+                {
+                  code: "BDSP 113",
+                  title: "Practical Lab I",
+                  credits: 2,
+                  description: "Hands-on laboratory exercises complementing the Fundamental of Data Science course.",
+                  type: "Practical",
+                  tags: ["Practical", "Data Science"]
+                },
+                {
+                  code: "BDST 114",
+                  title: "Computer Programming with C",
+                  credits: 4,
+                  description: "Introduction to programming using C language with emphasis on algorithmic thinking and problem-solving.",
+                  type: "Core",
+                  tags: ["Programming", "C Language"]
+                },
+                {
+                  code: "BDST 115",
+                  title: "Fundamental of Computer",
+                  credits: 4,
+                  description: "Computer architecture, operating systems, software applications, and basic computing concepts.",
+                  type: "Core",
+                  tags: ["Computer Science", "Foundation"]
+                },
+                {
+                  code: "BDSP 116",
+                  title: "Practical Lab II",
+                  credits: 2,
+                  description: "Laboratory exercises focused on C programming and computer fundamentals applications.",
+                  type: "Practical",
+                  tags: ["Practical", "Programming"]
+                },
+                {
+                  code: "BDST 117",
+                  title: "Mathematics for Data Science - I",
+                  credits: 4,
+                  description: "Mathematical foundations required for data science including linear algebra, calculus, and discrete mathematics.",
                   type: "Core",
                   tags: ["Mathematics", "Foundation"]
                 },
                 {
-                  code: "DS102",
-                  title: "Introduction to Computer Programming",
-                  credits: 4,
-                  description: "Fundamentals of programming using Python with emphasis on data processing and algorithmic thinking.",
-                  type: "Core",
-                  tags: ["Programming", "Python"]
-                },
-                {
-                  code: "DS103",
-                  title: "Basic Statistics",
+                  code: "BDST 118",
+                  title: "Statistics for Data Science - I",
                   credits: 4,
                   description: "Fundamental statistical concepts, descriptive statistics, probability distributions, and statistical inference.",
                   type: "Core",
                   tags: ["Statistics", "Foundation"]
                 },
                 {
-                  code: "DS104",
-                  title: "Data Science NEP 2.0 Framework",
-                  credits: 3,
-                  description: "Overview of data science within the NEP 2.0 framework, focusing on interdisciplinary approaches and credit-based systems.",
-                  type: "Core",
-                  tags: ["NEP 2.0", "Framework"]
-                },
-                {
-                  code: "DS105",
-                  title: "English Communication Skills",
+                  code: "BDSP 119",
+                  title: "Practical Lab III",
                   credits: 2,
-                  description: "Development of effective communication skills for academic and professional contexts in data science.",
-                  type: "Ability Enhancement",
-                  tags: ["Communication", "Soft Skills"]
-                },
-                {
-                  code: "DS106",
-                  title: "Environmental Studies",
-                  credits: 2,
-                  description: "Introduction to environmental concepts and sustainable development with data-driven approaches.",
-                  type: "Ability Enhancement",
-                  tags: ["Environment", "Sustainability"]
+                  description: "Practical applications of mathematical and statistical concepts in data science contexts.",
+                  type: "Practical",
+                  tags: ["Practical", "Statistics", "Mathematics"]
                 }
               ]
             },
