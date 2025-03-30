@@ -347,8 +347,13 @@ export default function Home() {
                     src="/images/group-photo.jpg" 
                     alt="Department of Data Science Students and Faculty" 
                     className="w-full h-full object-cover"
+                    width={1280}
+                    height={720}
+                    loading="eager"
+                    style={{ objectPosition: "center 20%" }}
                   />
                 </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent"></div>
               </div>
             </div>
             </div>

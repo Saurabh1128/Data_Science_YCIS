@@ -93,7 +93,7 @@ export default function CoverFlowSlider({
 
   return (
     <div 
-      className={cn("relative w-full py-16 overflow-hidden bg-gradient-to-r from-indigo-900 to-purple-900", 
+      className={cn("relative w-full py-16 md:py-24 overflow-hidden bg-gradient-to-r from-indigo-900 to-purple-900", 
       className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -103,7 +103,7 @@ export default function CoverFlowSlider({
       {/* Main slider container with perspective effect */}
       <div 
         ref={sliderRef}
-        className="relative max-w-5xl mx-auto h-[350px] perspective-1000 transform-style-3d"
+        className="relative max-w-6xl mx-auto h-[400px] md:h-[500px] perspective-1000 transform-style-3d"
       >
         {/* Slider track */}
         <div className="relative h-full w-full flex items-center justify-center">
@@ -112,7 +112,7 @@ export default function CoverFlowSlider({
             <div
               key={index}
               style={getImageStyles(index)}
-              className="absolute w-[300px] h-[200px] transition-all duration-500 ease-in-out cursor-pointer"
+              className="absolute w-[320px] h-[240px] md:w-[480px] md:h-[320px] transition-all duration-500 ease-in-out cursor-pointer"
               onClick={() => goToSlide(index)}
             >
               <div className="relative w-full h-full rounded-lg overflow-hidden shadow-xl border-2 border-indigo-300/20">
@@ -120,12 +120,15 @@ export default function CoverFlowSlider({
                   src={image.src}
                   alt={image.alt}
                   className="w-full h-full object-cover"
+                  width={720}
+                  height={480}
+                  loading="eager"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent opacity-90"></div>
                 {(image.title || image.description) && (
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                    {image.title && <h3 className="text-lg font-bold mb-1">{image.title}</h3>}
-                    {image.description && <p className="text-sm opacity-90">{image.description}</p>}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
+                    {image.title && <h3 className="text-lg md:text-xl font-bold mb-1">{image.title}</h3>}
+                    {image.description && <p className="text-sm md:text-base opacity-90">{image.description}</p>}
                   </div>
                 )}
               </div>
