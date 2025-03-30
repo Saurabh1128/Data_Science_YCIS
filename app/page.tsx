@@ -344,7 +344,7 @@ export default function Home() {
               <div className="relative bg-black/40 backdrop-blur-sm rounded-lg p-2 border border-white/10">
                 <div className="aspect-video w-full rounded overflow-hidden">
                   <img 
-                    src="/images/department-group.jpg" 
+                    src="https://www.dropbox.com/scl/fi/5xuw24pm5f7beid2z4j34/IMG20240921173243.jpg?rlkey=g9p1nwioket56s4lz8ihtz2xk&st=az5a8ca0&dl=1" 
                     alt="Department of Data Science Students and Faculty" 
                     className="w-full h-full object-cover"
                     width={1280}
