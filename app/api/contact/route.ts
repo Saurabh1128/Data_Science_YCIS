@@ -41,6 +41,28 @@ export async function POST(request: Request) {
   console.log('Contact form submission received');
   
   try {
+    // Get API key from request header or query parameter
+    const url = new URL(request.url);
+    const apiKeyHeader = request.headers.get('x-api-key');
+    const apiKeyQuery = url.searchParams.get('api_key');
+    const apiKey = apiKeyHeader || apiKeyQuery;
+    
+    // Get expected API key from environment
+    const expectedApiKey = process.env.API_KEY;
+    
+    // Check if API key is valid
+    if (!apiKey || apiKey !== expectedApiKey) {
+      console.log('API: Invalid or missing API key');
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Unauthorized: Invalid or missing API key',
+          timestamp: new Date().toISOString()
+        },
+        { status: 401 }
+      );
+    }
+    
     // Parse the request body
     const body = await request.json();
     

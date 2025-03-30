@@ -2,9 +2,31 @@ import { NextResponse } from 'next/server';
 import clientPromiseFn from '@/lib/mongodb';
 
 // Simple route to test MongoDB connection
-export async function GET() {
+export async function GET(request: Request) {
   try {
     console.log('API: Testing MongoDB connection...');
+    
+    // Get API key from request header or query parameter
+    const url = new URL(request.url);
+    const apiKeyHeader = request.headers.get('x-api-key');
+    const apiKeyQuery = url.searchParams.get('api_key');
+    const apiKey = apiKeyHeader || apiKeyQuery;
+    
+    // Get expected API key from environment
+    const expectedApiKey = process.env.API_KEY;
+    
+    // Check if API key is valid
+    if (!apiKey || apiKey !== expectedApiKey) {
+      console.log('API: Invalid or missing API key');
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Unauthorized: Invalid or missing API key',
+          timestamp: new Date().toISOString()
+        },
+        { status: 401 }
+      );
+    }
     
     // Get MongoDB client
     const client = await clientPromiseFn();

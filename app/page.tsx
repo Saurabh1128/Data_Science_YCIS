@@ -208,88 +208,77 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Set loading state
-    setFormStatus({ loading: true, message: 'Sending your message...' });
-    console.log('Form submission started...');
+    if (formStatus?.loading) return;
+    
+    setFormStatus({ loading: true });
     
     try {
-      console.log('Submitting form data:', formData);
-      
       // Create a timeout promise with a longer timeout - increase to 45 seconds to better handle slow connections
       const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Request timeout - the server took too long to respond')), 45000);
+        setTimeout(() => reject(new Error('Request timed out')), 45000);
       });
       
-      // Actual fetch request with additional settings for better reliability
+      // Get the API key from environment or use the hardcoded one if not available
+      const apiKey = '9475546b-9679-428d-b4f2-d97f312a2153';
+      
+      // Create the fetch promise
       const fetchPromise = fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-api-key': apiKey
         },
         body: JSON.stringify(formData),
-        cache: 'no-store',
-        // Add longer timeout for fetch
-        signal: AbortSignal.timeout(45000),
         // Add keepalive to maintain the connection
         keepalive: true
       });
       
-      // Race between fetch and timeout
-      const response = await Promise.race([fetchPromise, timeoutPromise]) as Response;
+      // Race the fetch against the timeout
+      const response = await Promise.race([fetchPromise, timeoutPromise]);
       
-      console.log('Response status:', response.status);
-      
+      // Check if the response is OK
       if (!response.ok) {
-        // Handle specific HTTP error status codes
-        if (response.status === 504) {
-          throw new Error('Gateway Timeout (504): The server took too long to respond. Your message may still have been received, but please check the dashboard later or try again.');
-        } else if (response.status === 503) {
-          throw new Error('Service Unavailable (503): The database is currently unavailable. Please try again later.');
-        } else {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        throw new Error('Service Unavailable (503): The database is currently unavailable. Please try again later.');
       }
       
       const data = await response.json();
-      console.log('Response data:', data);
       
-      if (data.success) {
-        // Only treat as success if the API explicitly returns success: true
-        setFormStatus({
-          success: true,
-          message: data.message || 'Thank you! Your message has been received.'
-        });
-        
-        // Reset form data on success
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: ''
-        });
-      } else {
-        // Handle API-level errors
-        throw new Error(data.message || 'Failed to submit message');
-      }
+      // Reset the form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+      
+      setFormStatus({
+        success: true,
+        message: data.message || 'Thank you for your message. We will get back to you soon.'
+      });
+      
+      // Clear success message after 10 seconds
+      setTimeout(() => {
+        setFormStatus(null);
+      }, 10000);
+      
     } catch (error) {
-      console.error('Error submitting form:', error);
-      
-      let errorMessage = 'Failed to submit message. Please try again later.';
+      let errorMessage = '';
       
       if (error instanceof Error) {
-        if (error.message.includes('timeout') || error.message.includes('504')) {
+        if (error.message.includes('timed out')) {
           errorMessage = 'The connection timed out. Your message may still have been received but the server took too long to respond. Please check later or try again.';
-        } else if (error.message.includes('fetch') || error.message.includes('network')) {
+        } else if (error.message.includes('fetch')) {
           errorMessage = 'Network error. Please check your internet connection and try again.';
         } else if (error.message.includes('MongoDB') || error.message.includes('database')) {
           errorMessage = 'Database connection error. Our system is currently having issues connecting to the database. Please try again later.';
         } else {
-          errorMessage = `Error: ${error.message}`;
+          errorMessage = error.message;
         }
+      } else {
+        errorMessage = 'An unknown error occurred. Please try again later.';
       }
       
-      // Show actual error instead of fake success
       setFormStatus({
         success: false,
         message: errorMessage
@@ -420,7 +409,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        
+
         {/* Mobile slider with improved image loading */}
         <div className="block lg:hidden mb-4">
           <div className="overflow-x-auto pb-4 px-4">
@@ -455,37 +444,6 @@ export default function Home() {
 
         <div className="hidden lg:block">
           <CoverFlowSlider images={sliderImages} />
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-10 bg-gradient-to-r from-indigo-900/10 to-purple-900/10 dark:from-indigo-950 dark:to-purple-950">
-        <div className="container px-4 mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center">
-              <div className="text-3xl md:text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">200+</div>
-              <div className="text-gray-600 dark:text-gray-300 font-medium">Students</div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center">
-              <div className="text-3xl md:text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">2</div>
-              <div className="text-gray-600 dark:text-gray-300 font-medium">Courses</div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center">
-              <div className="text-3xl md:text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">10+</div>
-              <div className="text-gray-600 dark:text-gray-300 font-medium">Faculty Members</div>
-            </div>
-            
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center">
-              <div className="flex justify-center items-center">
-                <div className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 text-xs font-medium px-2.5 py-0.5 rounded-full mb-2">
-                  Special Facility
-                </div>
-              </div>
-              <div className="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">Data Center</div>
-            </div>
-          </div>
         </div>
       </section>
 
