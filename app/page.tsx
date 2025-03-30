@@ -76,28 +76,28 @@ export default function Home() {
   // Sample images for the slider
   const sliderImages = [
     {
-      src: "/placeholder.svg?height=600&width=800&text=Data+Science+Program",
-      alt: "Data Science Program",
-      title: "Data Science Program",
-      description: "Comprehensive program with focus on practical skills"
+      src: "https://www.dropbox.com/scl/fi/s8bn6bzbn23dfxkcwthel/YC_FAIR_PRIZE.jpg?rlkey=p9dtzqv1vumc1cu8citku2ljf&st=jc4xor8a&dl=1",
+      alt: "Science Fair Prize Winners",
+      title: "Award-Winning Research",
+      description: "Our students excel in national and regional science competitions"
     },
     {
-      src: "/placeholder.svg?height=600&width=800&text=Campus+Facilities",
-      alt: "Campus Facilities",
-      title: "State-of-the-art Facilities",
-      description: "Modern labs and learning environments"
+      src: "https://www.dropbox.com/scl/fi/c6noqoy7jxwsfqcb03atg/SPORT.jpg?rlkey=0150mgizvy8lqk57ucj5ip2uc&st=mwrxivuo&dl=1",
+      alt: "Sports Activities",
+      title: "Balanced Student Life",
+      description: "We encourage physical activities alongside academic excellence"
     },
     {
-      src: "/placeholder.svg?height=600&width=800&text=Research+Projects",
-      alt: "Research Projects",
-      title: "Research Opportunities",
-      description: "Engage in cutting-edge research initiatives"
+      src: "https://www.dropbox.com/scl/fi/0mwz9df15emq2idbwqs4r/MSC_LAB.jpg?rlkey=cai82fn7uh8zj2y3351f96sto&st=atnopdiu&dl=1",
+      alt: "MSc Data Science Laboratory",
+      title: "Advanced Computing Labs",
+      description: "State-of-the-art facilities for postgraduate research"
     },
     {
-      src: "/placeholder.svg?height=600&width=800&text=Student+Life",
-      alt: "Student Life",
-      title: "Vibrant Student Life",
-      description: "Join a thriving community of data enthusiasts"
+      src: "https://www.dropbox.com/scl/fi/5x83twmxh6nnlghly11sp/BSC_LAB.jpg?rlkey=68ivvavqm1666i5cja15svutc&st=2s74o86c&dl=1",
+      alt: "BSc Data Science Laboratory",
+      title: "Undergraduate Facilities",
+      description: "Modern computing labs for hands-on learning experience"
     },
     {
       src: "/placeholder.svg?height=600&width=800&text=Industry+Connections",
