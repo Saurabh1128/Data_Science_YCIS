@@ -595,6 +595,68 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Company Logos Section */}
+      <section className="py-12 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+        <div className="container px-4 mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-block px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-medium mb-4">
+              Industry Partners
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Trusted By <span className="text-indigo-600 dark:text-indigo-400">Industry Leaders</span>
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Our graduates work at top companies worldwide. We collaborate with industry leaders to ensure our curriculum meets market demands.
+            </p>
+          </div>
+        </div>
+        
+        {/* Logo Slider */}
+        <div className="mt-6 overflow-hidden">
+          <div className="flex animate-scroll space-x-12 py-6">
+            {[1, 2].map((set) => (
+              <div key={set} className="flex space-x-12 items-center">
+                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                  <img src="/placeholder.svg?height=40&width=100&text=AWS" alt="AWS" className="h-8 object-contain" />
+                </div>
+                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                  <img src="/placeholder.svg?height=40&width=100&text=Capgemini" alt="Capgemini" className="h-8 object-contain" />
+                </div>
+                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                  <img src="/placeholder.svg?height=40&width=100&text=Cognizant" alt="Cognizant" className="h-8 object-contain" />
+                </div>
+                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                  <img src="/placeholder.svg?height=40&width=100&text=TCS" alt="TCS" className="h-8 object-contain" />
+                </div>
+                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                  <img src="/placeholder.svg?height=40&width=100&text=Google" alt="Google" className="h-8 object-contain" />
+                </div>
+                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                  <img src="/placeholder.svg?height=40&width=100&text=Qhills" alt="Qhills" className="h-8 object-contain" />
+                </div>
+                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
+                  <img src="/placeholder.svg?height=40&width=100&text=HCL" alt="HCL" className="h-8 object-contain" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <style jsx>{`
+          @keyframes scroll {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(calc(-100% - 3rem));
+            }
+          }
+          .animate-scroll {
+            animation: scroll 30s linear infinite;
+          }
+        `}</style>
+      </section>
+
       {/* Programs section */}
       <section className="py-16 bg-gradient-to-b from-white to-indigo-50 dark:from-gray-900 dark:to-indigo-950/30">
         
