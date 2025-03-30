@@ -8,7 +8,11 @@ import {
   Calendar, 
   Clock, 
   ArrowLeft,
-  Tag 
+  Tag,
+  BookOpen,
+  School,
+  ScrollText,
+  Users
 } from "lucide-react"
 
 export default function CoursesPage() {
@@ -103,52 +107,76 @@ export default function CoursesPage() {
               name: "Semester II",
               courses: [
                 {
-                  code: "DS107",
-                  title: "Linear Algebra and Calculus",
-                  credits: 4,
-                  description: "Advanced concepts in linear algebra and calculus with applications in data science and machine learning.",
+                  code: "BDST 121",
+                  title: "Data Storage Technology",
+                  credits: 2,
+                  description: "Fundamentals of data storage technologies, file systems, storage architectures, and data organization.",
+                  type: "Core",
+                  tags: ["Storage", "Data Management"]
+                },
+                {
+                  code: "BDST 122",
+                  title: "Relational Database Management System",
+                  credits: 2,
+                  description: "Advanced concepts in relational database design, normalization, SQL, and database administration.",
+                  type: "Core",
+                  tags: ["Database", "RDBMS"]
+                },
+                {
+                  code: "BDSP 123",
+                  title: "Practical Lab IV",
+                  credits: 2,
+                  description: "Hands-on laboratory exercises focused on data storage technologies and database management systems.",
+                  type: "Practical",
+                  tags: ["Practical", "Database"]
+                },
+                {
+                  code: "BDST 124",
+                  title: "Web Development",
+                  credits: 2,
+                  description: "Web development fundamentals including HTML, CSS, JavaScript, and responsive design principles.",
+                  type: "Core",
+                  tags: ["Web", "Programming"]
+                },
+                {
+                  code: "BDST 125",
+                  title: "Operating System Concept",
+                  credits: 2,
+                  description: "Core operating system concepts including process management, memory management, file systems, and security.",
+                  type: "Core",
+                  tags: ["OS", "Computer Science"]
+                },
+                {
+                  code: "BDSP 126",
+                  title: "Practical Lab V",
+                  credits: 2,
+                  description: "Practical exercises in web development and operating systems applications.",
+                  type: "Practical",
+                  tags: ["Practical", "Web Development"]
+                },
+                {
+                  code: "BDST 127",
+                  title: "Mathematics for Data Science – II",
+                  credits: 2,
+                  description: "Advanced mathematical concepts for data science including multivariate calculus, optimization, and differential equations.",
                   type: "Core",
                   tags: ["Mathematics", "Advanced"]
                 },
                 {
-                  code: "DS108",
-                  title: "Advanced Programming Concepts",
-                  credits: 4,
-                  description: "Object-oriented programming, data structures, and algorithms with focus on data science applications.",
-                  type: "Core",
-                  tags: ["Programming", "Advanced"]
-                },
-                {
-                  code: "DS109",
-                  title: "Probability Theory",
-                  credits: 4,
-                  description: "Probability concepts, random variables, probability distributions, and stochastic processes.",
-                  type: "Core",
-                  tags: ["Statistics", "Probability"]
-                },
-                {
-                  code: "DS110",
-                  title: "Database Management Systems",
-                  credits: 3,
-                  description: "Database design, SQL, NoSQL databases, and data management principles for data science.",
-                  type: "Core",
-                  tags: ["Database", "SQL"]
-                },
-                {
-                  code: "DS111",
-                  title: "Scientific Research Methodology",
+                  code: "BDST 128",
+                  title: "Statistics for Data Science – II",
                   credits: 2,
-                  description: "Research methods, literature review, hypothesis testing, and scientific writing in data science contexts.",
-                  type: "Skill Enhancement",
-                  tags: ["Research", "Methodology"]
+                  description: "Advanced statistical methods including regression analysis, time series, and Bayesian statistics.",
+                  type: "Core",
+                  tags: ["Statistics", "Advanced"]
                 },
                 {
-                  code: "DS112",
-                  title: "Indian Knowledge Systems",
+                  code: "BDSP 129",
+                  title: "Practical Lab VI",
                   credits: 2,
-                  description: "Traditional Indian approaches to knowledge organization and data analysis with modern perspectives.",
-                  type: "Value Added",
-                  tags: ["Indian Knowledge", "Heritage"]
+                  description: "Practical applications of advanced mathematics and statistics for data science.",
+                  type: "Practical",
+                  tags: ["Practical", "Mathematics", "Statistics"]
                 }
               ]
             }
@@ -429,27 +457,104 @@ export default function CoursesPage() {
     }
   ]
 
+  // Helper function to get badge color based on course type
+  const getTypeColor = (type: string) => {
+    switch(type) {
+      case 'Core': return 'bg-indigo-50 text-indigo-800 border-indigo-200 dark:bg-indigo-900/20 dark:text-indigo-300 dark:border-indigo-800/30';
+      case 'Practical': return 'bg-teal-50 text-teal-800 border-teal-200 dark:bg-teal-900/20 dark:text-teal-300 dark:border-teal-800/30';
+      case 'Elective': return 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800/30';
+      case 'Value Added': return 'bg-green-50 text-green-800 border-green-200 dark:bg-green-900/20 dark:text-green-300 dark:border-green-800/30';
+      case 'Skill Enhancement': return 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-900/20 dark:text-amber-300 dark:border-amber-800/30';
+      case 'Project': return 'bg-purple-50 text-purple-800 border-purple-200 dark:bg-purple-900/20 dark:text-purple-300 dark:border-purple-800/30';
+      case 'Internship': return 'bg-fuchsia-50 text-fuchsia-800 border-fuchsia-200 dark:bg-fuchsia-900/20 dark:text-fuchsia-300 dark:border-fuchsia-800/30';
+      default: return 'bg-gray-50 text-gray-800 border-gray-200 dark:bg-gray-900/20 dark:text-gray-300 dark:border-gray-800/30';
+    }
+  };
+
+  // Get icon for course type
+  const getTypeIcon = (type: string) => {
+    switch(type) {
+      case 'Core': return <BookOpen className="h-3 w-3 mr-1" />;
+      case 'Practical': return <ScrollText className="h-3 w-3 mr-1" />;
+      case 'Elective': return <Tag className="h-3 w-3 mr-1" />;
+      case 'Value Added': return <GraduationCap className="h-3 w-3 mr-1" />;
+      default: return null;
+    }
+  };
+
   return (
-    <div className="container py-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight mb-2">Courses</h1>
-          <p className="text-muted-foreground">
-            Explore our comprehensive range of data science courses
-          </p>
+    <div className="container py-6 px-4 sm:px-6">
+      {/* Header with decorative background */}
+      <div className="relative mb-8 rounded-lg overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-800 via-indigo-700 to-blue-600 opacity-90"></div>
+        <div className="absolute inset-0 bg-[url('/placeholder.svg?height=400&width=800')] mix-blend-overlay opacity-20"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0)_60%)]"></div>
+        <div className="relative px-6 py-16 sm:px-12 text-white">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4 text-white drop-shadow-md">
+              Academic Courses
+              <span className="block text-purple-100 text-lg sm:text-xl font-normal mt-2">Department of Data Science</span>
+            </h1>
+            <p className="text-blue-100 max-w-2xl mx-auto mb-8 text-lg">
+              Explore our comprehensive range of data science courses designed to build strong foundations and advanced skills
+            </p>
+            <div className="mt-6 flex justify-center gap-4">
+              <Link href="/department">
+                <Button variant="outline" className="bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-sm flex gap-2 items-center">
+                  <ArrowLeft className="h-4 w-4" /> 
+                  Department Overview
+                </Button>
+              </Link>
+              <Link href="/department/admission">
+                <Button className="bg-gradient-to-r from-purple-600 to-purple-800 border-none text-white hover:from-purple-700 hover:to-purple-900">
+                  Apply Now
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
-        <Link href="/department">
-          <Button variant="outline" className="flex gap-2 items-center">
-            <ArrowLeft className="h-4 w-4" /> 
-            Back to Department
-          </Button>
-        </Link>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="bg-indigo-50 dark:bg-indigo-900/20 p-4 rounded-lg border border-indigo-100 dark:border-indigo-800/30 flex flex-col items-center">
+          <div className="p-2 rounded-full bg-indigo-100 dark:bg-indigo-800/30 mb-2">
+            <School className="h-6 w-6 text-indigo-700 dark:text-indigo-300" />
+          </div>
+          <div className="text-2xl font-bold text-indigo-700 dark:text-indigo-300">2</div>
+          <div className="text-xs text-center text-indigo-600 dark:text-indigo-400">Programs</div>
+        </div>
+        <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-100 dark:border-purple-800/30 flex flex-col items-center">
+          <div className="p-2 rounded-full bg-purple-100 dark:bg-purple-800/30 mb-2">
+            <BookOpen className="h-6 w-6 text-purple-700 dark:text-purple-300" />
+          </div>
+          <div className="text-2xl font-bold text-purple-700 dark:text-purple-300">36+</div>
+          <div className="text-xs text-center text-purple-600 dark:text-purple-400">Courses</div>
+        </div>
+        <div className="bg-violet-50 dark:bg-violet-900/20 p-4 rounded-lg border border-violet-100 dark:border-violet-800/30 flex flex-col items-center">
+          <div className="p-2 rounded-full bg-violet-100 dark:bg-violet-800/30 mb-2">
+            <Users className="h-6 w-6 text-violet-700 dark:text-violet-300" />
+          </div>
+          <div className="text-2xl font-bold text-violet-700 dark:text-violet-300">60</div>
+          <div className="text-xs text-center text-violet-600 dark:text-violet-400">Seats Per Batch</div>
+        </div>
+        <div className="bg-fuchsia-50 dark:bg-fuchsia-900/20 p-4 rounded-lg border border-fuchsia-100 dark:border-fuchsia-800/30 flex flex-col items-center">
+          <div className="p-2 rounded-full bg-fuchsia-100 dark:bg-fuchsia-800/30 mb-2">
+            <Calendar className="h-6 w-6 text-fuchsia-700 dark:text-fuchsia-300" />
+          </div>
+          <div className="text-2xl font-bold text-fuchsia-700 dark:text-fuchsia-300">3</div>
+          <div className="text-xs text-center text-fuchsia-600 dark:text-fuchsia-400">Years Duration</div>
+        </div>
       </div>
 
       <Tabs defaultValue="bsc" className="w-full">
-        <TabsList className="mb-6">
+        <TabsList className="mb-8 w-full justify-start overflow-x-auto py-2 px-1 flex-nowrap sm:flex-wrap bg-indigo-50/50 dark:bg-indigo-900/20 rounded-lg">
           {programs.map(program => (
-            <TabsTrigger key={program.id} value={program.id} className="flex items-center gap-2">
+            <TabsTrigger 
+              key={program.id} 
+              value={program.id} 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-indigo-600 data-[state=active]:text-white text-sm sm:text-base"
+            >
               <GraduationCap className="h-4 w-4" />
               {program.name}
             </TabsTrigger>
@@ -458,73 +563,109 @@ export default function CoursesPage() {
 
         {programs.map(program => (
           <TabsContent key={program.id} value={program.id} className="space-y-8">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">{program.name}</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/10 dark:to-indigo-900/10 p-6 sm:p-8 rounded-lg border border-indigo-100 dark:border-indigo-800/30">
+              <div>
+                <h2 className="text-2xl font-bold text-indigo-800 dark:text-indigo-300">{program.name}</h2>
+                <p className="text-sm text-indigo-700 dark:text-indigo-400">Comprehensive curriculum designed for aspiring data scientists</p>
+              </div>
               <Link href={program.link}>
-                <Button variant="outline">View Program Details</Button>
+                <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white">View Program Details</Button>
               </Link>
             </div>
 
             {program.years.map((year, yearIndex) => (
-              <div key={yearIndex} className="space-y-6">
-                <h3 className="text-xl font-semibold flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-primary" />
+              <div key={yearIndex} className="space-y-6 bg-white dark:bg-gray-900/50 p-6 sm:p-8 rounded-lg border border-gray-200 dark:border-gray-800 shadow-sm">
+                <h3 className="text-xl font-semibold flex items-center gap-2 text-indigo-700 dark:text-indigo-300 border-b pb-3 border-indigo-100 dark:border-indigo-900/30">
+                  <Calendar className="h-5 w-5 text-indigo-600 dark:text-indigo-400" />
                   {year.year}
                 </h3>
 
                 <Tabs defaultValue={year.semesters[0].name} className="w-full">
-                  <TabsList className="mb-6">
+                  <TabsList className="mb-6 w-full justify-start overflow-x-auto flex-nowrap sm:flex-wrap bg-indigo-50/80 dark:bg-indigo-900/10 p-1 rounded-md">
                     {year.semesters.map((semester, semIndex) => (
-                      <TabsTrigger key={semIndex} value={semester.name}>
+                      <TabsTrigger 
+                        key={semIndex} 
+                        value={semester.name}
+                        className="text-sm data-[state=active]:bg-white dark:data-[state=active]:bg-indigo-800/30 data-[state=active]:text-indigo-700 dark:data-[state=active]:text-indigo-300"
+                      >
                         {semester.name}
                       </TabsTrigger>
                     ))}
                   </TabsList>
 
                   {year.semesters.map((semester, semIndex) => (
-                    <TabsContent key={semIndex} value={semester.name} className="space-y-4">
-                      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    <TabsContent key={semIndex} value={semester.name} className="space-y-6">
+                      {/* Mobile-friendly course list view */}
+                      <div className="block sm:hidden">
                         {semester.courses.map((course, courseIndex) => (
-                          <Card key={courseIndex} className="overflow-hidden">
-                            <CardHeader className="pb-2">
+                          <div key={courseIndex} className="mb-4 border-b pb-4 last:border-b-0 last:pb-0">
+                            <div className="flex justify-between items-start mb-2">
+                              <Badge variant="outline" className="font-mono text-xs bg-indigo-50/50 dark:bg-indigo-900/10 border-indigo-200 dark:border-indigo-800/30">{course.code}</Badge>
+                              <Badge 
+                                variant="outline" 
+                                className={`text-xs flex items-center ${getTypeColor(course.type)}`}
+                              >
+                                {getTypeIcon(course.type)}
+                                {course.type}
+                              </Badge>
+                            </div>
+                            <h4 className="font-bold text-indigo-700 dark:text-indigo-300 mb-1">{course.title}</h4>
+                            <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">{course.description}</p>
+                            <div className="flex justify-between">
+                              <div className="flex items-center text-xs">
+                                <Clock className="h-3 w-3 mr-1 text-indigo-600 dark:text-indigo-400" /> 
+                                {course.credits} Credits
+                              </div>
+                              <div className="flex flex-wrap gap-1 justify-end">
+                                {course.tags.slice(0, 2).map((tag, tagIndex) => (
+                                  <Badge key={tagIndex} variant="secondary" className="text-xs px-1.5 py-0 bg-purple-100/50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300">
+                                    {tag}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {/* Desktop grid view */}
+                      <div className="hidden sm:grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                        {semester.courses.map((course, courseIndex) => (
+                          <Card key={courseIndex} className="overflow-hidden hover:shadow-lg transition-all border-t-4 border-t-purple-600 dark:border-t-purple-400 group">
+                            <CardHeader className="pb-2 bg-gradient-to-r from-white to-indigo-50/30 dark:from-gray-900 dark:to-indigo-900/10">
                               <div className="flex justify-between items-start mb-2">
-                                <Badge variant="outline" className="font-mono">{course.code}</Badge>
+                                <Badge variant="outline" className="font-mono bg-indigo-50 dark:bg-indigo-900/20 border-indigo-200 dark:border-indigo-800/30">{course.code}</Badge>
                                 <Badge 
                                   variant="outline" 
-                                  className={
-                                    course.type === 'Core' ? 'bg-red-100/50 text-red-800 border-red-200' :
-                                    course.type === 'Elective' ? 'bg-blue-100/50 text-blue-800 border-blue-200' :
-                                    course.type === 'Value Added' ? 'bg-green-100/50 text-green-800 border-green-200' :
-                                    course.type === 'Skill Enhancement' ? 'bg-amber-100/50 text-amber-800 border-amber-200' :
-                                    course.type === 'Project' ? 'bg-purple-100/50 text-purple-800 border-purple-200' :
-                                    course.type === 'Internship' ? 'bg-indigo-100/50 text-indigo-800 border-indigo-200' :
-                                    course.type === 'Practical' ? 'bg-teal-100/50 text-teal-800 border-teal-200' :
-                                    'bg-gray-100/50 text-gray-800 border-gray-200'
-                                  }
+                                  className={`flex items-center ${getTypeColor(course.type)}`}
                                 >
+                                  {getTypeIcon(course.type)}
                                   {course.type}
                                 </Badge>
                               </div>
-                              <CardTitle className="text-base">{course.title}</CardTitle>
+                              <CardTitle className="text-base text-indigo-700 dark:text-indigo-300 group-hover:text-purple-600">{course.title}</CardTitle>
                               <CardDescription className="flex items-center gap-1 mt-1">
-                                <Clock className="h-3 w-3" /> {course.credits} Credits
+                                <Clock className="h-3 w-3 text-indigo-600 dark:text-indigo-400" /> {course.credits} Credits
                               </CardDescription>
                             </CardHeader>
                             <CardContent className="pt-0">
                               <p className="text-sm text-muted-foreground mb-3">{course.description}</p>
                               <div className="flex flex-wrap gap-1">
                                 {course.tags.map((tag, tagIndex) => (
-                                  <Badge key={tagIndex} variant="secondary" className="text-xs">
+                                  <Badge key={tagIndex} variant="secondary" className="text-xs bg-purple-100/50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300">
                                     <Tag className="h-3 w-3 mr-1" />
                                     {tag}
                                   </Badge>
                                 ))}
                               </div>
                             </CardContent>
-                            <CardFooter className="bg-muted/30 border-t pt-2 pb-2">
-                              <Link href={`/courses/${course.code}`} className="text-xs text-primary hover:underline">
+                            <CardFooter className="bg-muted/30 border-t pt-2 pb-2 flex justify-between items-center">
+                              <Link href={`/courses/${course.code}`} className="text-xs text-purple-600 dark:text-purple-400 hover:underline">
                                 View detailed syllabus
                               </Link>
+                              <div className="bg-indigo-100 dark:bg-indigo-900/30 text-xs px-2 py-0.5 rounded text-indigo-700 dark:text-indigo-300">
+                                {semester.name}
+                              </div>
                             </CardFooter>
                           </Card>
                         ))}
@@ -537,6 +678,28 @@ export default function CoursesPage() {
           </TabsContent>
         ))}
       </Tabs>
+      
+      {/* Bottom action banner */}
+      <div className="mt-12 rounded-lg overflow-hidden relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-700 via-indigo-700 to-purple-600"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_60%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_50%)]"></div>
+        <div className="relative p-8 text-white">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold mb-3">Ready to Start Your Journey?</h2>
+            <p className="mb-8 max-w-2xl mx-auto text-purple-100 text-lg">
+              Join our Data Science program and build a strong foundation for a successful career in the data-driven world.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/department/admission">
+                <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50 font-semibold px-6">Apply Now</Button>
+              </Link>
+              <Link href="/contact">
+                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10 font-semibold px-6">Contact Department</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 } 
