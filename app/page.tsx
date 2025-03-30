@@ -307,7 +307,7 @@ export default function Home() {
             <div className="text-center lg:text-left">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white mb-6 leading-tight">
                 <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-indigo-100">
-                  Sarupuria School of 
+                  Yashavantrao Chavan Institute of Science
                 </span>
                 <span className="block mt-2 text-white drop-shadow-md">Data Science</span>
               </h1>
@@ -317,7 +317,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                 <Link href="/courses">
                   <Button size="lg" className="bg-gradient-to-r from-purple-600 to-indigo-600 border-none text-white hover:from-purple-700 hover:to-indigo-700">
-                    Explore Courses
+                    Courses
                   </Button>
                 </Link>
                 <Link href="/contact">
@@ -325,19 +325,6 @@ export default function Home() {
                     Contact Us
                   </Button>
                 </Link>
-              </div>
-              
-              <div className="mt-10 flex items-center justify-center lg:justify-start">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className={`w-10 h-10 rounded-full border-2 border-indigo-800 overflow-hidden bg-gradient-to-b from-indigo-200 to-indigo-400`}>
-                      <div className="w-full h-full bg-[url('/placeholder.svg?height=50&width=50')] bg-cover"></div>
-                    </div>
-                  ))}
-                </div>
-                <div className="ml-4 text-sm text-indigo-100">
-                  Join <span className="font-semibold text-white">500+</span> students building their future
-                </div>
               </div>
             </div>
             
@@ -367,41 +354,6 @@ export default function Home() {
               className="dark:fill-gray-900"
             ></path>
           </svg>
-        </div>
-      </section>
-
-      {/* Programs section */}
-      <section className="py-16 bg-gradient-to-b from-white to-indigo-50 dark:from-gray-900 dark:to-indigo-950/30">
-        <div className="container px-4 mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-block px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-medium mb-4">
-              Academic Excellence
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Our Academic <span className="text-indigo-600 dark:text-indigo-400">Programs</span>
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Discover our carefully designed programs that prepare students for the challenges of tomorrow's data-driven world.
-            </p>
-          </div>
-
-          {/* Continue with the rest of your programs section */}
-        </div>
-      </section>
-
-      {/* Testimonials section */}
-      <section className="py-16 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30">
-        <div className="container px-4 mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              What Our <span className="text-purple-600 dark:text-purple-400">Students Say</span>
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Hear from our students about their experiences and success stories.
-            </p>
-          </div>
-
-          {/* Continue with the rest of your testimonials section */}
         </div>
       </section>
     </div>
