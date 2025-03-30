@@ -73,34 +73,34 @@ export default function Home() {
     },
   ]
 
-  // Sample images for the slider
+  // Sample images for the slider with more reliable direct links
   const sliderImages = [
     {
-      src: "https://www.dropbox.com/scl/fi/s8bn6bzbn23dfxkcwthel/YC_FAIR_PRIZE.jpg?rlkey=p9dtzqv1vumc1cu8citku2ljf&st=jc4xor8a&dl=1",
+      src: "https://dl.dropboxusercontent.com/scl/fi/s8bn6bzbn23dfxkcwthel/YC_FAIR_PRIZE.jpg?rlkey=p9dtzqv1vumc1cu8citku2ljf&dl=1",
       alt: "Science Fair Prize Winners",
       title: "Award-Winning Research",
       description: "Our students excel in national and regional science competitions"
     },
     {
-      src: "https://www.dropbox.com/scl/fi/c6noqoy7jxwsfqcb03atg/SPORT.jpg?rlkey=0150mgizvy8lqk57ucj5ip2uc&st=mwrxivuo&dl=1",
+      src: "https://dl.dropboxusercontent.com/scl/fi/c6noqoy7jxwsfqcb03atg/SPORT.jpg?rlkey=0150mgizvy8lqk57ucj5ip2uc&dl=1",
       alt: "Sports Activities",
       title: "Balanced Student Life",
       description: "We encourage physical activities alongside academic excellence"
     },
     {
-      src: "https://www.dropbox.com/scl/fi/mylleeyh58k39actn2md0/ACTIVITY.jpg?rlkey=ok10qyxk399y3uq4v98m7e33f&st=7ybrks2c&dl=1",
+      src: "https://dl.dropboxusercontent.com/scl/fi/mylleeyh58k39actn2md0/ACTIVITY.jpg?rlkey=ok10qyxk399y3uq4v98m7e33f&dl=1",
       alt: "Student Activities",
       title: "Engaging Extracurriculars",
       description: "Participate in diverse activities that enhance your learning experience"
     },
     {
-      src: "https://www.dropbox.com/scl/fi/0mwz9df15emq2idbwqs4r/MSC_LAB.jpg?rlkey=cai82fn7uh8zj2y3351f96sto&st=atnopdiu&dl=1",
+      src: "https://dl.dropboxusercontent.com/scl/fi/0mwz9df15emq2idbwqs4r/MSC_LAB.jpg?rlkey=cai82fn7uh8zj2y3351f96sto&dl=1",
       alt: "MSc Data Science Laboratory",
       title: "Advanced Computing Labs",
       description: "State-of-the-art facilities for postgraduate research"
     },
     {
-      src: "https://www.dropbox.com/scl/fi/5x83twmxh6nnlghly11sp/BSC_LAB.jpg?rlkey=68ivvavqm1666i5cja15svutc&st=2s74o86c&dl=1",
+      src: "https://dl.dropboxusercontent.com/scl/fi/5x83twmxh6nnlghly11sp/BSC_LAB.jpg?rlkey=68ivvavqm1666i5cja15svutc&dl=1",
       alt: "BSc Data Science Laboratory",
       title: "Undergraduate Facilities",
       description: "Modern computing labs for hands-on learning experience"
@@ -112,6 +112,25 @@ export default function Home() {
       description: "Connect with leading organizations in the field"
     }
   ];
+
+  const [imageLoading, setImageLoading] = useState<{[key: number]: boolean}>({});
+
+  const handleImageLoad = (index: number) => {
+    setImageLoading(prev => ({
+      ...prev,
+      [index]: false
+    }));
+  };
+
+  const handleImageError = (index: number, e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.target as HTMLImageElement;
+    target.onerror = null; // Prevent infinite loop
+    target.src = '/placeholder.svg?height=400&width=800&text=Image+Unavailable';
+    setImageLoading(prev => ({
+      ...prev,
+      [index]: false
+    }));
+  };
 
   useEffect(() => {
     setIsLoaded(true)
@@ -359,13 +378,18 @@ export default function Home() {
               <div className="relative bg-black/40 backdrop-blur-sm rounded-lg p-2 border border-white/10">
                 <div className="aspect-video w-full rounded overflow-hidden">
                   <img 
-                    src="https://www.dropbox.com/scl/fi/5xuw24pm5f7beid2z4j34/IMG20240921173243.jpg?rlkey=g9p1nwioket56s4lz8ihtz2xk&st=az5a8ca0&dl=1" 
+                    src="https://dl.dropboxusercontent.com/scl/fi/5xuw24pm5f7beid2z4j34/IMG20240921173243.jpg?rlkey=g9p1nwioket56s4lz8ihtz2xk&dl=1" 
                     alt="Department of Data Science Students and Faculty" 
                     className="w-full h-full object-cover"
                     width={1280}
                     height={720}
                     loading="eager"
                     style={{ objectPosition: "center 20%" }}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                      target.src = '/placeholder.svg?height=720&width=1280&text=Department+Image';
+                    }}
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent"></div>
@@ -403,16 +427,25 @@ export default function Home() {
           </div>
         </div>
         
+        {/* Mobile slider with improved image loading */}
         <div className="block lg:hidden mb-4">
           <div className="overflow-x-auto pb-4 px-4">
             <div className="flex space-x-4">
               {sliderImages.map((image, index) => (
                 <div key={index} className="min-w-[85vw] rounded-xl overflow-hidden shadow-md">
-                  <div className="relative aspect-[16/9]">
+                  <div className="relative aspect-[16/9] bg-gray-200 dark:bg-gray-700">
+                    {imageLoading[index] !== false && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-8 h-8 border-2 border-t-indigo-600 border-indigo-200 rounded-full animate-spin"></div>
+                      </div>
+                    )}
                     <img
                       src={image.src}
                       alt={image.alt}
                       className="w-full h-full object-cover"
+                      loading="lazy"
+                      onLoad={() => handleImageLoad(index)}
+                      onError={(e) => handleImageError(index, e)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
@@ -652,41 +685,41 @@ export default function Home() {
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Our graduates work at top companies worldwide. We collaborate with industry leaders to ensure our curriculum meets market demands.
-              </p>
-            </div>
+            </p>
+          </div>
         </div>
         
-        {/* Logo Slider */}
+        {/* Mobile-optimized Logo Slider */}
         <div className="mt-6 overflow-hidden">
-          <div className="flex animate-scroll space-x-12 py-6">
+          <div className="flex animate-scroll space-x-6 md:space-x-12 py-6">
             {[1, 2].map((set) => (
-              <div key={set} className="flex space-x-12 items-center">
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1280px-Amazon_Web_Services_Logo.svg.png" alt="AWS" className="h-8 object-contain" />
+              <div key={set} className="flex space-x-6 md:space-x-12 items-center">
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1280px-Amazon_Web_Services_Logo.svg.png" alt="AWS" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Wipro_Primary_Logo_Color_RGB.svg/2560px-Wipro_Primary_Logo_Color_RGB.svg.png" alt="Wipro" className="h-8 object-contain" />
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Wipro_Primary_Logo_Color_RGB.svg/2560px-Wipro_Primary_Logo_Color_RGB.svg.png" alt="Wipro" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Cognizant_logo_2022.svg/2560px-Cognizant_logo_2022.svg.png" alt="Cognizant" className="h-8 object-contain" />
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Cognizant_logo_2022.svg/2560px-Cognizant_logo_2022.svg.png" alt="Cognizant" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Tata_Consultancy_Services_Logo.svg/1280px-Tata_Consultancy_Services_Logo.svg.png" alt="TCS" className="h-8 object-contain" />
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Tata_Consultancy_Services_Logo.svg/1280px-Tata_Consultancy_Services_Logo.svg.png" alt="TCS" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" className="h-8 object-contain" />
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/1200px-Microsoft_Azure.svg.png" alt="Microsoft Azure" className="h-8 object-contain" />
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/1200px-Microsoft_Azure.svg.png" alt="Microsoft Azure" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/HCL_Technologies_logo.svg/1280px-HCL_Technologies_logo.svg.png" alt="HCL" className="h-8 object-contain" />
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/HCL_Technologies_logo.svg/1280px-HCL_Technologies_logo.svg.png" alt="HCL" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Databricks_logo.svg/1200px-Databricks_logo.svg.png" alt="Databricks" className="h-8 object-contain" />
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Databricks_logo.svg/1200px-Databricks_logo.svg.png" alt="Databricks" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
-                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png" alt="Jupyter" className="h-8 object-contain" />
+                <div className="w-24 md:w-32 h-12 md:h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-2 md:p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1200px-Jupyter_logo.svg.png" alt="Jupyter" className="h-6 md:h-8 object-contain" loading="lazy" />
                 </div>
               </div>
             ))}
@@ -699,11 +732,24 @@ export default function Home() {
               transform: translateX(0);
             }
             100% {
-              transform: translateX(calc(-100% - 3rem));
+              transform: translateX(calc(-100% - 1.5rem));
             }
           }
           .animate-scroll {
-            animation: scroll 20s linear infinite;
+            animation: scroll 25s linear infinite;
+          }
+          @media (min-width: 768px) {
+            @keyframes scroll {
+              0% {
+                transform: translateX(0);
+              }
+              100% {
+                transform: translateX(calc(-100% - 3rem));
+              }
+            }
+            .animate-scroll {
+              animation: scroll 20s linear infinite;
+            }
           }
         `}</style>
       </section>
