@@ -32,7 +32,7 @@ export default function CoursesPage() {
                 {
                   code: "BDST 111",
                   title: "Fundamental of Data Science",
-                  credits: 4,
+                  credits: 2,
                   description: "Introduction to core concepts of data science including data collection, processing, analysis, and interpretation.",
                   type: "Core",
                   tags: ["Data Science", "Foundation"]
@@ -40,7 +40,7 @@ export default function CoursesPage() {
                 {
                   code: "BDST 112",
                   title: "Database Management System",
-                  credits: 4,
+                  credits: 2,
                   description: "Database design principles, SQL, relational database systems, and data management techniques.",
                   type: "Core",
                   tags: ["Database", "SQL"]
@@ -56,7 +56,7 @@ export default function CoursesPage() {
                 {
                   code: "BDST 114",
                   title: "Computer Programming with C",
-                  credits: 4,
+                  credits: 2,
                   description: "Introduction to programming using C language with emphasis on algorithmic thinking and problem-solving.",
                   type: "Core",
                   tags: ["Programming", "C Language"]
@@ -64,7 +64,7 @@ export default function CoursesPage() {
                 {
                   code: "BDST 115",
                   title: "Fundamental of Computer",
-                  credits: 4,
+                  credits: 2,
                   description: "Computer architecture, operating systems, software applications, and basic computing concepts.",
                   type: "Core",
                   tags: ["Computer Science", "Foundation"]
@@ -80,7 +80,7 @@ export default function CoursesPage() {
                 {
                   code: "BDST 117",
                   title: "Mathematics for Data Science - I",
-                  credits: 4,
+                  credits: 2,
                   description: "Mathematical foundations required for data science including linear algebra, calculus, and discrete mathematics.",
                   type: "Core",
                   tags: ["Mathematics", "Foundation"]
@@ -88,7 +88,7 @@ export default function CoursesPage() {
                 {
                   code: "BDST 118",
                   title: "Statistics for Data Science - I",
-                  credits: 4,
+                  credits: 2,
                   description: "Fundamental statistical concepts, descriptive statistics, probability distributions, and statistical inference.",
                   type: "Core",
                   tags: ["Statistics", "Foundation"]
