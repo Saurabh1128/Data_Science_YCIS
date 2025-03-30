@@ -3,14 +3,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
 import { 
-  BookOpen, 
-  Search, 
   GraduationCap, 
   Calendar, 
   Clock, 
-  Filter,
   ArrowLeft,
   Tag 
 } from "lucide-react"
@@ -439,7 +435,7 @@ export default function CoursesPage() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight mb-2">Courses</h1>
           <p className="text-muted-foreground">
-            Explore our comprehensive range of data science courses designed according to NEP 2.0 guidelines
+            Explore our comprehensive range of data science courses
           </p>
         </div>
         <Link href="/department">
@@ -448,67 +444,6 @@ export default function CoursesPage() {
             Back to Department
           </Button>
         </Link>
-      </div>
-
-      <div className="mb-8 flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-grow">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search courses by name or code..."
-            className="pl-8"
-          />
-        </div>
-        <Button variant="outline" className="flex gap-2 items-center">
-          <Filter className="h-4 w-4" /> 
-          Filters
-        </Button>
-      </div>
-
-      <div className="bg-muted/30 p-4 rounded-lg border mb-8">
-        <div className="flex items-center gap-2 mb-3">
-          <BookOpen className="h-5 w-5 text-primary" />
-          <h2 className="text-lg font-medium">NEP 2.0 Course Structure</h2>
-        </div>
-        <p className="text-sm text-muted-foreground mb-4">
-          Our curriculum is designed in accordance with the National Education Policy (NEP) 2.0 guidelines, offering flexibility, 
-          interdisciplinary learning, and multiple entry/exit options with appropriate certification.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="bg-background">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="bg-red-100/50 text-red-800 border-red-200">Core</Badge>
-                <CardTitle className="text-sm">Core Courses</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <p className="text-xs text-muted-foreground">Fundamental courses essential for building strong foundations in data science</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-background">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="bg-blue-100/50 text-blue-800 border-blue-200">Elective</Badge>
-                <CardTitle className="text-sm">Elective Courses</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <p className="text-xs text-muted-foreground">Specialized courses that allow students to focus on areas of interest</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-background">
-            <CardHeader className="pb-2">
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="bg-green-100/50 text-green-800 border-green-200">Value Added</Badge>
-                <CardTitle className="text-sm">Value Added Courses</CardTitle>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <p className="text-xs text-muted-foreground">Courses focused on ethics, Indian knowledge systems, and holistic development</p>
-            </CardContent>
-          </Card>
-        </div>
       </div>
 
       <Tabs defaultValue="bsc" className="w-full">
@@ -563,6 +498,7 @@ export default function CoursesPage() {
                                     course.type === 'Skill Enhancement' ? 'bg-amber-100/50 text-amber-800 border-amber-200' :
                                     course.type === 'Project' ? 'bg-purple-100/50 text-purple-800 border-purple-200' :
                                     course.type === 'Internship' ? 'bg-indigo-100/50 text-indigo-800 border-indigo-200' :
+                                    course.type === 'Practical' ? 'bg-teal-100/50 text-teal-800 border-teal-200' :
                                     'bg-gray-100/50 text-gray-800 border-gray-200'
                                   }
                                 >
