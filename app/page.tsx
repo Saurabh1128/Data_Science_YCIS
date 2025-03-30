@@ -458,6 +458,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Stats Section */}
+      <section className="py-10 bg-gradient-to-r from-indigo-900/10 to-purple-900/10 dark:from-indigo-950 dark:to-purple-950">
+        <div className="container px-4 mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center">
+              <div className="text-3xl md:text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">200+</div>
+              <div className="text-gray-600 dark:text-gray-300 font-medium">Students</div>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center">
+              <div className="text-3xl md:text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">2</div>
+              <div className="text-gray-600 dark:text-gray-300 font-medium">Courses</div>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center">
+              <div className="text-3xl md:text-4xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">10+</div>
+              <div className="text-gray-600 dark:text-gray-300 font-medium">Faculty Members</div>
+            </div>
+            
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700 text-center">
+              <div className="flex justify-center items-center">
+                <div className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 text-xs font-medium px-2.5 py-0.5 rounded-full mb-2">
+                  Special Facility
+                </div>
+              </div>
+              <div className="text-xl md:text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">Data Center</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Why Choose Us Section */}
       <section className="py-16 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30">
         <div className="container px-4 mx-auto">
