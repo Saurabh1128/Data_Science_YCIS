@@ -88,6 +88,12 @@ export default function Home() {
       description: "We encourage physical activities alongside academic excellence"
     },
     {
+      src: "https://www.dropbox.com/scl/fi/mylleeyh58k39actn2md0/ACTIVITY.jpg?rlkey=ok10qyxk399y3uq4v98m7e33f&st=7ybrks2c&dl=1",
+      alt: "Student Activities",
+      title: "Engaging Extracurriculars",
+      description: "Participate in diverse activities that enhance your learning experience"
+    },
+    {
       src: "https://www.dropbox.com/scl/fi/0mwz9df15emq2idbwqs4r/MSC_LAB.jpg?rlkey=cai82fn7uh8zj2y3351f96sto&st=atnopdiu&dl=1",
       alt: "MSc Data Science Laboratory",
       title: "Advanced Computing Labs",
@@ -388,7 +394,32 @@ export default function Home() {
           </div>
         </div>
         
-        <CoverFlowSlider images={sliderImages} />
+        <div className="block lg:hidden mb-4">
+          <div className="overflow-x-auto pb-4 px-4">
+            <div className="flex space-x-4">
+              {sliderImages.map((image, index) => (
+                <div key={index} className="min-w-[85vw] rounded-xl overflow-hidden shadow-md">
+                  <div className="relative aspect-[16/9]">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                      <h3 className="text-xl font-bold mb-1">{image.title}</h3>
+                      <p className="text-sm text-white/80">{image.description}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <div className="hidden lg:block">
+          <CoverFlowSlider images={sliderImages} />
+        </div>
       </section>
 
       {/* Why Choose Us Section */}
