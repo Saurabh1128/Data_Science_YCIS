@@ -27,6 +27,7 @@ import { useInView } from "react-intersection-observer"
 import LogoSlider from "@/components/logo-slider"
 import ImageSlider from "@/components/image-slider"
 import ClientOnly from "@/components/client-only"
+import CoverFlowSlider from "@/components/image-slider"
 
 // Define feature type
 interface Feature {
@@ -72,29 +73,39 @@ export default function Home() {
     },
   ]
 
-  // Image slider data
+  // Sample images for the slider
   const sliderImages = [
     {
-      src: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1000&auto=format&fit=crop",
-      alt: "Department Computer Lab",
-      caption: "Students working on real-world data science projects"
+      src: "/placeholder.svg?height=600&width=800&text=Data+Science+Program",
+      alt: "Data Science Program",
+      title: "Data Science Program",
+      description: "Comprehensive program with focus on practical skills"
     },
     {
-      src: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1000&auto=format&fit=crop",
-      alt: "Department Group Photo",
-      caption: "Department of Data Science students and faculty"
+      src: "/placeholder.svg?height=600&width=800&text=Campus+Facilities",
+      alt: "Campus Facilities",
+      title: "State-of-the-art Facilities",
+      description: "Modern labs and learning environments"
     },
     {
-      src: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?q=80&w=1000&auto=format&fit=crop",
-      alt: "Science Exhibition",
-      caption: "Students participating in the YC Science Exhibition"
+      src: "/placeholder.svg?height=600&width=800&text=Research+Projects",
+      alt: "Research Projects",
+      title: "Research Opportunities",
+      description: "Engage in cutting-edge research initiatives"
     },
     {
-      src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1000&auto=format&fit=crop",
-      alt: "Lab Facilities",
-      caption: "State-of-the-art computing facilities"
+      src: "/placeholder.svg?height=600&width=800&text=Student+Life",
+      alt: "Student Life",
+      title: "Vibrant Student Life",
+      description: "Join a thriving community of data enthusiasts"
     },
-  ]
+    {
+      src: "/placeholder.svg?height=600&width=800&text=Industry+Connections",
+      alt: "Industry Connections",
+      title: "Industry Partnerships",
+      description: "Connect with leading organizations in the field"
+    }
+  ];
 
   useEffect(() => {
     setIsLoaded(true)
@@ -318,30 +329,29 @@ export default function Home() {
                 <Link href="/courses">
                   <Button size="lg" className="bg-gradient-to-r from-purple-600 to-indigo-600 border-none text-white hover:from-purple-700 hover:to-indigo-700">
                     Courses
-                  </Button>
-                </Link>
+                </Button>
+              </Link>
                 <Link href="/contact">
                   <Button size="lg" variant="outline" className="text-white border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20">
                     Contact Us
-                  </Button>
-                </Link>
+                </Button>
+              </Link>
               </div>
-            </div>
-            
+        </div>
+
             <div className="hidden lg:block relative">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg blur-sm opacity-75"></div>
               <div className="relative bg-black/40 backdrop-blur-sm rounded-lg p-2 border border-white/10">
-                <div className="aspect-video w-full bg-[url('/placeholder.svg?height=720&width=1280')] rounded overflow-hidden">
-                  {/* Video thumbnail or placeholder */}
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 cursor-pointer hover:bg-white/20 transition-colors">
-                    <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-white border-b-8 border-b-transparent ml-1"></div>
-                  </div>
+                <div className="aspect-video w-full rounded overflow-hidden">
+                  <img 
+                    src="/images/group-photo.jpg" 
+                    alt="Department of Data Science Students and Faculty" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
-          </div>
+            </div>
         </div>
         
         {/* Wave separator */}
@@ -356,6 +366,34 @@ export default function Home() {
           </svg>
         </div>
       </section>
+
+      {/* Cover Flow Slider Section */}
+      <section className="py-12 bg-white dark:bg-gray-900">
+        <div className="container px-4 mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-block px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-medium mb-4">
+              Explore Our World
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Discover the <span className="text-indigo-600 dark:text-indigo-400">Data Science</span> Experience
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Take a visual journey through our programs, facilities, and student life
+            </p>
+          </div>
+        </div>
+        
+        <CoverFlowSlider images={sliderImages} />
+      </section>
+
+      {/* Programs section */}
+      <section className="py-16 bg-gradient-to-b from-white to-indigo-50 dark:from-gray-900 dark:to-indigo-950/30">
+        
+        {/* ... existing programs section ... */}
+        
+      </section>
+
+      {/* ... other sections ... */}
     </div>
   )
 }
