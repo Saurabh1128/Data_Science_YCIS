@@ -616,26 +616,26 @@ export default function Home() {
           <div className="flex animate-scroll space-x-12 py-6">
             {[1, 2].map((set) => (
               <div key={set} className="flex space-x-12 items-center">
-                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-                  <img src="/placeholder.svg?height=40&width=100&text=AWS" alt="AWS" className="h-8 object-contain" />
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Amazon_Web_Services_Logo.svg/1280px-Amazon_Web_Services_Logo.svg.png" alt="AWS" className="h-8 object-contain" />
                 </div>
-                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-                  <img src="/placeholder.svg?height=40&width=100&text=Capgemini" alt="Capgemini" className="h-8 object-contain" />
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/6e/Capgemini_logo.svg/1200px-Capgemini_logo.svg.png" alt="Capgemini" className="h-8 object-contain" />
                 </div>
-                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-                  <img src="/placeholder.svg?height=40&width=100&text=Cognizant" alt="Cognizant" className="h-8 object-contain" />
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Cognizant_logo_2022.svg/2560px-Cognizant_logo_2022.svg.png" alt="Cognizant" className="h-8 object-contain" />
                 </div>
-                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-                  <img src="/placeholder.svg?height=40&width=100&text=TCS" alt="TCS" className="h-8 object-contain" />
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Tata_Consultancy_Services_Logo.svg/1280px-Tata_Consultancy_Services_Logo.svg.png" alt="TCS" className="h-8 object-contain" />
                 </div>
-                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-                  <img src="/placeholder.svg?height=40&width=100&text=Google" alt="Google" className="h-8 object-contain" />
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/1200px-Google_2015_logo.svg.png" alt="Google" className="h-8 object-contain" />
                 </div>
-                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-                  <img src="/placeholder.svg?height=40&width=100&text=Qhills" alt="Qhills" className="h-8 object-contain" />
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://placehold.co/400x200/purple/white?text=Qhills" alt="Qhills" className="h-8 object-contain" />
                 </div>
-                <div className="w-32 h-12 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm">
-                  <img src="/placeholder.svg?height=40&width=100&text=HCL" alt="HCL" className="h-8 object-contain" />
+                <div className="w-32 h-16 flex items-center justify-center bg-white dark:bg-gray-800 rounded-lg p-3 shadow-sm hover:shadow-md transition-shadow">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/HCL_Technologies_logo.svg/1280px-HCL_Technologies_logo.svg.png" alt="HCL" className="h-8 object-contain" />
                 </div>
               </div>
             ))}
@@ -652,7 +652,7 @@ export default function Home() {
             }
           }
           .animate-scroll {
-            animation: scroll 30s linear infinite;
+            animation: scroll 20s linear infinite;
           }
         `}</style>
       </section>
