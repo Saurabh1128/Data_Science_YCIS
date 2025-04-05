@@ -47,12 +47,23 @@ export async function POST(request: Request) {
     const apiKeyQuery = url.searchParams.get('api_key');
     const apiKey = apiKeyHeader || apiKeyQuery;
     
+    // Enhanced debugging for API key validation
+    console.log('Request URL:', request.url);
+    console.log('Headers received:', [...request.headers.entries()].map(([key, value]) => `${key}: ${value}`));
+    console.log('API Key from header:', apiKeyHeader);
+    console.log('API Key from query:', apiKeyQuery);
+    
     // Get expected API key from environment
     const expectedApiKey = process.env.API_KEY;
+    console.log('Expected API Key (env):', expectedApiKey ? `${expectedApiKey.substring(0, 6)}...` : 'undefined');
     
     // Check if API key is valid
     if (!apiKey || apiKey !== expectedApiKey) {
       console.log('API: Invalid or missing API key');
+      console.log('Received:', apiKey ? `${apiKey.substring(0, 6)}...` : 'undefined');
+      console.log('Expected:', expectedApiKey ? `${expectedApiKey.substring(0, 6)}...` : 'undefined');
+      console.log('Match:', apiKey === expectedApiKey);
+      
       return NextResponse.json(
         {
           success: false,
@@ -62,6 +73,8 @@ export async function POST(request: Request) {
         { status: 401 }
       );
     }
+    
+    console.log('API Key validation successful');
     
     // Parse the request body
     const body = await request.json();

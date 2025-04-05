@@ -28,6 +28,8 @@ import LogoSlider from "@/components/logo-slider"
 import ImageSlider from "@/components/image-slider"
 import CoverFlowSlider from "@/components/image-slider"
 import { ClientOnly } from "@/components/client-only"
+import { RecentUpdates } from "@/components/recent-updates"
+import VideoSection from "@/components/video-section"
 
 // Define feature type
 interface Feature {
@@ -53,27 +55,8 @@ export default function Home() {
     threshold: 0.1,
   })
 
-  const testimonials = [
-    {
-      quote:
-        "The Data Science program at YCIS has provided me with the skills and knowledge needed to excel in my career.",
-      author: "Priya Sharma",
-      role: "Alumni, Data Scientist at Tech Solutions",
-    },
-    {
-      quote: "The faculty's expertise and hands-on approach to learning has been instrumental in my academic growth.",
-      author: "Rahul Patel",
-      role: "Current Student, M.Sc. Data Science",
-    },
-    {
-      quote:
-        "Our collaboration with YCIS Data Science department has helped us find talented graduates who make immediate impact.",
-      author: "Amit Verma",
-      role: "Hiring Manager, Analytics Pro",
-    },
-  ]
 
-  // Sample images for the slider with more reliable direct links
+  // mple images for the slider with more reliable direct links
   const sliderImages = [
     {
       src: "https://dl.dropboxusercontent.com/scl/fi/s8bn6bzbn23dfxkcwthel/YC_FAIR_PRIZE.jpg?rlkey=p9dtzqv1vumc1cu8citku2ljf&dl=1",
@@ -125,16 +108,6 @@ export default function Home() {
       [index]: false
     }));
   };
-
-  useEffect(() => {
-    setIsLoaded(true)
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-
-    return () => clearInterval(interval)
-  }, [testimonials.length])
 
   useEffect(() => {
     if (statsInView) {
@@ -226,10 +199,14 @@ export default function Home() {
                 <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-indigo-100">
                   Yashavantrao Chavan Institute of Science
                 </span>
-                <span className="block mt-2 text-white drop-shadow-md">Data Science</span>
+                <span className="block mt-2 text-white drop-shadow-md">Data Science Department</span>
               </h1>
               <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl mx-auto lg:mx-0">
-                Empowering the next generation of data scientists with cutting-edge education, research opportunities, and industry connections.
+                Establishment Year: 2022 <br />
+                Data Science Department is a part of Yashavatrao Chavan Institute of Science<br />
+                Intake Capacity:
+                UG: 120 <br />
+                PG:20
               </p>
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
                 <Link href="/courses">
@@ -283,6 +260,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Recent Updates Section */}
+      <RecentUpdates />
+
       {/* Cover Flow Slider Section */}
       <section className="py-12 bg-white dark:bg-gray-900">
         <div className="container px-4 mx-auto">
@@ -335,41 +315,6 @@ export default function Home() {
           <CoverFlowSlider images={sliderImages} />
         </div>
       </section>
-
-      {/* Why Choose Us Section */}
-      <section className="py-16 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30">
-        <div className="container px-4 mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-block px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-medium mb-4">
-              Our Advantages
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Why Choose <span className="text-indigo-600 dark:text-indigo-400">Our Program</span>
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Our data science program offers unique advantages designed to prepare you for success in the evolving data landscape.
-            </p>
-          </div>
-          
-          {/* Feature cards grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature: Feature, index: number) => (
-              <div 
-                key={index}
-                className="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow group"
-              >
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center mb-4 text-white group-hover:scale-110 transition-transform">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Company Logos Section */}
       <section className="py-12 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
         <div className="container px-4 mx-auto">
           <div className="text-center mb-8">
@@ -449,6 +394,49 @@ export default function Home() {
           }
         `}</style>
       </section>
+
+
+
+
+
+      {/* Why Choose Us Section */}
+      <section className="py-16 bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30">
+        <div className="container px-4 mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-block px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-sm font-medium mb-4">
+              Our Advantages
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              Why Choose <span className="text-indigo-600 dark:text-indigo-400">Our Program</span>
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              Our data science program offers unique advantages designed to prepare you for success in the evolving data landscape.
+            </p>
+          </div>
+
+          {/* Video Section */}
+         
+          
+          {/* Feature cards grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature: Feature, index: number) => (
+              <div 
+                key={index}
+                className="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow group"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center mb-4 text-white group-hover:scale-110 transition-transform">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <VideoSection />
+      {/* Company Logos Section */}
+      
 
       {/* Programs section */}
       <section className="py-16 bg-gradient-to-b from-white to-indigo-50 dark:from-gray-900 dark:to-indigo-950/30">

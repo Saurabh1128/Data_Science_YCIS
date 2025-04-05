@@ -32,7 +32,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
-  const [theme, setTheme] = useState<"light" | "dark" | "system">("dark");
+  const [theme, setTheme] = useState<"dark" | "system">("dark");
   const pathname = usePathname();
 
   // Check if the user is scrolling down
@@ -47,7 +47,7 @@ export default function Navbar() {
   // Handle theme switching
   useEffect(() => {
     // On mount, read the theme from localStorage or use dark as default
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | "system" || "dark";
+    const savedTheme = localStorage.getItem("theme") as "dark" | "system" || "dark";
     setTheme(savedTheme);
 
     // Apply the theme
@@ -69,7 +69,7 @@ export default function Navbar() {
   };
 
   const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : theme === "dark" ? "system" : "light";
+    const newTheme = theme === "dark" ? "system" : "dark";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
     applyTheme(newTheme);
@@ -189,7 +189,7 @@ export default function Navbar() {
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <div className="relative h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold">
+              <div className="relative h-8 w-8 rounded-full bg-gradient-to-tr from-purple-600 to-purple-800 flex items-center justify-center text-white font-bold">
                 <span>DS</span>
               </div>
               <span className={`font-bold text-xl ${isScrolled ? "text-gray-900 dark:text-white" : "text-white"}`}>
@@ -206,9 +206,9 @@ export default function Navbar() {
                       onClick={() => toggleSubMenu(item.label)}
                       className={`flex items-center px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         isActive(item.href)
-                          ? "text-indigo-600 dark:text-indigo-400"
+                          ? "text-purple-600 dark:text-purple-400"
                           : isScrolled
-                            ? "text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+                            ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                             : "text-white/90 hover:text-white"
                       }`}
                     >
@@ -220,9 +220,9 @@ export default function Navbar() {
                       href={item.href}
                       className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         isActive(item.href)
-                          ? "text-indigo-600 dark:text-indigo-400"
+                          ? "text-purple-600 dark:text-purple-400"
                           : isScrolled
-                            ? "text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+                            ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                             : "text-white/90 hover:text-white"
                       }`}
                     >
@@ -257,14 +257,12 @@ export default function Navbar() {
                 onClick={toggleTheme}
                 className={`p-2 rounded-full transition-colors ${
                   isScrolled
-                    ? "text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+                    ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                     : "text-white/90 hover:text-white"
                 }`}
                 aria-label="Toggle theme"
               >
-                {theme === "light" ? (
-                  <Moon className="h-5 w-5" />
-                ) : theme === "dark" ? (
+                {theme === "dark" ? (
                   <Sun className="h-5 w-5" />
                 ) : (
                   <Laptop className="h-5 w-5" />
@@ -278,14 +276,12 @@ export default function Navbar() {
                 onClick={toggleTheme}
                 className={`p-2 rounded-full transition-colors mr-2 ${
                   isScrolled
-                    ? "text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+                    ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                     : "text-white/90 hover:text-white"
                 }`}
                 aria-label="Toggle theme"
               >
-                {theme === "light" ? (
-                  <Moon className="h-5 w-5" />
-                ) : theme === "dark" ? (
+                {theme === "dark" ? (
                   <Sun className="h-5 w-5" />
                 ) : (
                   <Laptop className="h-5 w-5" />
@@ -296,7 +292,7 @@ export default function Navbar() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={`p-2 rounded-md ${
                   isScrolled
-                    ? "text-gray-700 hover:text-indigo-600 dark:text-gray-200 dark:hover:text-indigo-400"
+                    ? "text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400"
                     : "text-white/90 hover:text-white"
                 }`}
                 aria-label="Toggle menu"
@@ -326,7 +322,7 @@ export default function Navbar() {
             <div className="fixed inset-y-0 left-0 w-4/5 max-w-sm bg-white dark:bg-gray-900 shadow-xl z-50 overflow-y-auto">
               <div className="p-6">
                 <Link href="/" className="flex items-center space-x-2 mb-8">
-                  <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold">
+                  <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-purple-600 to-purple-800 flex items-center justify-center text-white font-bold">
                     <span>DS</span>
                   </div>
                   <span className="font-bold text-xl text-gray-900 dark:text-white">
@@ -343,7 +339,7 @@ export default function Navbar() {
                             onClick={() => toggleSubMenu(item.label)}
                             className={`w-full flex items-center justify-between p-3 rounded-md ${
                               isActive(item.href)
-                                ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+                                ? "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
                                 : "text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
                             }`}
                           >
@@ -370,7 +366,7 @@ export default function Navbar() {
                                     href={child.href}
                                     className={`block p-3 rounded-md text-sm ${
                                       pathname === child.href
-                                        ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+                                        ? "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
                                         : "text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
                                     }`}
                                     onClick={() => setIsOpen(false)}
@@ -387,7 +383,7 @@ export default function Navbar() {
                           href={item.href}
                           className={`flex items-center p-3 rounded-md ${
                             isActive(item.href)
-                              ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400"
+                              ? "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
                               : "text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800"
                           }`}
                           onClick={() => setIsOpen(false)}
@@ -419,4 +415,4 @@ export default function Navbar() {
       </AnimatePresence>
     </>
   );
-} 
+}

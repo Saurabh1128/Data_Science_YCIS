@@ -1,22 +1,21 @@
 import { Metadata } from 'next';
-import DashboardContent from './dashboard-content';
+import DashboardOverview from './components/dashboard-overview';
+import { DashboardSidebar } from './components/dashboard-sidebar';
 
 export const metadata: Metadata = {
-  title: 'Admin Dashboard - Data Science Department',
-  description: 'Admin dashboard for managing contact submissions',
+  title: 'Dashboard - Analytics Overview',
+  description: 'View your analytics and performance metrics',
 };
 
 export default function DashboardPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-        <p className="text-gray-600 dark:text-gray-300">
-          View and manage contact form submissions
-        </p>
-      </div>
-      
-      <DashboardContent />
+    <div className="flex h-full">
+      <DashboardSidebar />
+      <main className="flex-1 p-8">
+        <div className="space-y-8">
+          <DashboardOverview />
+        </div>
+      </main>
     </div>
   );
-} 
+}
