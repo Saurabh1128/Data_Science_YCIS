@@ -197,9 +197,9 @@ export default function Home() {
             <div className="text-center lg:text-left">
               <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white mb-6 leading-tight">
                 <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-purple-200 to-indigo-100">
-                  Yashavantrao Chavan Institute of Science
+                  Data Science
                 </span>
-                <span className="block mt-2 text-white drop-shadow-md">Data Science Department</span>
+                <span className="block mt-2 text-white drop-shadow-md">Yashavantrao Chavan Institute of Science, Satara</span>
               </h1>
               <p className="text-lg md:text-xl text-indigo-100 mb-8 max-w-xl mx-auto lg:mx-0">
                 Establishment Year: 2022 <br />
