@@ -131,11 +131,6 @@ export default function Navbar() {
       icon: <BookOpen className="h-5 w-5" />,
     },
     {
-      label: "Research",
-      href: "/research",
-      icon: <FileText className="h-5 w-5" />,
-    },
-    {
       label: "Contact",
       href: "/contact",
       icon: <Phone className="h-5 w-5" />,

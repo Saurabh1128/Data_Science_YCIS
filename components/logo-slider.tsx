@@ -11,16 +11,18 @@ export default function LogoSlider({ className }: LogoSliderProps) {
   const [width, setWidth] = useState(0)
   const [isMounted, setIsMounted] = useState(false)
 
-  // Company logos data
+  // Data Science tools logos data
   const companies = [
-    { name: "Tech Solutions", logo: "https://cdn-icons-png.flaticon.com/256/5968/5968520.png" },
-    { name: "Data Insights", logo: "https://cdn-icons-png.flaticon.com/256/5968/5968472.png" },
-    { name: "AI Research Labs", logo: "https://cdn-icons-png.flaticon.com/256/5968/5968554.png" },
-    { name: "Analytics Pro", logo: "https://cdn-icons-png.flaticon.com/256/5968/5968428.png" },
-    { name: "Cloud Systems", logo: "https://cdn-icons-png.flaticon.com/256/5968/5968381.png" },
-    { name: "Neural Networks Inc", logo: "https://cdn-icons-png.flaticon.com/256/5968/5968474.png" },
-    { name: "Quantum Computing", logo: "https://cdn-icons-png.flaticon.com/256/5968/5968350.png" },
-    { name: "Big Data Solutions", logo: "https://cdn-icons-png.flaticon.com/256/5968/5968342.png" },
+    { name: "Python", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png" },
+    { name: "MongoDB", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" },
+    { name: "PostgreSQL", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1985px-Postgresql_elephant.svg.png" },
+    { name: "Power BI", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/New_Power_BI_Logo.svg/2048px-New_Power_BI_Logo.svg.png" },
+    { name: "TensorFlow", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Tensorflow_logo.svg/1915px-Tensorflow_logo.svg.png" },
+    { name: "Jupyter", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1767px-Jupyter_logo.svg.png" },
+    { name: "Pandas", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Pandas_logo.svg/2560px-Pandas_logo.svg.png" },
+    { name: "NumPy", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/NumPy_logo_2020.svg/2560px-NumPy_logo_2020.svg.png" },
+    { name: "Scikit-learn", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Scikit_learn_logo_small.svg/2560px-Scikit_learn_logo_small.svg.png" },
+    { name: "R", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/1280px-R_logo.svg.png" },
   ]
 
   // Duplicate the array to create a seamless loop
@@ -37,10 +39,9 @@ export default function LogoSlider({ className }: LogoSliderProps) {
   return (
     <div className={`w-full overflow-hidden ${className}`}>
       <div className="relative">
-        {/* First slider - moves from right to left */}
-        <div className="py-4 flex items-center">
+        <div className="py-8 flex items-center">
           <motion.div
-            className="flex gap-8 items-center"
+            className="flex gap-12 items-center"
             animate={{
               x: [0, -2000],
             }}
@@ -48,7 +49,7 @@ export default function LogoSlider({ className }: LogoSliderProps) {
               x: {
                 repeat: Number.POSITIVE_INFINITY,
                 repeatType: "loop",
-                duration: 30,
+                duration: 20,
                 ease: "linear",
               },
             }}
@@ -56,52 +57,16 @@ export default function LogoSlider({ className }: LogoSliderProps) {
             {duplicatedCompanies.map((company, index) => (
               <div
                 key={`${company.name}-${index}`}
-                className="flex-shrink-0 h-16 flex items-center justify-center group px-4"
+                className="flex-shrink-0 h-20 flex items-center justify-center group px-6"
               >
-                <div className="relative h-12 w-[140px] grayscale opacity-70 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                <div className="relative h-16 w-[160px] opacity-90 transition-all duration-300 hover:opacity-100 hover:scale-110 hover:drop-shadow-lg">
                   <img
                     src={company.logo || "/placeholder.svg"}
                     alt={company.name}
                     className="h-full w-full object-contain"
                   />
                 </div>
-                <span className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-white text-xs rounded py-1 px-2 -bottom-7 pointer-events-none">
-                  {company.name}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Second slider - moves from left to right (in opposite direction) */}
-        <div className="py-4 flex items-center mt-4">
-          <motion.div
-            className="flex gap-8 items-center"
-            animate={{
-              x: [-2000, 0],
-            }}
-            transition={{
-              x: {
-                repeat: Number.POSITIVE_INFINITY,
-                repeatType: "loop",
-                duration: 30,
-                ease: "linear",
-              },
-            }}
-          >
-            {duplicatedCompanies.reverse().map((company, index) => (
-              <div
-                key={`reverse-${company.name}-${index}`}
-                className="flex-shrink-0 h-16 flex items-center justify-center group px-4"
-              >
-                <div className="relative h-12 w-[140px] grayscale opacity-70 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
-                  <img
-                    src={company.logo || "/placeholder.svg"}
-                    alt={company.name}
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-                <span className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-black/80 text-white text-xs rounded py-1 px-2 -bottom-7 pointer-events-none">
+                <span className="absolute opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm rounded-full py-1.5 px-4 -bottom-8 pointer-events-none shadow-lg">
                   {company.name}
                 </span>
               </div>
@@ -110,8 +75,8 @@ export default function LogoSlider({ className }: LogoSliderProps) {
         </div>
 
         {/* Gradient overlays for smooth fade effect on edges */}
-        <div className="absolute top-0 left-0 h-full w-20 bg-gradient-to-r from-white to-transparent dark:from-gray-950 z-10"></div>
-        <div className="absolute top-0 right-0 h-full w-20 bg-gradient-to-l from-white to-transparent dark:from-gray-950 z-10"></div>
+        <div className="absolute top-0 left-0 h-full w-32 bg-gradient-to-r from-white to-transparent dark:from-gray-950 z-10"></div>
+        <div className="absolute top-0 right-0 h-full w-32 bg-gradient-to-l from-white to-transparent dark:from-gray-950 z-10"></div>
       </div>
     </div>
   )

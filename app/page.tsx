@@ -260,8 +260,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Recent Updates Section */}
-      <RecentUpdates />
+      {/* Main Content Section */}
+      <section className="container mx-auto px-4 py-16">
+        {/* Logo Slider Section */}
+        <div className="mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Our Technology Stack</h2>
+          <LogoSlider />
+        </div>
+
+        {/* Recent Updates Section */}
+        <div className="mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Recent Updates</h2>
+          <RecentUpdates />
+        </div>
+      </section>
 
       {/* Cover Flow Slider Section */}
       <section className="py-12 bg-white dark:bg-gray-900">
