@@ -120,11 +120,7 @@ export default function Navbar() {
         }
       ]
     },
-    {
-      label: "Courses",
-      href: "/courses",
-      icon: <BookOpen className="h-5 w-5" />,
-    },
+
     {
       label: "Contact",
       href: "/contact",

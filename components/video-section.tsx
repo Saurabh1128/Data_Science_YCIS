@@ -34,6 +34,9 @@ export default function VideoSection() {
   return (
     <section className="py-16 bg-white dark:bg-gray-900">
       <div className="container px-4 mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Informative Videos</h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {videos.map((video) => (
             <div key={video.videoId} className="aspect-video relative rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">

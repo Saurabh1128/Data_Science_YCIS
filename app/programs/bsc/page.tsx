@@ -106,6 +106,38 @@ export default function BSCPage() {
           </Card>
         </div>
 
+        {/* Syllabus Section */}
+        <div className="mb-12">
+          <Card className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-purple-100 dark:border-purple-900/30">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <BookOpen className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
+                <span>Program Syllabus</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-gray-600 dark:text-gray-300">
+                Download our comprehensive B.Sc. Data Science I NEP 2.0 syllabus to explore the detailed course structure, subjects, and learning outcomes.
+              </p>
+              <div className="flex justify-center">
+                <a 
+                  href="https://www.dropbox.com/scl/fi/y8zx57d7uu9jbp8smsaad/B.Sc.-I-NEP-Syllabus-2.0.pdf?rlkey=z52b0oh0421kjwr0cimw8r8gk&st=6lqae9ze&dl=1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700"
+                  >
+                    <BookOpen className="mr-2 h-5 w-5" />
+                    Download Syllabus (PDF)
+                  </Button>
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Call to Action */}
         <div className="text-center">
           <Link href="/contact">
