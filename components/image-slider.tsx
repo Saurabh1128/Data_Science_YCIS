@@ -65,19 +65,19 @@ export default function CoverFlowSlider({
     setIsAutoPlaying(true)
   }
 
-  // Calculate position and styles for each image
+  // Calculate position and styles for each image with enhanced 3D effect
   const getImageStyles = (index: number) => {
     const diff = index - currentIndex
     
-    // Base transformation values
-    let translateX = diff * 60
-    let translateZ = -Math.abs(diff) * 100
-    let rotateY = diff * 25
-    let scale = 1 - Math.abs(diff) * 0.2
-    let opacity = 1 - Math.abs(diff) * 0.3
+    // Enhanced transformation values for more dramatic 3D effect
+    let translateX = diff * 65
+    let translateZ = -Math.abs(diff) * 120
+    let rotateY = diff * 35
+    let scale = 1 - Math.abs(diff) * 0.15
+    let opacity = 1 - Math.abs(diff) * 0.25
     let zIndex = 20 - Math.abs(diff)
     
-    // Limit the visible slides
+    // Limit the visible slides with smoother falloff
     if (Math.abs(diff) > 2) {
       opacity = 0
       scale = 0
@@ -93,17 +93,27 @@ export default function CoverFlowSlider({
 
   return (
     <div 
-      className={cn("relative w-full py-16 md:py-24 overflow-hidden bg-gradient-to-r from-indigo-900 to-purple-900", 
+      className={cn("relative w-full py-8 md:py-12 overflow-hidden bg-gradient-to-r from-indigo-900 via-purple-900 to-violet-900", 
       className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
+      <style jsx global>{`
+        @keyframes gradient-x {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-gradient-x {
+          animation: gradient-x 3s linear infinite;
+          background-size: 200% 200%;
+        }
+      `}</style>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1)_0%,rgba(255,255,255,0)_60%)]"></div>
       
       {/* Main slider container with perspective effect */}
       <div 
         ref={sliderRef}
-        className="relative max-w-6xl mx-auto h-[400px] md:h-[500px] perspective-1000 transform-style-3d"
+        className="relative max-w-6xl mx-auto h-[300px] md:h-[400px] perspective-1000 transform-style-3d"
       >
         {/* Slider track */}
         <div className="relative h-full w-full flex items-center justify-center">
@@ -112,25 +122,27 @@ export default function CoverFlowSlider({
             <div
               key={index}
               style={getImageStyles(index)}
-              className="absolute w-[320px] h-[240px] md:w-[480px] md:h-[320px] transition-all duration-500 ease-in-out cursor-pointer"
+              className="absolute w-[280px] h-[200px] md:w-[400px] md:h-[280px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] cursor-pointer hover:scale-105"
               onClick={() => goToSlide(index)}
             >
-              <div className="relative w-full h-full rounded-lg overflow-hidden shadow-xl border-2 border-indigo-300/20">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-cover"
-                  width={720}
-                  height={480}
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/80 to-transparent opacity-90"></div>
-                {(image.title || image.description) && (
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
-                    {image.title && <h3 className="text-lg md:text-xl font-bold mb-1">{image.title}</h3>}
-                    {image.description && <p className="text-sm md:text-base opacity-90">{image.description}</p>}
-                  </div>
-                )}
+              <div className="relative w-full h-full rounded-lg overflow-hidden shadow-xl before:absolute before:inset-0 before:p-[2px] before:bg-gradient-to-r before:from-indigo-500 before:via-purple-500 before:to-pink-500 before:rounded-lg before:content-[''] before:animate-gradient-x">
+                <div className="relative w-full h-full rounded-lg overflow-hidden bg-black/20 backdrop-blur-sm">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-full h-full object-cover"
+                    width={720}
+                    height={480}
+                    loading="eager"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-purple-900/90 via-purple-900/50 to-transparent opacity-90"></div>
+                  {(image.title || image.description) && (
+                    <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 text-white">
+                      {image.title && <h3 className="text-lg md:text-xl font-bold mb-1">{image.title}</h3>}
+                      {image.description && <p className="text-sm md:text-base opacity-90">{image.description}</p>}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -168,4 +180,4 @@ export default function CoverFlowSlider({
       </div>
     </div>
   )
-} 
+}

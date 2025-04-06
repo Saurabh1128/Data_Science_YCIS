@@ -690,7 +690,7 @@ export default function CoursesPage() {
               Join our Data Science program and build a strong foundation for a successful career in the data-driven world.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/department/admission">
+              <Link href="/apply">
                 <Button size="lg" className="bg-white text-purple-700 hover:bg-purple-50 font-semibold px-6">Apply Now</Button>
               </Link>
               <Link href="/contact">
@@ -702,4 +702,4 @@ export default function CoursesPage() {
       </div>
     </div>
   )
-} 
+}

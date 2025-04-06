@@ -117,11 +117,6 @@ export default function Navbar() {
           label: "MSc Data Science",
           href: "/programs/msc",
           description: "Postgraduate program in Data Science"
-        },
-        {
-          label: "Certificate Courses",
-          href: "/programs/certificates",
-          description: "Short-term specialized certificate courses"
         }
       ]
     },
@@ -134,11 +129,6 @@ export default function Navbar() {
       label: "Contact",
       href: "/contact",
       icon: <Phone className="h-5 w-5" />,
-    },
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: <Laptop className="h-5 w-5" />,
     },
   ];
 

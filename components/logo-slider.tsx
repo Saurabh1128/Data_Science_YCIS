@@ -13,16 +13,15 @@ export default function LogoSlider({ className }: LogoSliderProps) {
 
   // Data Science tools logos data
   const companies = [
-    { name: "Python", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png" },
-    { name: "MongoDB", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MongoDB_Logo.svg/2560px-MongoDB_Logo.svg.png" },
-    { name: "PostgreSQL", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1985px-Postgresql_elephant.svg.png" },
-    { name: "Power BI", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/New_Power_BI_Logo.svg/2048px-New_Power_BI_Logo.svg.png" },
-    { name: "TensorFlow", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Tensorflow_logo.svg/1915px-Tensorflow_logo.svg.png" },
-    { name: "Jupyter", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Jupyter_logo.svg/1767px-Jupyter_logo.svg.png" },
-    { name: "Pandas", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Pandas_logo.svg/2560px-Pandas_logo.svg.png" },
-    { name: "NumPy", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/NumPy_logo_2020.svg/2560px-NumPy_logo_2020.svg.png" },
-    { name: "Scikit-learn", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Scikit_learn_logo_small.svg/2560px-Scikit_learn_logo_small.svg.png" },
-    { name: "R", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/1280px-R_logo.svg.png" },
+    { name: "Python", logo: "https://www.python.org/static/community_logos/python-logo.png" },
+    { name: "MongoDB", logo: "https://webimages.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png" },
+    { name: "PostgreSQL", logo: "https://www.postgresql.org/media/img/about/press/elephant.png" },
+    { name: "Power BI", logo: "https://powerbi.microsoft.com/pictures/shared/social/social-default-image.png" },
+    { name: "TensorFlow", logo: "https://www.tensorflow.org/images/tf_logo_social.png" },
+    { name: "Jupyter", logo: "https://jupyter.org/assets/homepage/main-logo.svg" },
+    { name: "Pandas", logo: "https://pandas.pydata.org/static/img/pandas.svg" },
+    { name: "NumPy", logo: "https://numpy.org/images/logo.svg" },
+    { name: "Scikit-learn", logo: "https://scikit-learn.org/stable/_static/scikit-learn-logo-small.png" },
   ]
 
   // Duplicate the array to create a seamless loop

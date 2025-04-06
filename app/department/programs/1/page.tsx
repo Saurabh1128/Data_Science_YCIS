@@ -394,7 +394,7 @@ export default function BSCDataSciencePage() {
               </div>
               
               <div className="flex justify-center">
-                <Link href="/admissions">
+                <Link href="/apply">
                   <Button className="px-8">Apply Now</Button>
                 </Link>
               </div>
@@ -409,7 +409,7 @@ export default function BSCDataSciencePage() {
           Join our B.Sc. Data Science program designed as per NEP 2.0 guidelines and build a strong foundation for a successful career in the data-driven world.
         </p>
         <div className="flex flex-wrap gap-4 justify-center">
-          <Link href="/admissions">
+          <Link href="/apply">
             <Button size="lg" className="px-8">Apply Now</Button>
           </Link>
           <Link href="/contact">
@@ -419,4 +419,4 @@ export default function BSCDataSciencePage() {
       </div>
     </div>
   );
-} 
+}

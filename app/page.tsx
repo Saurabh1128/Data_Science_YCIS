@@ -270,7 +270,6 @@ export default function Home() {
 
         {/* Recent Updates Section */}
         <div className="mb-16">
-          <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">Recent Updates</h2>
           <RecentUpdates />
         </div>
       </section>
